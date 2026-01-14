@@ -1,0 +1,58 @@
+=== Edge Functions audit ===
+Repo: /Users/masaruokami/Projects/sns-functions
+Root: supabase/functions
+
+---- generate-media ----
+guard_import: YES
+ALLOW_ROLES: (not found)
+worker_secret: NO
+store_id_source: g.storeId
+
+---- generate-story-preview ----
+guard_import: YES
+ALLOW_ROLES: (not found)
+worker_secret: NO
+store_id_source: g.storeId
+
+---- post_preview_mobile ----
+guard_import: YES
+ALLOW_ROLES: 7:const ALLOW_ROLES = ["admin", "editor", "viewer"]
+worker_secret: NO
+store_id_source: g.storeId
+
+---- smooth-actionsns-preview-feedback ----
+guard_import: YES
+ALLOW_ROLES: 34:const ALLOW_ROLES = ["admin", "editor"]
+worker_secret: NO
+store_id_source: g.storeId
+
+---- sns-feedback ----
+guard_import: YES
+ALLOW_ROLES: (not found)
+worker_secret: NO
+store_id_source: (unknown)
+
+---- sns-p-plan-restore ----
+guard_import: YES
+ALLOW_ROLES: (not found)
+worker_secret: NO
+store_id_source: (unknown)
+
+---- sns-post-dispatch ----
+guard_import: YES
+ALLOW_ROLES: 17:const ALLOW_ROLES = ["admin"]
+worker_secret: NO
+store_id_source: (unknown)
+
+---- sns-preview-feedback ----
+guard_import: YES
+ALLOW_ROLES: (not found)
+worker_secret: NO
+store_id_source: (unknown)
+
+---- story-availability-preview ----
+guard_import: YES
+ALLOW_ROLES: 6:const ALLOW_ROLES = ["admin", "editor", "viewer"]
+worker_secret: NO
+store_id_source: g.storeId
+
