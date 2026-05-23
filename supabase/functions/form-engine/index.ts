@@ -1,6 +1,6 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
-import OpenAI from "npm:openai@4.28.0";
-import { corsHeaders } from "../_shared/cors.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import OpenAI from "https://esm.sh/openai@4.28.0";
 
 /** fetch with automatic AbortController timeout (default 20s) */
 async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs = 20000): Promise<Response> {
@@ -13,10 +13,16 @@ async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs = 2000
   }
 }
 
+const corsHeaders: Record<string, string> = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Expose-Headers": "X-Submission-Id",
+};
+
 const createHtmlResponse = (html: string): Response => {
   return new Response(html, {
     headers: {
-      ...corsHeaders(null),
+      ...corsHeaders,
       "Content-Type": "text/html; charset=utf-8",
       "X-Content-Type-Options": "nosniff",
       "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -159,9 +165,9 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     phone_register_hint: "電話番号を登録するとポイントを管理できます。<br>{n}P 貯めてクーポンと交換！",
     phone_register_btn: "登録する",
     phone_register_note: "※電話番号はハッシュ化して保存。ポイント管理のみに使用します。",
-    view_points_btn: "🎴 ポイント確認・特典（クーポン）交換はこちら",
-    view_points_line_btn: "📲 LINEでポイント確認・特典（クーポン）交換はこちら",
-    arrow_earn_hint: "上記アクション後に追加ポイント獲得！ポイントでクーポンと交換できます",
+    view_points_btn: "🎴 ポイントを確認する",
+    view_points_line_btn: "📲 LINEでポイントを確認する",
+    arrow_earn_hint: "上記アクション後に下記から追加ポイント獲得！",
   },
   en: {
     need_store_id: "store_id is required. /?store_id=XXX",
@@ -1489,7 +1495,7 @@ function buildResultHtml(params: {
         const fbSid = escAttr(submissionId ?? "");
         const fbStoreId = escAttr(store_id);
         const fbReviewId = escAttr(review.id);
-        const fbAnonKey = escAttr(Deno.env.get("SUPABASE_ANON_KEY") ?? "");
+        // ★ L-1 fix: anon key is not exposed in HTML attributes
         // ── 送信済みの場合はシンプルな完了表示 ──────────────────────────
         if (!fbEnabled) {
           return `<div style="background:#f0fdf4;border:2px solid #86efac;border-radius:18px;padding:18px 16px;text-align:center;">
@@ -1510,9 +1516,9 @@ function buildResultHtml(params: {
             <div style="font-size:42px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.02em;">＋${fbBonusPts}P</div>
             <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;">口コミ投稿（＋${fbPts}P）より 1P 多い！</div>
           </div>
-          <button type="button" id="btn-store-feedback" class="btn-store-feedback store-feedback-cta-highlight" style="width:100%;padding:16px;border:none;border-radius:14px;background:#d97706;color:#fff;font-weight:800;font-size:16px;text-align:center;cursor:pointer;letter-spacing:.02em;box-shadow:0 4px 14px rgba(217,119,6,.45);" data-sent="0" data-original-text="${fbOriginal}" data-review-id="${fbReviewId}" data-store-id="${fbStoreId}" data-sub-id="${fbSid}" data-dash-url="${fbDashUrl}" data-anon-key="${fbAnonKey}">${fbLabel}</button>
+          <button type="button" id="btn-store-feedback" class="btn-store-feedback store-feedback-cta-highlight" style="width:100%;padding:16px;border:none;border-radius:14px;background:#d97706;color:#fff;font-weight:800;font-size:16px;text-align:center;cursor:pointer;letter-spacing:.02em;box-shadow:0 4px 14px rgba(217,119,6,.45);" data-sent="0" data-original-text="${fbOriginal}" data-review-id="${fbReviewId}" data-store-id="${fbStoreId}" data-sub-id="${fbSid}" data-dash-url="${fbDashUrl}">${fbLabel}</button>
         </div>
-<script>(function(){var _b=document.getElementById('btn-store-feedback');if(!_b||_b.disabled)return;_b.onclick=function(){if(_b.disabled)return;_b.disabled=true;var _ot=_b.getAttribute('data-original-text')||_b.textContent||'';_b.textContent='\u9001\u4fe1\u4e2d\u2026';var _ae=document.querySelector('.content.active .review-text');var _stid=_b.getAttribute('data-store-id');var _sid=_b.getAttribute('data-sub-id');var _ak=_b.getAttribute('data-anon-key')||'';var _base=window.location.href.split('?')[0]+'?store_id='+encodeURIComponent(_stid)+(_sid?'&sid='+encodeURIComponent(_sid):'');var _hdrs={'Content-Type':'application/json'};if(_ak){_hdrs['apikey']=_ak;_hdrs['Authorization']='Bearer '+_ak;}fetch(_base,{method:'POST',headers:_hdrs,body:JSON.stringify({action:'send_improvement_feedback',review_id:_b.getAttribute('data-review-id'),store_id:_stid,text:_ae?(_ae.innerText||'').trim():''})}).then(function(r){return r.json();}).then(function(d){if(d.daily_limit){_b.textContent='\u26a0\ufe0f \u672c\u65e5\u5206\u306f\u52a0\u7b97\u6e08\u307f';_b.style.background='#f3f4f6';_b.style.color='#6b7280';if(typeof _showSimpleBanner==='function')_showSimpleBanner('\u26a0\ufe0f \u30ec\u30dd\u30fc\u30c8\u306e\u30dd\u30a4\u30f3\u30c8\u306f1\u65e51\u56de\u306e\u307f\u3067\u3059\uff08\u672c\u65e5\u5206\u306f\u52a0\u7b97\u6e08\u307f\uff09','#b45309',6000);return;}if(d.ok){var _pts=d.points_awarded||0;_b.textContent=_pts>0?('\u2705 \uff0b'+_pts+'P \u52a0\u7b97\uff01'):'\u2705 \u9001\u4fe1\u3057\u307e\u3057\u305f';if(_pts>0){var _c=document.getElementById('loyalty-point-card')||document.getElementById('loyalty-wallet-summary');if(_c&&d.balance!=null){var _big=_c.querySelector('div[style*="font-size:58px"]');if(_big)_big.innerHTML=d.balance+'<span style="font-size:18px;font-weight:600;"> P<\/span>';var _bdg=document.createElement('div');_bdg.style.cssText='text-align:center;padding:10px 0 4px;font-size:30px;font-weight:800;color:#059669;opacity:1;transition:opacity 1s;';_bdg.textContent='\uff0b'+_pts+'P';_c.insertBefore(_bdg,_c.firstChild);setTimeout(function(){_bdg.style.opacity='0';},3000);setTimeout(function(){try{_bdg.remove();}catch(e){}},4200);}(_c=_c||document.querySelector('.loyalty-card'))&&_c.scrollIntoView({behavior:'smooth',block:'center'});var _bal2=d.balance!=null?d.balance:_pts;if(typeof window._showPtsPopup==='function'){window._showPtsPopup(_pts,_bal2,'\u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u9001\u4fe1');}else if(typeof _showSimpleBanner==='function'){_showSimpleBanner('\ud83c\udf89 \u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af \uff0b'+_pts+'P \u52a0\u7b97\uff01','#16a34a',5000);}if(typeof window._refreshWalletDisplay==='function')window._refreshWalletDisplay();}else{if(typeof _showSimpleBanner==='function')_showSimpleBanner('\u2705 \u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u3092\u9001\u4fe1\u3057\u307e\u3057\u305f','#374151',3000);}}else{_b.disabled=false;_b.textContent=_ot;}}).catch(function(){_b.disabled=false;_b.textContent=_ot;});};})();<\/script>`;
+<script>(function(){var _b=document.getElementById('btn-store-feedback');if(!_b||_b.disabled)return;_b.onclick=function(){if(_b.disabled)return;_b.disabled=true;var _ot=_b.getAttribute('data-original-text')||_b.textContent||'';_b.textContent='\u9001\u4fe1\u4e2d\u2026';var _ae=document.querySelector('.content.active .review-text');var _stid=_b.getAttribute('data-store-id');var _sid=_b.getAttribute('data-sub-id');var _base=window.location.href.split('?')[0]+'?store_id='+encodeURIComponent(_stid)+(_sid?'&sid='+encodeURIComponent(_sid):'');var _hdrs={'Content-Type':'application/json'};fetch(_base,{method:'POST',headers:_hdrs,body:JSON.stringify({action:'send_improvement_feedback',review_id:_b.getAttribute('data-review-id'),store_id:_stid,text:_ae?(_ae.innerText||'').trim():''})}).then(function(r){return r.json();}).then(function(d){if(d.daily_limit){_b.textContent='\u26a0\ufe0f \u672c\u65e5\u5206\u306f\u52a0\u7b97\u6e08\u307f';_b.style.background='#f3f4f6';_b.style.color='#6b7280';if(typeof _showSimpleBanner==='function')_showSimpleBanner('\u26a0\ufe0f \u30ec\u30dd\u30fc\u30c8\u306e\u30dd\u30a4\u30f3\u30c8\u306f1\u65e51\u56de\u306e\u307f\u3067\u3059\uff08\u672c\u65e5\u5206\u306f\u52a0\u7b97\u6e08\u307f\uff09','#b45309',6000);return;}if(d.ok){var _pts=d.points_awarded||0;_b.textContent=_pts>0?('\u2705 \uff0b'+_pts+'P \u52a0\u7b97\uff01'):'\u2705 \u9001\u4fe1\u3057\u307e\u3057\u305f';if(_pts>0){var _c=document.getElementById('loyalty-point-card')||document.getElementById('loyalty-wallet-summary');if(_c&&d.balance!=null){var _big=_c.querySelector('div[style*="font-size:58px"]');if(_big)_big.innerHTML=d.balance+'<span style="font-size:18px;font-weight:600;"> P<\/span>';var _bdg=document.createElement('div');_bdg.style.cssText='text-align:center;padding:10px 0 4px;font-size:30px;font-weight:800;color:#059669;opacity:1;transition:opacity 1s;';_bdg.textContent='\uff0b'+_pts+'P';_c.insertBefore(_bdg,_c.firstChild);setTimeout(function(){_bdg.style.opacity='0';},3000);setTimeout(function(){try{_bdg.remove();}catch(e){}},4200);}(_c=_c||document.querySelector('.loyalty-card'))&&_c.scrollIntoView({behavior:'smooth',block:'center'});var _bal2=d.balance!=null?d.balance:_pts;if(typeof window._showPtsPopup==='function'){window._showPtsPopup(_pts,_bal2,'\u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u9001\u4fe1');}else if(typeof _showSimpleBanner==='function'){_showSimpleBanner('\ud83c\udf89 \u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af \uff0b'+_pts+'P \u52a0\u7b97\uff01','#16a34a',5000);}if(typeof window._refreshWalletDisplay==='function')window._refreshWalletDisplay();}else{if(typeof _showSimpleBanner==='function')_showSimpleBanner('\u2705 \u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u3092\u9001\u4fe1\u3057\u307e\u3057\u305f','#374151',3000);}}else{_b.disabled=false;_b.textContent=_ot;}}).catch(function(){_b.disabled=false;_b.textContent=_ot;});};})();<\/script>`;
       })()}
     </div>
     ` : ""}
@@ -2579,7 +2585,6 @@ function buildResultHtml(params: {
             if (newBal != null) { injectPointCard(newTotal, newBal, ptThreshold, themeColorP, googlePts, buildCoupons(newBal), _exMs); }
             // ★ リダイレクトの代わりに目立つポップアップを表示
             showPointsEarnedPopup(googlePts, newBal, '口コミ投稿');
-            try { localStorage.setItem('fe_google_done_' + SUBMISSION_ID, '1'); } catch(e) {}
             if (typeof window._refreshWalletDisplay === 'function') window._refreshWalletDisplay();
           } else if (data.skipped) {
             showFloatBanner('⚠️ 口コミポイントは1日1回のみ加算されます（本日分は加算済み）', '#b45309', 5000);
@@ -2592,7 +2597,6 @@ function buildResultHtml(params: {
               if (cwData.ready && cwData.balance != null) { _skipBal = cwData.balance; }
             } catch(ce) {}
             showPointsEarnedPopup(googlePts, _skipBal, '口コミ投稿');
-            try { localStorage.setItem('fe_google_done_' + SUBMISSION_ID, '1'); } catch(e) {}
           } else {
             // ★ NO_IDENTITY等のエラー時も感謝ポップアップ表示（LINE未連携ユーザー向け）
             showPointsEarnedPopup(googlePts, googlePts, '口コミ投稿');
@@ -2621,7 +2625,7 @@ function buildResultHtml(params: {
             lineButtonPressed = false;
             _walletPollingStarted = false;
             bonusDone = false;
-            if (bonusBtn) { bonusBtn.style.opacity = '1'; bonusBtn.style.pointerEvents = 'auto'; bonusBtn.style.background = '#06C755'; bonusBtn.textContent = '🎴 ポイント確認・特典（クーポン）交換はこちら'; }
+            if (bonusBtn) { bonusBtn.style.opacity = '1'; bonusBtn.style.pointerEvents = 'auto'; bonusBtn.style.background = '#06C755'; bonusBtn.textContent = '🎴 ポイントを確認する'; }
             if (bonusMsg) { bonusMsg.style.color = '#ef4444'; bonusMsg.textContent = '⚠️ 検出できませんでした。もう一度タップしてください。'; }
             return;
           }
@@ -2667,8 +2671,6 @@ function buildResultHtml(params: {
         // ★ 口コミリンクをクリックした記録がない場合はバーを表示しない
         // （記録なし＝このセッションで口コミリンクを押していない → ボタンを覆って邪魔にならないよう）
         if (upgraded) return;
-        // ポイント付与ポップアップを既に1回表示済みなら再表示しない
-        try { if (localStorage.getItem('fe_google_done_' + SUBMISSION_ID)) return; } catch(e) {}
         var _savedForBar = null;
         try { _savedForBar = localStorage.getItem(storeKey); } catch(e2) {}
         if (!_savedForBar) return;
@@ -2712,8 +2714,6 @@ function buildResultHtml(params: {
       // ── 口コミページからの帰還検出 ────────────────────────────────────
       function upgradeBtn() {
         if (upgraded) return;
-        // ポイント付与ポップアップを既に1回表示済みなら再表示しない
-        try { if (localStorage.getItem('fe_google_done_' + SUBMISSION_ID)) return; } catch(e) {}
         upgraded = true;
         try { localStorage.removeItem(storeKey); } catch(ex) {}
         clearTimeout(_barShownTimer);
@@ -2728,8 +2728,6 @@ function buildResultHtml(params: {
 
       function checkReturn() {
         if (upgraded) return;
-        // ポイント付与ポップアップを既に1回表示済みなら再表示しない
-        try { if (localStorage.getItem('fe_google_done_' + SUBMISSION_ID)) return; } catch(e) {}
         var raw = localStorage.getItem(storeKey);
         if (!raw) return;
         try {
@@ -3541,8 +3539,8 @@ function buildResultHtml(params: {
 }
 
 // ========== メイン ==========
-Deno.serve(async (req: Request): Promise<Response> => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders(null) });
+serve(async (req: Request): Promise<Response> => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   // supabase.co URL からのGETアクセスはカスタムドメインへリダイレクト
   // Edge Function 内からはドメインを判別できないため _nc=1 センチネルで無限ループを防ぐ
@@ -3553,18 +3551,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const ncParam = reqUrl.searchParams.get("_nc");
     const actionCheck = reqUrl.searchParams.get("action");
     const liffLinkCheck = reqUrl.searchParams.get("liff_link"); // LIFF ページはリダイレクト対象外
-    // wallet_check も LIFF ページなのでリダイレクト対象外（liff.state 内も考慮）
-    let walletCheckSkip = reqUrl.searchParams.get("wallet_check");
-    if (!walletCheckSkip) {
-      const _lsRaw = reqUrl.searchParams.get("liff.state");
-      if (_lsRaw) {
-        try {
-          const _lsDec = _lsRaw.startsWith("?") ? _lsRaw.slice(1) : _lsRaw;
-          walletCheckSkip = new URLSearchParams(_lsDec).get("wallet_check");
-        } catch (_) {}
-      }
-    }
-    if (!ncParam && !actionCheck && !liffLinkCheck && !walletCheckSkip) {
+    if (!ncParam && !actionCheck && !liffLinkCheck) {
       const redirectParams = new URLSearchParams();
       reqUrl.searchParams.forEach((v, k) => { if (k !== "_nc") redirectParams.set(k, v); });
       redirectParams.set("_nc", "1");
@@ -3656,62 +3643,6 @@ liff.init({liffId:LIFF_ID}).then(async function(){
     return createHtmlResponse(liffHtml);
   }
 
-  // ---------- GET: ウォレット直接アクセス用 LIFF ページ（QR → LINE認証 → ウォレットへ）----------
-  if (req.method === "GET" && (_p("wallet_check") === "1")) {
-    const wcStoreId = (_p("store_id") ?? storeId ?? "").trim();
-    const { data: wcCredsRow } = await supabase
-      .from("store_line_credentials").select("line_liff_id").eq("store_id", wcStoreId).maybeSingle();
-    const { data: wcStoreRow } = await supabase
-      .from("store_profiles").select("line_liff_id, store_name_jp").eq("store_id", wcStoreId).maybeSingle();
-    const wcLiffId = ((wcCredsRow as { line_liff_id?: string } | null)?.line_liff_id
-      || (wcStoreRow as { line_liff_id?: string } | null)?.line_liff_id || "").trim();
-    const wcStoreName = (wcStoreRow as { store_name_jp?: string } | null)?.store_name_jp ?? "お店";
-    const wcApiOrigin = new URL(req.url).origin;
-    const wcApiBase = customDomainBase || `${wcApiOrigin}/functions/v1`;
-    const wcHtml = `<!DOCTYPE html>
-<html><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${wcStoreName} ポイントカード</title>
-<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
-<style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f0fdf4;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;}.wrap{max-width:320px;}.icon{font-size:52px;margin-bottom:16px;}.title{font-size:18px;font-weight:800;color:#1f2937;margin-bottom:8px;}.sub{font-size:13px;color:#6b7280;line-height:1.6;}</style>
-</head><body>
-<div class="wrap"><div class="icon" id="icon">⏳</div><div class="title" id="title">ポイントカードを確認中…</div><div class="sub" id="sub">少々お待ちください</div></div>
-<script>
-var STORE_ID=${JSON.stringify(wcStoreId)};
-var LIFF_ID=${JSON.stringify(wcLiffId)};
-var API_URL=${JSON.stringify(wcApiBase+"/form-engine")};
-function setUI(ic,ti,sb){document.getElementById("icon").textContent=ic;document.getElementById("title").textContent=ti;document.getElementById("sub").textContent=sb||"";}
-liff.init({liffId:LIFF_ID}).then(async function(){
-  if(!liff.isLoggedIn()){liff.login({redirectUri:window.location.href});return;}
-  try{
-    var prof=await liff.getProfile();
-    var uid=prof.userId;
-    var res=await fetch(API_URL+"?store_id="+encodeURIComponent(STORE_ID),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"wallet_check_redirect",line_user_id:uid,store_id:STORE_ID})});
-    var data=await res.json();
-    if(data.wallet_url){
-      setUI("✅","ポイントカードを表示します","そのまましばらくお待ちください");
-      setTimeout(function(){
-        try{window.location.href=data.wallet_url;}catch(e){
-          try{liff.openWindow({url:data.wallet_url,external:true});}catch(e2){}
-        }
-      },400);
-    }else if(data.survey_url){
-      setUI("📝","アンケートへご案内します","初回はアンケートへのご回答をお願いします");
-      setTimeout(function(){
-        try{window.location.href=data.survey_url;}catch(e){
-          try{liff.openWindow({url:data.survey_url,external:true});}catch(e2){}
-        }
-      },1200);
-    }else{
-      setUI("⚠️","見つかりませんでした",data.error||"スタッフにお声がけください");
-    }
-  }catch(e){setUI("❌","エラー",e.message||"通信に失敗しました");}
-}).catch(function(err){setUI("❌","初期化エラー",err.message||"LIFF初期化に失敗しました");});
-</script>
-</body></html>`;
-    return createHtmlResponse(wcHtml);
-  }
-
   // ---------- GET: ポイントウォレット確認（ポーリング用） ----------
   if (req.method === "GET" && actionParam === "check_wallet" && storeId && sidParam) {
     const { data: rev } = await supabase
@@ -3721,13 +3652,9 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       .eq("store_id", storeId)
       .maybeSingle();
     if (!rev) {
-      return new Response(JSON.stringify({ ready: false }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+      return new Response(JSON.stringify({ ready: false }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
     const { data: st } = await supabase.from("store_profiles").select("points_scope, chain_id, point_threshold, point_threshold_2, point_reward_title_1, point_reward_title_2, point_rule_survey, point_rule_google, coupon_tiers, point_expiry_days").eq("store_id", rev.store_id).maybeSingle();
-    // ★ L4 fix: store_profiles が null（店舗未設定）の場合は残高0データを返さず ready: false を返す
-    if (!st) {
-      return new Response(JSON.stringify({ ready: false }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-    }
     const scopeType = ((st as Record<string,unknown>)?.points_scope as string) === "chain" && (st as Record<string,unknown>)?.chain_id ? "chain" : "store";
     const scopeId = scopeType === "chain" ? String((st as Record<string,unknown>).chain_id) : rev.store_id;
     // identity 解決: line_user_id → 直接 / anon → ledger.source_ref で逆引き
@@ -3737,12 +3664,11 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       identity = idByLine;
     }
     if (!identity) {
-      // ★ Bug fix: store_id フィルタを追加して他店舗のSIDが混入しないようにする
-      const { data: ledgerForCw } = await supabase.from("customer_points_ledger").select("identity_id").eq("source_ref", sidParam).eq("store_id", rev.store_id).limit(1).maybeSingle();
+      const { data: ledgerForCw } = await supabase.from("customer_points_ledger").select("identity_id").eq("source_ref", sidParam).limit(1).maybeSingle();
       if (ledgerForCw?.identity_id) identity = { id: ledgerForCw.identity_id as string };
     }
     if (!identity) {
-      return new Response(JSON.stringify({ ready: false }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+      return new Response(JSON.stringify({ ready: false }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
     // ウォレットテーブルから total_spent のみ取得（残高はレジャーから再集計）
     // wallet がなくても total_spent=0 で続行（page.tsx と同一ロジック）
@@ -3773,10 +3699,8 @@ liff.init({liffId:LIFF_ID}).then(async function(){
         expiresAtCw = new Date(expiryMs).toISOString();
       }
     }
-    // totalSpentCw / balanceFromLedger は redeemHistoryCw 取得後に計算
-    // （wallet.total_spent は競合で乖離するため使わない — sync/route.ts と同一ロジック）
-    let totalSpentCw = 0;
-    let balanceFromLedger = 0;
+    const totalSpentCw = wallet ? Number((wallet as Record<string, unknown>).total_spent ?? 0) : 0;
+    const balanceFromLedger = Math.max(0, teFromLedger - totalSpentCw);
     // 最近の獲得ポイント履歴（最新50件）
     const { data: recentLedger } = await supabase
       .from("customer_points_ledger")
@@ -3786,23 +3710,15 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       .eq("scope_id", scopeId)
       .order("created_at", { ascending: false })
       .limit(50);
-    // クーポン使用履歴（points_redemption）— scope フィルタで他店舗の履歴を除外
-    // ★ H1 fix: limit(50)を削除（50件超のユーザーでtotalSpentが過小計算されバランス不正になるバグを修正）
-    // mergedRecentCw の .slice(0, 50) で表示件数は引き続き制限される
+    // クーポン使用履歴（points_redemption）
     const { data: redeemHistoryCw } = await supabase
       .from("points_redemption")
       .select("spent_points, used_at")
       .eq("identity_id", identity.id)
-      .eq("scope_type", scopeType)
-      .eq("scope_id", scopeId)
       .eq("status", "used")
       .gt("spent_points", 0)
-      .order("used_at", { ascending: false });
-    // ★ Bug fix: wallet.total_spent ではなく points_redemption から残高を再集計（sync/route.ts と同一ロジック）
-    totalSpentCw = (redeemHistoryCw ?? []).reduce(
-      (s: number, r: Record<string,unknown>) => s + Number(r.spent_points ?? 0), 0
-    );
-    balanceFromLedger = Math.max(0, teFromLedger - totalSpentCw);
+      .order("used_at", { ascending: false })
+      .limit(50);
     const redeemItemsCw = (redeemHistoryCw ?? []).map((r: Record<string,unknown>) => ({
       action_type: "redeem",
       points_delta: -Number(r.spent_points ?? 0),
@@ -3884,12 +3800,25 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       recent_additions: mergedRecentCw,
       used_coupon_titles: usedCouponTitles,
       expires_at: expiresAtCw,
-    }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+    }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 
   // ---------- GET: ロイヤルティ顧客一覧（管理画面用） ----------
   // store_id のみで参照可能。データはマスク済みの集計値のみ返す。
   if (req.method === "GET" && actionParam === "loyalty_customers" && storeId) {
+    // ★ H-1 fix: JWT auth + store access required
+    const authHeaderLc = req.headers.get("authorization") ?? "";
+    if (!authHeaderLc.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "UNAUTHORIZED" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    const { data: lcUser, error: lcAuthErr } = await supabase.auth.getUser(authHeaderLc.slice(7));
+    if (lcAuthErr || !lcUser?.user) {
+      return new Response(JSON.stringify({ error: "UNAUTHORIZED" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    const { data: lcAccess } = await supabase.from("user_store_access").select("role").eq("user_id", lcUser.user.id).eq("store_id", storeId).maybeSingle();
+    if (!lcAccess) {
+      return new Response(JSON.stringify({ error: "FORBIDDEN" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
     // 店舗設定
     const { data: stLc } = await supabase.from("store_profiles")
       .select("points_scope, chain_id, point_threshold, point_reward_title_1, point_threshold_2, point_reward_title_2")
@@ -3905,7 +3834,7 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       .order("total_earned", { ascending: false })
       .limit(500);
     if (!wallets || wallets.length === 0) {
-      return new Response(JSON.stringify({ customers: [], total: 0 }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+      return new Response(JSON.stringify({ customers: [], total: 0 }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
     const identityIds = wallets.map((w: Record<string,unknown>) => w.identity_id as string);
     // 顧客識別子（LINE ID → マスク表示 / anon_id → 匿名）
@@ -3943,11 +3872,24 @@ liff.init({liffId:LIFF_ID}).then(async function(){
         joined_at: ident.created_at ?? null,
       };
     });
-    return new Response(JSON.stringify({ customers, total: customers.length }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ customers, total: customers.length }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 
   // ---------- GET: 不正利用レポート（管理画面用） ----------
   if (req.method === "GET" && actionParam === "fraud_report" && storeId) {
+    // ★ H-1 fix: JWT auth + store access required
+    const authHeaderFr = req.headers.get("authorization") ?? "";
+    if (!authHeaderFr.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "UNAUTHORIZED" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    const { data: frUser, error: frAuthErr } = await supabase.auth.getUser(authHeaderFr.slice(7));
+    if (frAuthErr || !frUser?.user) {
+      return new Response(JSON.stringify({ error: "UNAUTHORIZED" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    const { data: frAccess } = await supabase.from("user_store_access").select("role").eq("user_id", frUser.user.id).eq("store_id", storeId).maybeSingle();
+    if (!frAccess) {
+      return new Response(JSON.stringify({ error: "FORBIDDEN" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
     // 店舗スコープ取得
     const { data: stFr } = await supabase.from("store_profiles")
       .select("points_scope, chain_id").eq("store_id", storeId).maybeSingle();
@@ -4117,7 +4059,7 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       .sort((a, b) => b.fraud_score - a.fraud_score || b.total_earned - a.total_earned);
 
     return new Response(JSON.stringify({ users: fraudUsers, total: fraudUsers.length }),
-      { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 
   // ---------- GET: フォーム画面用ポイント取得 ----------
@@ -4130,14 +4072,14 @@ liff.init({liffId:LIFF_ID}).then(async function(){
     const ptSurveyGp = Number((stGp as Record<string,unknown>)?.point_rule_survey ?? 1);
     if (!lineUserIdGp) {
       return new Response(JSON.stringify({ points: 0, point_threshold: ptThresholdGp, survey_points: ptSurveyGp }),
-        { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
     const scopeTypeGp = ((stGp as Record<string,unknown>)?.points_scope as string) === "chain" && (stGp as Record<string,unknown>)?.chain_id ? "chain" : "store";
     const scopeIdGp = scopeTypeGp === "chain" ? String((stGp as Record<string,unknown>).chain_id) : storeId;
     const { data: identityGp } = await supabase.from("customer_identity").select("id").eq("line_user_id", lineUserIdGp).maybeSingle();
     if (!identityGp) {
       return new Response(JSON.stringify({ points: 0, point_threshold: ptThresholdGp, survey_points: ptSurveyGp }),
-        { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
     const { data: walletGp } = await supabase.from("customer_points_wallet").select("total_earned")
       .eq("identity_id", (identityGp as Record<string,unknown>).id).eq("scope_type", scopeTypeGp).eq("scope_id", scopeIdGp).maybeSingle();
@@ -4145,7 +4087,7 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       points: Number((walletGp as Record<string,unknown>)?.total_earned ?? 0),
       point_threshold: ptThresholdGp,
       survey_points: ptSurveyGp,
-    }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+    }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 
   // ---------- GET/POST: 来店チェックインポイント ----------
@@ -4186,7 +4128,7 @@ liff.init({liffId:LIFF_ID}).then(async function(){
 
       if (!ciAnonId && !ciLiffId) {
         return new Response(JSON.stringify({ error: "NO_IDENTITY" }), {
-          status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" },
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
 
@@ -4205,7 +4147,7 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       const ptData = await ptRes.json();
       return new Response(JSON.stringify(ptData), {
         status: ptRes.ok ? 200 : ptRes.status,
-        headers: { ...corsHeaders(null), "Content-Type": "application/json" },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
@@ -4892,11 +4834,7 @@ document.getElementById('copyBtn').onclick=function(){
         }
         var _ai = document.getElementById('anon_id');
         if (_ai) _ai.value = _aid;
-      } catch(e) {
-        // localStorage 不可時（プライベートブラウジング等）: セッション一時IDを使用
-        var _ai2 = document.getElementById('anon_id');
-        if (_ai2 && !_ai2.value) _ai2.value = 'a_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
-      }
+      } catch(e) {}
     })();
 
     // LIFF で LINE userId を取得して hidden field にセット
@@ -5152,7 +5090,6 @@ document.getElementById('copyBtn').onclick=function(){
         vid: (form.querySelector('#vid') || {}).value || null,
         answers: collectVisibleAnswers(),
         anon_id: (form.querySelector('#anon_id') || {}).value || null,
-        line_user_id: (form.querySelector('#line_user_id') || {}).value || null,
         referral_code: rcInput ? ((rcInput.value || '').trim().toUpperCase() || null) : null,
       };
       var res = await fetch(window.location.href, {
@@ -5220,7 +5157,7 @@ document.getElementById('copyBtn').onclick=function(){
             if (!review_id) {
               return new Response(
                 JSON.stringify({ error: "review_id_required", message: "review_id required" }),
-                { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+                { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
               );
             }
             const { data: rev, error: fetchError } = await supabase
@@ -5232,13 +5169,13 @@ document.getElementById('copyBtn').onclick=function(){
               console.error("[form-engine create_ref] supabase fetch error:", fetchError);
               return new Response(
                 JSON.stringify({ error: "db_error", message: String(fetchError.message) }),
-                { status: 500, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+                { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
               );
             }
             if (!rev) {
               return new Response(
                 JSON.stringify({ error: "review_not_found", message: "review not found" }),
-                { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+                { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
               );
             }
             let token = (rev as { ref_token?: string | null }).ref_token;
@@ -5254,7 +5191,7 @@ document.getElementById('copyBtn').onclick=function(){
                 console.error("[form-engine create_ref] supabase update error:", updateError);
                 return new Response(
                   JSON.stringify({ error: "db_error", message: String(updateError.message) }),
-                  { status: 500, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+                  { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
                 );
               }
             } else if (!(rev as { is_scouter?: boolean }).is_scouter) {
@@ -5264,13 +5201,13 @@ document.getElementById('copyBtn').onclick=function(){
             const referralUrl = scoutLpBase + "?ref=" + encodeURIComponent(token) + "&store=" + encodeURIComponent((rev as { store_id?: string }).store_id || "");
             return new Response(
               JSON.stringify({ ref_token: token, referral_url: referralUrl }),
-              { headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           } catch (e) {
             console.error("[form-engine create_ref] unexpected error:", e);
             return new Response(
               JSON.stringify({ error: "internal_error", message: String((e as Error).message) }),
-              { status: 500, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
         }
@@ -5279,18 +5216,19 @@ document.getElementById('copyBtn').onclick=function(){
           if (!review_id) {
             return new Response(
               JSON.stringify({ error: "review_id required" }),
-              { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const { data: rev } = await supabase
             .from("reviews")
             .select("id, used_at, store_id, created_at")
             .eq("id", review_id)
+            .eq("store_id", storeId ?? "")
             .single();
           if (!rev) {
             return new Response(
               JSON.stringify({ error: "review not found" }),
-              { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const storeIdForCookie = (rev as { store_id?: string }).store_id ?? "";
@@ -5302,7 +5240,7 @@ document.getElementById('copyBtn').onclick=function(){
           if ((st as { coupon_emergency_stop?: boolean })?.coupon_emergency_stop === true) {
             return new Response(
               JSON.stringify({ error: "coupon_stopped", ok: false, message: "クーポンは現在停止中です" }),
-              { status: 403, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const expiryType = String((st as { coupon_expiry_type?: string })?.coupon_expiry_type ?? "permanent").toLowerCase();
@@ -5325,14 +5263,14 @@ document.getElementById('copyBtn').onclick=function(){
           if (isExpired) {
             return new Response(
               JSON.stringify({ ok: false, expired: true, message: "このクーポンは有効期限切れです。" }),
-              { status: 200, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const alreadyUsed = (rev as { used_at?: string | null }).used_at != null;
           if (alreadyUsed) {
             return new Response(
               JSON.stringify({ ok: false, already_used: true, message: "このクーポンはすでに使用済みです。" }),
-              { status: 200, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const reacquireEnabledRaw = (st as { coupon_reacquire_enabled?: boolean | null })?.coupon_reacquire_enabled;
@@ -5358,7 +5296,7 @@ document.getElementById('copyBtn').onclick=function(){
               : "この店舗ではクーポンは1回限りのため、再利用できません。";
             return new Response(
               JSON.stringify({ ok: false, already_used: true, message: blockedMsg }),
-              { status: 200, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const nowIso = new Date().toISOString();
@@ -5366,35 +5304,37 @@ document.getElementById('copyBtn').onclick=function(){
             .from("reviews")
             .update({ used_at: nowIso })
             .eq("id", review_id)
+            .eq("store_id", storeIdForCookie)
             .is("used_at", null)
             .select("id")
             .maybeSingle();
           if (!updated) {
             return new Response(
               JSON.stringify({ ok: false, already_used: true, message: "このクーポンはすでに使用済みです。" }),
-              { status: 200, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const cookieMaxAge = intervalDays * 24 * 60 * 60;
           const setCookie = `${cookieName}=1; Max-Age=${cookieMaxAge}; Path=/; SameSite=Lax`;
           return new Response(
             JSON.stringify({ ok: true, used: true }),
-            { headers: { ...corsHeaders(null), "Content-Type": "application/json", "Set-Cookie": setCookie } }
+            { headers: { ...corsHeaders, "Content-Type": "application/json", "Set-Cookie": setCookie } }
           );
         }
         if (body.action === "claim_survey_line") {
           // アンケート1P をLINE登録時に加算（survey action）
           const { review_id } = body;
           if (!review_id) {
-            return new Response(JSON.stringify({ error: "review_id required" }), { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "review_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
           const { data: rev } = await supabase
             .from("reviews")
             .select("submission_id, store_id, line_user_id")
             .eq("id", review_id)
+            .eq("store_id", storeId ?? "")
             .maybeSingle();
           if (!rev) {
-            return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
           const workerSecret = Deno.env.get("SNS_WORKER_SECRET") ?? "";
           const _apAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
@@ -5413,186 +5353,40 @@ document.getElementById('copyBtn').onclick=function(){
           const ptData = await ptRes.json().catch(() => ({ error: "parse_error" }));
 
           // LINE友達追加ポイント（既存LINE友達が初回利用時にも付与。source_ref重複チェックで2回目以降はスキップ）
-          // ★ Bug fix: "line" は add-loyalty-point の許可リストにないため "sns" を使用
           if (rev.line_user_id) {
             fetch(addPointUrl, {
               method: "POST",
               headers: _apHeaders,
               body: JSON.stringify({
                 store_id: rev.store_id,
-                action_type: "sns",
+                action_type: "line",
                 source_ref: "line_follow",
                 line_user_id: rev.line_user_id,
               }),
             }).catch(() => {});
           }
 
-          return new Response(JSON.stringify(ptData), { status: ptRes.ok ? 200 : ptRes.status, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+          return new Response(JSON.stringify(ptData), { status: ptRes.ok ? 200 : ptRes.status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
-        // ── QR→LIFF ウォレット直アクセス ──────────────────────────────────────
-        if (body.action === "wallet_check_redirect") {
-          const wcUid = String(body.line_user_id ?? "").trim() || null;
-          const wcSid = String(body.store_id ?? storeId ?? "").trim() || null;
-          if (!wcUid || !wcSid) {
-            return new Response(JSON.stringify({ error: "line_user_id and store_id required" }), { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-          }
-          const wcDashUrl = (Deno.env.get("DASHBOARD_URL") ?? "").replace(/\/$/, "");
-
-          // ── wcSid のスコープを解決（chain 対応）──────────────────────────────
-          const { data: wcStoreProfile } = await supabase
-            .from("store_profiles")
-            .select("points_scope, chain_id")
-            .eq("store_id", wcSid)
-            .maybeSingle();
-          // ★ N4 fix: 店舗が存在しない場合は早期リターン（null のまま処理続行すると不正な survey_url を返す）
-          if (!wcStoreProfile) {
-            return new Response(JSON.stringify({ ok: false, error: "store_not_found" }), { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-          }
-          const wcScopeType = ((wcStoreProfile as Record<string,unknown>)?.points_scope as string) === "chain" && (wcStoreProfile as Record<string,unknown>)?.chain_id
-            ? "chain" : "store";
-          const wcScopeId = wcScopeType === "chain"
-            ? String((wcStoreProfile as Record<string,unknown>).chain_id)
-            : wcSid;
-
-          // ── ① customer_points_ledger から submission_id を探す ─────────────
-          // scope_id でフィルタ（chain対応）。他店舗の submission_id が混入しないよう store_id も確認
-          const { data: wcIdent } = await supabase.from("customer_identity").select("id").eq("line_user_id", wcUid).maybeSingle();
-          let wcSubId: string | null = null;
-          // ★ H6 fix: チェーン他店舗のレビューを使う場合はその store_id を wallet URL に使用
-          let wcWalletStoreId: string = wcSid;
-          if (wcIdent?.id) {
-            const { data: wcLedger } = await supabase
-              .from("customer_points_ledger")
-              .select("source_ref, store_id")
-              .eq("identity_id", wcIdent.id as string)
-              .eq("scope_type", wcScopeType)
-              .eq("scope_id", wcScopeId)
-              .not("source_ref", "is", null)
-              .filter("source_ref", "~", "^[0-9a-f]{12}$")
-              .order("occurred_at", { ascending: false })
-              .limit(1)
-              .maybeSingle();
-            wcSubId = (wcLedger?.source_ref as string) ?? null;
-            // ★ Bug fix: scope_id が一致しても store_id が異なる場合（chain内他店舗）は
-            //   submission_id が本当にこの scope に属するか reviews で確認
-            if (wcSubId && (wcLedger as Record<string,unknown>)?.store_id !== wcSid && wcScopeType === "store") {
-              wcSubId = null; // store スコープで他店舗の submission は使わない
-            }
-          }
-
-          // ── ② reviews.line_user_id で直接検索（liff_link_review 経由のユーザー）────
-          // ★ Bug fix: 必ず store_id フィルタを適用。他店舗の submission_id を返さない
-          if (!wcSubId) {
-            const { data: wcRevDirect } = await supabase
-              .from("reviews")
-              .select("submission_id")
-              .eq("line_user_id", wcUid)
-              .eq("store_id", wcSid)
-              .order("created_at", { ascending: false })
-              .limit(1)
-              .maybeSingle();
-            wcSubId = (wcRevDirect?.submission_id as string) ?? null;
-            // chain スコープの場合のみ、同chain内の他店舗も検索
-            if (!wcSubId && wcScopeType === "chain") {
-              const { data: wcChainStores } = await supabase
-                .from("store_profiles")
-                .select("store_id")
-                .eq("chain_id", wcScopeId);
-              const chainStoreIds = (wcChainStores ?? []).map((s: Record<string,unknown>) => String(s.store_id));
-              if (chainStoreIds.length > 0) {
-                const { data: wcRevChain } = await supabase
-                  .from("reviews")
-                  .select("submission_id, store_id")
-                  .eq("line_user_id", wcUid)
-                  .in("store_id", chainStoreIds)
-                  .order("created_at", { ascending: false })
-                  .limit(1)
-                  .maybeSingle();
-                wcSubId = (wcRevChain?.submission_id as string) ?? null;
-                // ★ H6 fix: チェーン他店舗のレビューから取得した場合はその store_id を wallet URL に使用
-                if (wcSubId) wcWalletStoreId = String((wcRevChain as Record<string,unknown>)?.store_id ?? wcSid);
-              }
-            }
-          }
-
-          // ── ③ coupon_follow_pending.used_by_user_id → coupon_url の sid を取得 ─
-          // ★ Bug fix: 必ず store_id フィルタを適用
-          if (!wcSubId) {
-            const { data: wcPending } = await supabase
-              .from("coupon_follow_pending")
-              .select("coupon_url")
-              .eq("used_by_user_id", wcUid)
-              .eq("store_id", wcSid)
-              .order("created_at", { ascending: false })
-              .limit(1)
-              .maybeSingle();
-            if (wcPending?.coupon_url) {
-              try {
-                wcSubId = new URL(wcPending.coupon_url as string).searchParams.get("sid") ?? null;
-              } catch (_) {}
-            }
-          }
-
-          // ★ M6 fix: LINE webhook がまだ used_by_user_id を書き込んでいない場合の対策
-          // 直近2分以内に used_by_user_id=NULL のペンディングレコードが存在する場合は
-          // pending_follow を返してクライアントにリトライを促す（survey_url へ飛ばさない）
-          if (!wcSubId) {
-            const twoMinsAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
-            const { data: wcPendingNull } = await supabase
-              .from("coupon_follow_pending")
-              .select("id")
-              .eq("store_id", wcSid)
-              .is("used_by_user_id", null)
-              .gte("created_at", twoMinsAgo)
-              .limit(1)
-              .maybeSingle();
-            if (wcPendingNull) {
-              return new Response(JSON.stringify({ ok: false, pending_follow: true }), {
-                headers: { ...corsHeaders(null), "Content-Type": "application/json" },
-              });
-            }
-          }
-
-          if (wcSubId && wcDashUrl) {
-            // ★ H6 fix: チェーン他店舗のレビューから取得した場合は wcWalletStoreId (review の store_id) を使用
-            const walletUrl = `${wcDashUrl}/s/${encodeURIComponent(wcWalletStoreId)}/wallet/${encodeURIComponent(wcSubId)}`;
-            return new Response(JSON.stringify({ ok: true, wallet_url: walletUrl }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-          } else if (wcSubId) {
-            // DASHBOARD_URL 未設定フォールバック
-            const wcFormBase = (Deno.env.get("FORM_ENGINE_BASE_URL") ?? "").replace(/\/$/, "") || (new URL(req.url).origin + "/functions/v1");
-            const walletUrl = `${wcFormBase}/form-engine?store_id=${encodeURIComponent(wcWalletStoreId)}&sid=${encodeURIComponent(wcSubId)}&_nc=1`;
-            return new Response(JSON.stringify({ ok: true, wallet_url: walletUrl }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-          } else {
-            // 未回答ユーザー → アンケートへ案内
-            const wcFormBase2 = (Deno.env.get("FORM_ENGINE_BASE_URL") ?? "").replace(/\/$/, "") || (new URL(req.url).origin + "/functions/v1");
-            const surveyUrl = `${wcFormBase2}/form-engine?store_id=${encodeURIComponent(wcSid)}`;
-            return new Response(JSON.stringify({ ok: false, survey_url: surveyUrl, error: "no_wallet_found" }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-          }
-        }
-
         if (body.action === "liff_link_review") {
           // LIFF 経由で LINE user ID とレビューを紐付け（既存友達も自動対応）
           const { review_id: liffRevId, line_user_id: liffUid } = body as { review_id?: string; line_user_id?: string };
           if (!liffRevId || !liffUid) {
-            return new Response(JSON.stringify({ error: "review_id and line_user_id required" }), { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "review_id and line_user_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
-          // ★ C4 Security fix: store_id フィルタを追加して他店舗のreview_idを使ったID乗っ取りを防ぐ
           const { data: revLiff } = await supabase
             .from("reviews").select("id, store_id, submission_id, line_user_id")
-            .eq("id", liffRevId).eq("store_id", storeId).maybeSingle();
+            .eq("id", liffRevId).maybeSingle();
           if (!revLiff) {
-            return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
           const existingUid = (revLiff as any).line_user_id as string | null;
-          // ★ M3 fix: 既存の LINE UID がある場合は上書きしない（異なる UID で乗っ取りを防止）
-          // LINE UID が未設定（null）の場合のみ LIFF 認証ユーザーで初期化する
-          if (!existingUid) {
+          // ★ LIFF認証ユーザーを常に正とする（テスト用IDや古い値を上書き）
+          if (existingUid !== liffUid) {
             await supabase.from("reviews").update({ line_user_id: liffUid }).eq("id", liffRevId);
           }
-          // ★ N3 fix: existingUid が既にある場合はそのユーザーを正とする
-          // effectiveUid を liffUid に固定すると、別 LINE UID からのアクセス時に
-          // review オーナー（existingUid）ではなく LIFF ユーザーにポイントが付与されてしまう
-          const effectiveUid = existingUid ?? liffUid;
+          // 実際に使用する LINE UID は常に LIFF 認証ユーザー
+          const effectiveUid = liffUid;
           const workerSecretLiff = Deno.env.get("SNS_WORKER_SECRET") ?? "";
           const _liffAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
           const _liffApHeaders = { "Content-Type": "application/json", "x-worker-secret": workerSecretLiff, ...(_liffAnonKey ? { "apikey": _liffAnonKey, "Authorization": `Bearer ${_liffAnonKey}` } : {}) };
@@ -5603,12 +5397,10 @@ document.getElementById('copyBtn').onclick=function(){
           {
             const subId = (revLiff as any).submission_id as string | null;
             if (subId) {
-              // ★ Bug fix: store_id フィルタを追加して他店舗のSIDが混入しないようにする
               const { data: existingLedger } = await supabase
                 .from("customer_points_ledger")
                 .select("identity_id")
                 .eq("source_ref", subId)
-                .eq("store_id", String((revLiff as any).store_id))
                 .limit(1)
                 .maybeSingle();
               if (existingLedger?.identity_id) {
@@ -5626,11 +5418,10 @@ document.getElementById('copyBtn').onclick=function(){
             body: JSON.stringify({ store_id: (revLiff as any).store_id, action_type: "survey", source_ref: (revLiff as any).submission_id, line_user_id: effectiveUid }),
           }).catch(console.error);
           // LINE友達追加ポイント（生涯1回 — source_ref="line_follow" で重複防止）
-          // ★ Bug fix: "line" は add-loyalty-point の許可リストにないため "sns" を使用
           await fetchWithTimeout(addPointUrlLiff, {
             method: "POST",
             headers: _liffApHeaders,
-            body: JSON.stringify({ store_id: (revLiff as any).store_id, action_type: "sns", source_ref: "line_follow", line_user_id: effectiveUid }),
+            body: JSON.stringify({ store_id: (revLiff as any).store_id, action_type: "line", source_ref: "line_follow", line_user_id: effectiveUid }),
           }).catch(console.error);
           // LINE Push: ポイントカードURLをLINEに送信
           const liffDashboardUrl = (Deno.env.get("DASHBOARD_URL") ?? "").replace(/\/$/, "");
@@ -5640,42 +5431,39 @@ document.getElementById('copyBtn').onclick=function(){
             : `${liffFormBase}/form-engine?store_id=${encodeURIComponent((revLiff as any).store_id)}&sid=${encodeURIComponent((revLiff as any).submission_id)}&_nc=1`;
           // LIFF 経由は wallet_url への直接リダイレクトで完結するため LINE push は送信しない。
           // LINE push は LINE bot OAメッセージ経由（lineOaMsgUrl フロー）でのみ行う。
-          return new Response(JSON.stringify({ ok: true, wallet_url: liffResultUrl }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ ok: true, wallet_url: liffResultUrl }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
         if (body.action === "get_line_code") {
           // LINEコード発行（oaMessage URL に埋め込む用）
           const { review_id } = body as { review_id?: string };
-          if (!review_id) return new Response(JSON.stringify({ error: "review_id required" }), { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-          const { data: revForCode } = await supabase.from("reviews").select("id, store_id, line_user_id").eq("id", review_id).maybeSingle();
-          if (!revForCode) return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-          if ((revForCode as any).line_user_id) return new Response(JSON.stringify({ already_linked: true }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+          if (!review_id) return new Response(JSON.stringify({ error: "review_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          const { data: revForCode } = await supabase.from("reviews").select("id, store_id, line_user_id").eq("id", review_id).eq("store_id", storeId ?? "").maybeSingle();
+          if (!revForCode) return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          if ((revForCode as any).line_user_id) return new Response(JSON.stringify({ already_linked: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
           // 既存コードがあれば再利用
           const { data: existingCode } = await supabase.from("coupon_pending_codes").select("code").eq("coupon_url", "REVIEW:" + review_id).gt("expires_at", new Date().toISOString()).maybeSingle();
-          if (existingCode?.code) return new Response(JSON.stringify({ code: existingCode.code }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+          if (existingCode?.code) return new Response(JSON.stringify({ code: existingCode.code }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
           // 4文字コード生成（O/0/1/I除く）
           const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
           const genCode = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
           let newCode = genCode();
           const { error: codeErr } = await supabase.from("coupon_pending_codes").insert({ code: newCode, store_id: (revForCode as any).store_id, coupon_url: "REVIEW:" + review_id, expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString() });
-          // ★ L3 fix: genCode() + genCode()[0] は 5文字コードになるバグ → genCode() のみで正しく4文字を生成
-          if (codeErr) { newCode = genCode(); await supabase.from("coupon_pending_codes").insert({ code: newCode, store_id: (revForCode as any).store_id, coupon_url: "REVIEW:" + review_id, expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString() }); }
-          return new Response(JSON.stringify({ code: newCode }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+          if (codeErr) { newCode = genCode() + genCode()[0]; await supabase.from("coupon_pending_codes").insert({ code: newCode, store_id: (revForCode as any).store_id, coupon_url: "REVIEW:" + review_id, expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString() }); }
+          return new Response(JSON.stringify({ code: newCode }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
         // ── スタッフがクーポンを使用済みにする ──────────────────────────────────
         if (body.action === "use_loyalty_coupon") {
           const { coupon_title } = body as { coupon_title?: string };
           if (!coupon_title) {
-            return new Response(JSON.stringify({ error: "coupon_title required" }), { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "coupon_title required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
           // sidParam または review_id から identity を解決
-          // ★ C5 Security fix: sid は URL パラメータからのみ受け取る（body からの上書きを禁止してポイント不正消費を防ぐ）
-          const sidForUse = sidParam || "";
+          const sidForUse = sidParam || (body.sid as string) || "";
           let lineUserIdForUse: string | null = null;
           let storeIdForUse = storeId;
           if (sidForUse) {
-            // ★ N2 fix: store_id フィルタを追加して他店舗の sid による identity 混入を防ぐ
             const { data: revUc } = await supabase.from("reviews")
-              .select("line_user_id, store_id").eq("submission_id", sidForUse).eq("store_id", storeId).maybeSingle();
+              .select("line_user_id, store_id").eq("submission_id", sidForUse).maybeSingle();
             lineUserIdForUse = (revUc?.line_user_id as string) ?? null;
             if (revUc?.store_id) storeIdForUse = revUc.store_id as string;
           }
@@ -5685,14 +5473,14 @@ document.getElementById('copyBtn').onclick=function(){
               .select("id").eq("line_user_id", lineUserIdForUse).maybeSingle();
             identityIdUc = (identUc?.id as string) ?? null;
           }
-          // anon_id フォールバック: ledger の source_ref = sid から identity を逆引き（store_id フィルタで他店舗を除外）
+          // anon_id フォールバック: ledger の source_ref = sid から identity を逆引き
           if (!identityIdUc && sidForUse) {
             const { data: ledgerEntryUc } = await supabase.from("customer_points_ledger")
-              .select("identity_id").eq("source_ref", sidForUse).eq("store_id", storeIdForUse).limit(1).maybeSingle();
+              .select("identity_id").eq("source_ref", sidForUse).limit(1).maybeSingle();
             identityIdUc = (ledgerEntryUc?.identity_id as string) ?? null;
           }
           if (!identityIdUc) {
-            return new Response(JSON.stringify({ error: "identity_not_found" }), { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "identity_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
           // 店舗スコープ取得
           const { data: stUc } = await supabase.from("store_profiles")
@@ -5787,7 +5575,7 @@ document.getElementById('copyBtn').onclick=function(){
 
           // rewardIdUc がない場合（自動作成も失敗）は処理続行不可
           if (!rewardIdUc) {
-            return new Response(JSON.stringify({ error: "REWARD_NOT_FOUND", detail: "特典が見つかりません" }), { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "REWARD_NOT_FOUND", detail: "特典が見つかりません" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
 
           // daily_limit チェック（metadata.daily_limit を使用）
@@ -5806,35 +5594,33 @@ document.getElementById('copyBtn').onclick=function(){
               .eq("reward_id", rewardIdUc)
               .gte("used_at", jstMidnightUc.toISOString());
             if ((todayCountUc ?? 0) >= dailyLimitUc) {
-              return new Response(JSON.stringify({ error: "DAILY_LIMIT_EXCEEDED" }), { status: 429, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+              return new Response(JSON.stringify({ error: "DAILY_LIMIT_EXCEEDED" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
             }
           }
 
-          // ★ H5 fix: wallet.balance は競合で乖離するため常に ledger+redemption から正確な残高を計算
-          // wallet 行の有無のみ取得（後続の update vs insert 判断用）
+          // 残高チェック（wallet 行がなければ ledger から集計して判定）
           const { data: walletUcPre } = await supabase.from("customer_points_wallet")
-            .select("identity_id")
+            .select("balance, total_spent")
             .eq("identity_id", identityIdUc).eq("scope_type", scopeTypeUc).eq("scope_id", scopeIdUc)
             .maybeSingle();
-          const [{ data: ledgerForUcBal }, { data: redemptionForUcBal }] = await Promise.all([
-            supabase.from("customer_points_ledger").select("points_delta")
+          let currentBalanceUc = Number((walletUcPre as Record<string,unknown> | null)?.balance ?? 0);
+          if (!walletUcPre) {
+            // wallet 行がない場合はレジャーから正確な残高を計算
+            const { data: ledgerForBal } = await supabase
+              .from("customer_points_ledger").select("points_delta")
               .eq("identity_id", identityIdUc).eq("scope_type", scopeTypeUc).eq("scope_id", scopeIdUc)
-              .gt("points_delta", 0),
-            supabase.from("points_redemption").select("spent_points")
-              .eq("identity_id", identityIdUc).eq("scope_type", scopeTypeUc).eq("scope_id", scopeIdUc)
-              .eq("status", "used").gt("spent_points", 0),
-          ]);
-          const currentBalanceUc = Math.max(0,
-            (ledgerForUcBal ?? []).reduce((s: number, r: Record<string, unknown>) => s + Number(r.points_delta ?? 0), 0) -
-            (redemptionForUcBal ?? []).reduce((s: number, r: Record<string, unknown>) => s + Number(r.spent_points ?? 0), 0)
-          );
+              .gt("points_delta", 0);
+            currentBalanceUc = (ledgerForBal ?? []).reduce(
+              (sum: number, r: Record<string, unknown>) => sum + Number(r.points_delta ?? 0), 0
+            );
+          }
           console.log(`[use_loyalty_coupon] spentPtsUc=${spentPtsUc}, currentBalanceUc=${currentBalanceUc}, authoritativePts=${authoritativePts}, walletExists=${!!walletUcPre}`);
           if (spentPtsUc > 0 && currentBalanceUc < spentPtsUc) {
-            return new Response(JSON.stringify({ error: "INSUFFICIENT_BALANCE" }), { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "INSUFFICIENT_BALANCE" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
 
-          // 毎回新規 INSERT — ★ C1 fix: IDを取得してTOCTOUロールバックに備える
-          const { data: insertedRowsUc, error: useInsertErr } = await supabase.from("points_redemption").insert({
+          // 毎回新規 INSERT
+          const { error: useInsertErr } = await supabase.from("points_redemption").insert({
             identity_id: identityIdUc,
             store_id: storeIdForUse,
             reward_id: rewardIdUc,
@@ -5845,39 +5631,25 @@ document.getElementById('copyBtn').onclick=function(){
             used_at: new Date().toISOString(),
             issued_code: null,
             metadata: {},
-          }).select("id");
+          });
           if (useInsertErr) {
             console.error("[use_loyalty_coupon] insert error:", useInsertErr);
-            return new Response(JSON.stringify({ error: "INSERT_FAILED", detail: useInsertErr.message }), { status: 500, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "INSERT_FAILED", detail: useInsertErr.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
 
-          // ウォレット残高を更新（INSERT後にledger・redemption から再集計）
+          // ウォレット残高を更新（レジャーから再集計して正確な値を保存）
           if (spentPtsUc > 0) {
-            // ★ C1/C2 fix: INSERT後に再集計して二重消費チェック + wallet更新値を正確に算出
-            const [{ data: ledgerRowsUcPost }, { data: redemptionRowsUcPost }] = await Promise.all([
-              supabase.from("customer_points_ledger").select("points_delta")
-                .eq("identity_id", identityIdUc).eq("scope_type", scopeTypeUc).eq("scope_id", scopeIdUc)
-                .gt("points_delta", 0),
-              supabase.from("points_redemption").select("spent_points")
-                .eq("identity_id", identityIdUc).eq("scope_type", scopeTypeUc).eq("scope_id", scopeIdUc)
-                .eq("status", "used").gt("spent_points", 0),
-            ]);
+            const { data: ledgerRowsUcPost } = await supabase
+              .from("customer_points_ledger").select("points_delta")
+              .eq("identity_id", identityIdUc).eq("scope_type", scopeTypeUc).eq("scope_id", scopeIdUc)
+              .gt("points_delta", 0);
             const totalEarnedUcPost = (ledgerRowsUcPost ?? []).reduce(
               (sum: number, r: Record<string, unknown>) => sum + Number(r.points_delta ?? 0), 0
             );
-            // ★ C2 fix: wallet.total_spent ではなく points_redemption から再集計（INSERT後の正確な値）
-            const totalSpentUcPost = (redemptionRowsUcPost ?? []).reduce(
-              (sum: number, r: Record<string, unknown>) => sum + Number(r.spent_points ?? 0), 0
-            );
-            // ★ C1 fix: 後検証 — 並行リクエストで二重消費になった場合はINSERTをロールバック
-            if (totalSpentUcPost > totalEarnedUcPost && (insertedRowsUc as any)?.[0]?.id) {
-              await supabase.from("points_redemption").delete().eq("id", (insertedRowsUc as any)[0].id);
-              console.warn(`[use_loyalty_coupon] TOCTOU rollback: earned=${totalEarnedUcPost}, spent=${totalSpentUcPost}`);
-              return new Response(JSON.stringify({ error: "INSUFFICIENT_BALANCE" }), { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
-            }
-            const newBalanceUc = Math.max(0, totalEarnedUcPost - totalSpentUcPost);
+            const newTotalSpentUc = Number((walletUcPre as Record<string,unknown> | null)?.total_spent ?? 0) + spentPtsUc;
+            const newBalanceUc = Math.max(0, totalEarnedUcPost - newTotalSpentUc);
             const walletPayloadUc = {
-              total_spent: totalSpentUcPost,
+              total_spent: newTotalSpentUc,
               total_earned: totalEarnedUcPost,
               balance: newBalanceUc,
               updated_at: new Date().toISOString(),
@@ -5889,6 +5661,7 @@ document.getElementById('copyBtn').onclick=function(){
                 console.error("[use_loyalty_coupon] wallet update error:", walletUpdateErr);
               }
             } else {
+              // wallet 行がない場合は新規 INSERT
               await supabase.from("customer_points_wallet").insert({
                 identity_id: identityIdUc,
                 scope_type: scopeTypeUc,
@@ -5896,26 +5669,24 @@ document.getElementById('copyBtn').onclick=function(){
                 ...walletPayloadUc,
               });
             }
-            return new Response(JSON.stringify({ ok: true, newBalance: newBalanceUc }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ ok: true, newBalance: newBalanceUc }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
 
-          return new Response(JSON.stringify({ ok: true }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ ok: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
 
         if (body.action === "claim_google_bonus") {
           const { review_id } = body;
           if (!review_id) {
-            return new Response(JSON.stringify({ error: "review_id required" }), { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "review_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
-          // ★ C3 Security fix: store_id フィルタを追加して他店舗のreview_idを使った不正ポイント付与を防ぐ
           const { data: rev } = await supabase
             .from("reviews")
             .select("submission_id, store_id, line_user_id")
             .eq("id", review_id)
-            .eq("store_id", storeId)
             .maybeSingle();
           if (!rev) {
-            return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
 
           // ── identity 解決: reviews に line_user_id がない場合は
@@ -5924,12 +5695,10 @@ document.getElementById('copyBtn').onclick=function(){
           let directIdentityId: string | null = null;
 
           if (!gbLineUserId && rev.submission_id) {
-            // ★ Bug fix: store_id フィルタを追加して他店舗のSIDが混入しないようにする
             const { data: ledgerEntry } = await supabase
               .from("customer_points_ledger")
               .select("identity_id")
               .eq("source_ref", String(rev.submission_id))
-              .eq("store_id", String(rev.store_id))
               .limit(1)
               .maybeSingle();
             if (ledgerEntry?.identity_id) {
@@ -5953,18 +5722,23 @@ document.getElementById('copyBtn').onclick=function(){
               .eq("source_ref", sourceRef)
               .maybeSingle();
             if (dup) {
-              return new Response(JSON.stringify({ ok: true, skipped: true, reason: "duplicate_source_ref" }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+              return new Response(JSON.stringify({ ok: true, skipped: true, reason: "duplicate_source_ref" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
             }
-            // 1日1回チェック（JST）★ L5 fix: floor-based midnight 計算に統一
-            const _gbJstMidnight = new Date(Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000) * 86400000 - 9 * 3600 * 1000);
+            // 1日1回チェック（JST）
+            const _gbNowJstMs = Date.now() + 9 * 60 * 60 * 1000;
+            const _gbNowJst   = new Date(_gbNowJstMs);
+            const _gbJstDate  = _gbNowJst.toISOString().slice(0, 10);
+            const _gbDayStart = new Date(`${_gbJstDate}T00:00:00+09:00`);
+            const _gbDayEnd   = new Date(`${_gbJstDate}T23:59:59.999+09:00`);
             const { count: _gbTodayCount } = await supabase
               .from("customer_points_ledger")
               .select("id", { count: "exact", head: true })
               .eq("identity_id", directIdentityId)
               .eq("action_type", "google")
-              .gte("created_at", _gbJstMidnight.toISOString());
+              .gte("created_at", _gbDayStart.toISOString())
+              .lte("created_at", _gbDayEnd.toISOString());
             if ((_gbTodayCount ?? 0) >= 1) {
-              return new Response(JSON.stringify({ ok: true, skipped: true, reason: "daily_limit_exceeded" }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+              return new Response(JSON.stringify({ ok: true, skipped: true, reason: "daily_limit_exceeded" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
             }
             // 店舗設定取得
             const { data: storeForGb } = await supabase
@@ -6010,7 +5784,7 @@ document.getElementById('copyBtn').onclick=function(){
               total_earned: gbTotal, total_spent: gbSpent, balance: Math.max(0, gbTotal - gbSpent),
               updated_at: new Date().toISOString(),
             }, { onConflict: "identity_id,scope_type,scope_id" });
-            return new Response(JSON.stringify({ ok: true, points_awarded: gbPts, total_points: gbTotal, balance: Math.max(0, gbTotal - gbSpent) }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ ok: true, points_awarded: gbPts, total_points: gbTotal, balance: Math.max(0, gbTotal - gbSpent) }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
 
           // 通常パス: add-loyalty-point 経由
@@ -6025,15 +5799,20 @@ document.getElementById('copyBtn').onclick=function(){
             }),
           });
           const ptData = await ptRes.json().catch(() => ({ error: "parse_error" }));
-          return new Response(JSON.stringify(ptData), { status: ptRes.ok ? 200 : ptRes.status, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+          return new Response(JSON.stringify(ptData), { status: ptRes.ok ? 200 : ptRes.status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
         if (body.action === "register_phone") {
           const { review_id, phone } = body;
           if (!review_id || !phone) {
             return new Response(
               JSON.stringify({ error: "review_id and phone are required" }),
-              { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
+          }
+          // ★ L-6 fix: validate phone format
+          const phoneVal = (phone as string ?? "").trim();
+          if (!phoneVal || !/^\+?[\d\s\-]{10,15}$/.test(phoneVal)) {
+            return new Response(JSON.stringify({ error: "invalid_phone" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
           const { data: rev } = await supabase
             .from("reviews")
@@ -6043,7 +5822,7 @@ document.getElementById('copyBtn').onclick=function(){
           if (!rev) {
             return new Response(
               JSON.stringify({ error: "review_not_found" }),
-              { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const workerSecret = Deno.env.get("SNS_WORKER_SECRET") ?? "";
@@ -6062,7 +5841,7 @@ document.getElementById('copyBtn').onclick=function(){
           const ptData = await ptRes.json().catch(() => ({ error: "parse_error" }));
           return new Response(
             JSON.stringify(ptData),
-            { status: ptRes.ok ? 200 : ptRes.status, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+            { status: ptRes.ok ? 200 : ptRes.status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
           );
         }
         if (body.action === "save_review_text") {
@@ -6070,28 +5849,30 @@ document.getElementById('copyBtn').onclick=function(){
           if (!review_id || !style_key || text === undefined) {
             return new Response(
               JSON.stringify({ error: "review_id, style_key, text required" }),
-              { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const { data: rev } = await supabase
             .from("reviews")
             .select("id, review_options")
             .eq("id", review_id)
+            .eq("store_id", storeId ?? "")
             .single();
           if (!rev || !(rev as any).review_options) {
             return new Response(
               JSON.stringify({ error: "review not found" }),
-              { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const opts = { ...(rev as any).review_options, [style_key]: String(text) };
           await supabase
             .from("reviews")
             .update({ review_options: opts })
-            .eq("id", review_id);
+            .eq("id", review_id)
+            .eq("store_id", storeId ?? "");
           return new Response(
             JSON.stringify({ ok: true }),
-            { headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+            { headers: { ...corsHeaders, "Content-Type": "application/json" } }
           );
         }
         if (body.action === "send_improvement_feedback") {
@@ -6099,14 +5880,16 @@ document.getElementById('copyBtn').onclick=function(){
           if (!review_id) {
             return new Response(
               JSON.stringify({ error: "review_id required" }),
-              { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           // Fetch review for identity + store info
+          const feedbackStoreId = (body_store_id as string) || storeId || "";
           const { data: revFb } = await supabase
             .from("reviews")
             .select("submission_id, store_id, line_user_id, score")
             .eq("id", review_id)
+            .eq("store_id", feedbackStoreId)
             .maybeSingle();
           const { error: updateError } = await supabase
             .from("reviews")
@@ -6114,11 +5897,12 @@ document.getElementById('copyBtn').onclick=function(){
               improvement_feedback_sent_at: new Date().toISOString(),
               improvement_feedback_text: feedback_text != null ? String(feedback_text) : null,
             })
-            .eq("id", review_id);
+            .eq("id", review_id)
+            .eq("store_id", feedbackStoreId);
           if (updateError) {
             return new Response(
               JSON.stringify({ error: "update_failed", message: String(updateError.message) }),
-              { status: 500, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           // レポート送信時は常にポイントを付与（スコア条件なし・LINE/anon両対応）
@@ -6130,12 +5914,10 @@ document.getElementById('copyBtn').onclick=function(){
             let fbAnonId: string | null = null;
             let fbIdentityId: string | null = null;
             if (!fbLineUserId && revFb.submission_id) {
-              // ★ Bug fix: store_id フィルタを追加して他店舗のSIDが混入しないようにする
               const { data: ledgerForFb } = await supabase
                 .from("customer_points_ledger")
                 .select("identity_id")
                 .eq("source_ref", revFb.submission_id)
-                .eq("store_id", String(revFb.store_id))
                 .limit(1)
                 .maybeSingle();
               if (ledgerForFb?.identity_id) {
@@ -6156,19 +5938,23 @@ document.getElementById('copyBtn').onclick=function(){
               fbIdentityId = (identForFbLine?.id as string) ?? null;
             }
 
-            // 1日1回チェック（feedback）★ L5 fix: floor-based midnight 計算に統一
+            // 1日1回チェック（feedback）
             if (fbIdentityId) {
-              const _fbJstMidnight = new Date(Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000) * 86400000 - 9 * 3600 * 1000);
+              const _fbNowJstMs = Date.now() + 9 * 60 * 60 * 1000;
+              const _fbJstDate  = new Date(_fbNowJstMs).toISOString().slice(0, 10);
+              const _fbDayStart = new Date(`${_fbJstDate}T00:00:00+09:00`);
+              const _fbDayEnd   = new Date(`${_fbJstDate}T23:59:59.999+09:00`);
               const { count: _fbTodayCount } = await supabase
                 .from("customer_points_ledger")
                 .select("id", { count: "exact", head: true })
                 .eq("identity_id", fbIdentityId)
                 .eq("action_type", "feedback")
-                .gte("created_at", _fbJstMidnight.toISOString());
+                .gte("created_at", _fbDayStart.toISOString())
+                .lte("created_at", _fbDayEnd.toISOString());
               if ((_fbTodayCount ?? 0) >= 1) {
                 return new Response(
                   JSON.stringify({ ok: false, daily_limit: true, message: "レポートのポイントは1日1回のみ加算されます（本日分は加算済みです）" }),
-                  { headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+                  { headers: { ...corsHeaders, "Content-Type": "application/json" } }
                 );
               }
             }
@@ -6204,7 +5990,7 @@ document.getElementById('copyBtn').onclick=function(){
           }
           return new Response(
             JSON.stringify({ ok: true, points_awarded: pointsAwarded, total_points: (ptData as any)?.total_points ?? null, balance: (ptData as any)?.balance ?? null }),
-            { headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+            { headers: { ...corsHeaders, "Content-Type": "application/json" } }
           );
         }
         if (body.action === "refine") {
@@ -6213,18 +5999,19 @@ document.getElementById('copyBtn').onclick=function(){
           if (!review_id || !style_key || !instruction) {
             return new Response(
               JSON.stringify({ error: "review_id, style_key, instruction required" }),
-              { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const { data: rev } = await supabase
             .from("reviews")
             .select("*, store_profiles(*)")
             .eq("id", review_id)
+            .eq("store_id", storeId ?? "")
             .single();
           if (!rev || !(rev as any).review_options) {
             return new Response(
               JSON.stringify({ error: "review not found" }),
-              { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const opts = (rev as any).review_options || {};
@@ -6288,6 +6075,7 @@ document.getElementById('copyBtn').onclick=function(){
           const langCond = REFINE_LANG_COND[refineLang] || REFINE_LANG_COND.en;
           const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
+            max_tokens: 1000,
             messages: [
               {
                 role: "user",
@@ -6299,9 +6087,10 @@ document.getElementById('copyBtn').onclick=function(){
           await supabase
             .from("reviews")
             .update({ review_options: { ...opts, [style_key]: newText } })
-            .eq("id", review_id);
+            .eq("id", review_id)
+            .eq("store_id", storeId ?? "");
           return new Response(JSON.stringify({ newText }), {
-            headers: { ...corsHeaders(null), "Content-Type": "application/json" },
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
         }
         if (body.action === "refine_tone_keywords") {
@@ -6310,18 +6099,19 @@ document.getElementById('copyBtn').onclick=function(){
           if (!review_id || !style_key) {
             return new Response(
               JSON.stringify({ error: "review_id, style_key required" }),
-              { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const { data: rev } = await supabase
             .from("reviews")
             .select("*, store_profiles(*)")
             .eq("id", review_id)
+            .eq("store_id", storeId ?? "")
             .single();
           if (!rev || !(rev as any).review_options) {
             return new Response(
               JSON.stringify({ error: "review not found" }),
-              { status: 400, headers: { ...corsHeaders(null), "Content-Type": "application/json" } }
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const opts = (rev as any).review_options || {};
@@ -6382,6 +6172,7 @@ document.getElementById('copyBtn').onclick=function(){
           const langCond = TONE_REFINE_LANG_COND[refineLang] || TONE_REFINE_LANG_COND.en;
           const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
+            max_tokens: 1000,
             messages: [
               {
                 role: "user",
@@ -6393,9 +6184,10 @@ document.getElementById('copyBtn').onclick=function(){
           await supabase
             .from("reviews")
             .update({ review_options: { ...opts, [style_key]: newText } })
-            .eq("id", review_id);
+            .eq("id", review_id)
+            .eq("store_id", storeId ?? "");
           return new Response(JSON.stringify({ newText }), {
-            headers: { ...corsHeaders(null), "Content-Type": "application/json" },
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
         }
         storeIdFromForm = (body.store_id as string) || "";
@@ -6502,14 +6294,15 @@ document.getElementById('copyBtn').onclick=function(){
     // ── IP レート制限（同一回線から1日1回まで）────────────────────────
     // ip_block_enabled が false の場合はスキップ（デフォルト true）
     if ((store as Record<string, unknown>).ip_block_enabled !== false) {
-      // ★ L5 fix: floor-based midnight 計算に統一
-      const _ipJstMidnight = new Date(Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000) * 86400000 - 9 * 3600 * 1000);
+      const _ipNowJstMs = Date.now() + 9 * 60 * 60 * 1000;
+      const _ipJstDate  = new Date(_ipNowJstMs).toISOString().slice(0, 10);
+      const _ipDayStart = new Date(`${_ipJstDate}T00:00:00+09:00`);
       const { count: _ipTodayCount } = await supabase
         .from("reviews")
         .select("id", { count: "exact", head: true })
         .eq("store_id", store_id)
         .eq("ip_hash", _ipHash)
-        .gte("created_at", _ipJstMidnight.toISOString());
+        .gte("created_at", _ipDayStart.toISOString());
       if ((_ipTodayCount ?? 0) >= 1) {
         return createHtmlResponse(`
           <div style="min-height:100vh;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;">
@@ -6841,9 +6634,13 @@ document.getElementById('copyBtn').onclick=function(){
           : (USED_MENU_HEADER[lang] || USED_MENU_HEADER.en) + (USED_MENU_EMPTY[lang] || USED_MENU_EMPTY.en);
       const storeUiMode = String(store.ui_mode ?? "sns").toLowerCase();
       const includeHashtagsInUser = storeUiMode !== "review";
+      // ★ M-2 fix: sanitize answers before sending to OpenAI
+      const sanitizedAnswers = Object.fromEntries(
+        Object.entries(answers).map(([k, v]) => [k, typeof v === "string" ? v.slice(0, 500) : v])
+      );
       const userContent = [
         (SURVEY_LABEL[lang] || SURVEY_LABEL.en),
-        JSON.stringify(answers),
+        JSON.stringify(sanitizedAnswers),
         SURVEY_MENU_RULE[lang] || SURVEY_MENU_RULE.en,
         "\n" + (STORE_LABEL[lang] || STORE_LABEL.en) + ((typeof store.form_display_name === "string" && store.form_display_name.trim()) ? store.form_display_name.trim() : (store.store_name_ja as string) || (store.store_name_jp as string) || store_id),
         includeHashtagsInUser && (store.hashtags_fixed as string)?.trim()
@@ -6861,6 +6658,7 @@ document.getElementById('copyBtn').onclick=function(){
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
+        max_tokens: 1000,
         response_format: { type: "json_object" },
         messages: [
           { role: "system", content: systemPrompt },
@@ -7069,6 +6867,10 @@ document.getElementById('_fbsend').onclick=async function(){
 
     const submission_id = crypto.randomUUID().replace(/-/g, "").slice(0, 12);
     let imageUrl: string | null = null;
+    // ★ M-5 fix: reject oversized base64 photos (>7MB)
+    if (photoBase64FromForm && photoBase64FromForm.length > 7 * 1024 * 1024) {
+      photoBase64FromForm = null;
+    }
     if (photoBase64FromForm && photoBase64FromForm.startsWith("data:image/")) {
       try {
         const m = photoBase64FromForm.match(/^data:image\/(\w+);base64,(.+)$/);
@@ -7300,38 +7102,6 @@ document.getElementById('_fbsend').onclick=async function(){
       }
     }
 
-    // LINE ユーザー + デモモード（ip_block_enabled=false）の場合は直接 add-loyalty-point を呼ぶ
-    // 通常モードでは LIFF → LINE メッセージ → webhook 経由でポイント付与されるが、
-    // デモモードは LIFF を無効化しているため webhook が発火せずポイントが付かない
-    if (lineUserIdFromForm && (store as Record<string, unknown>).ip_block_enabled === false) {
-      const workerSecretLine = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-      const anonKeyForPtLine = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
-      const addPtUrlLine = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
-      try {
-        const ptAbortLine = new AbortController();
-        const ptTimerLine = setTimeout(() => ptAbortLine.abort(), 15000);
-        let ptResLine: Response;
-        try {
-          ptResLine = await fetch(addPtUrlLine, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-worker-secret": workerSecretLine,
-              ...(anonKeyForPtLine ? { "apikey": anonKeyForPtLine, "Authorization": `Bearer ${anonKeyForPtLine}` } : {}),
-            },
-            body: JSON.stringify({ store_id, action_type: "survey", source_ref: submission_id, line_user_id: lineUserIdFromForm }),
-            signal: ptAbortLine.signal,
-          });
-        } finally {
-          clearTimeout(ptTimerLine);
-        }
-        const ptBodyLine = await ptResLine.json().catch(() => ({}));
-        console.log("[form-engine] demo LINE add-loyalty-point:", ptResLine.status, ptBodyLine);
-      } catch (e) {
-        console.error("[form-engine] demo LINE add-loyalty-point failed:", e);
-      }
-    }
-
     // ── アンケート完了後に referral code を即時生成（wallet ロード前でもコードが確定） ──
     if ((store.point_rule_referral as number) > 0) {
       try {
@@ -7406,7 +7176,7 @@ document.getElementById('_fbsend').onclick=async function(){
     // → LINE WebView の document.write() スクリプト非実行問題を回避
     return new Response(resultHtml, {
       headers: {
-        ...corsHeaders(null),
+        ...corsHeaders,
         "Content-Type": "text/html; charset=utf-8",
         "X-Submission-Id": submission_id,
       },
