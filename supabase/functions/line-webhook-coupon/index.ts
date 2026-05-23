@@ -17,6 +17,24 @@ const FORM_ENGINE_BASE_URL = (Deno.env.get("FORM_ENGINE_BASE_URL") ?? "").replac
 
 const te = new TextEncoder();
 const FUNCTIONS_BASE = SUPABASE_URL ? SUPABASE_URL.replace(/\/$/, "") + "/functions/v1" : "";
+
+// ── LINE ユーザー別インメモリレートリミット（インスタンス単位）──
+// 大量メッセージ送信（スパム・ボット）への対策。同一 userId に対し 60 秒間に 20 件超はスキップ。
+const _lineMsgLimiter = new Map<string, { count: number; resetAt: number }>();
+function checkLINERateLimit(userId: string, limit = 20, windowMs = 60_000): boolean {
+  const now = Date.now();
+  // 古いエントリーを間引く（Map が 5000 件超になったとき）
+  if (_lineMsgLimiter.size > 5_000) {
+    Array.from(_lineMsgLimiter.entries()).forEach(([k, v]) => { if (now > v.resetAt) _lineMsgLimiter.delete(k); });
+  }
+  const entry = _lineMsgLimiter.get(userId);
+  if (!entry || now > entry.resetAt) {
+    _lineMsgLimiter.set(userId, { count: 1, resetAt: now + windowMs });
+    return true;
+  }
+  entry.count++;
+  return entry.count <= limit;
+}
 // 結果ページURLはカスタムドメイン優先
 const RESULT_BASE = FORM_ENGINE_BASE_URL || FUNCTIONS_BASE;
 
@@ -419,6 +437,12 @@ Deno.serve(async (req) => {
   const events = parsed?.events ?? [];
   console.log("[line-webhook-coupon] events count", events.length, "types", events.map((e: { type?: string }) => e.type));
   for (const ev of events) {
+    // ★ rate limit: 同一ユーザーが 60 秒以内に 20 件超送信した場合はイベントをスキップ（スパム・ボット対策）
+    const evUserId = ev.source?.userId;
+    if (evUserId && !checkLINERateLimit(evUserId)) {
+      console.warn("[line-webhook-coupon] rate limit exceeded, skipping event", { type: ev.type, userId: evUserId.slice(0, 8) + "..." });
+      continue;
+    }
     console.log("[line-webhook-coupon] event", { type: ev.type, hasReplyToken: !!ev.replyToken, hasSource: !!ev.source });
     if (ev.type === "follow") {
       const replyToken = ev.replyToken;
