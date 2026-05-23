@@ -3724,6 +3724,10 @@ liff.init({liffId:LIFF_ID}).then(async function(){
       return new Response(JSON.stringify({ ready: false }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
     }
     const { data: st } = await supabase.from("store_profiles").select("points_scope, chain_id, point_threshold, point_threshold_2, point_reward_title_1, point_reward_title_2, point_rule_survey, point_rule_google, coupon_tiers, point_expiry_days").eq("store_id", rev.store_id).maybeSingle();
+    // ★ L4 fix: store_profiles が null（店舗未設定）の場合は残高0データを返さず ready: false を返す
+    if (!st) {
+      return new Response(JSON.stringify({ ready: false }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+    }
     const scopeType = ((st as Record<string,unknown>)?.points_scope as string) === "chain" && (st as Record<string,unknown>)?.chain_id ? "chain" : "store";
     const scopeId = scopeType === "chain" ? String((st as Record<string,unknown>).chain_id) : rev.store_id;
     // identity 解決: line_user_id → 直接 / anon → ledger.source_ref で逆引き
@@ -5647,7 +5651,8 @@ document.getElementById('copyBtn').onclick=function(){
           const genCode = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
           let newCode = genCode();
           const { error: codeErr } = await supabase.from("coupon_pending_codes").insert({ code: newCode, store_id: (revForCode as any).store_id, coupon_url: "REVIEW:" + review_id, expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString() });
-          if (codeErr) { newCode = genCode() + genCode()[0]; await supabase.from("coupon_pending_codes").insert({ code: newCode, store_id: (revForCode as any).store_id, coupon_url: "REVIEW:" + review_id, expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString() }); }
+          // ★ L3 fix: genCode() + genCode()[0] は 5文字コードになるバグ → genCode() のみで正しく4文字を生成
+          if (codeErr) { newCode = genCode(); await supabase.from("coupon_pending_codes").insert({ code: newCode, store_id: (revForCode as any).store_id, coupon_url: "REVIEW:" + review_id, expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString() }); }
           return new Response(JSON.stringify({ code: newCode }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
         }
         // ── スタッフがクーポンを使用済みにする ──────────────────────────────────
@@ -5943,19 +5948,14 @@ document.getElementById('copyBtn').onclick=function(){
             if (dup) {
               return new Response(JSON.stringify({ ok: true, skipped: true, reason: "duplicate_source_ref" }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
             }
-            // 1日1回チェック（JST）
-            const _gbNowJstMs = Date.now() + 9 * 60 * 60 * 1000;
-            const _gbNowJst   = new Date(_gbNowJstMs);
-            const _gbJstDate  = _gbNowJst.toISOString().slice(0, 10);
-            const _gbDayStart = new Date(`${_gbJstDate}T00:00:00+09:00`);
-            const _gbDayEnd   = new Date(`${_gbJstDate}T23:59:59.999+09:00`);
+            // 1日1回チェック（JST）★ L5 fix: floor-based midnight 計算に統一
+            const _gbJstMidnight = new Date(Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000) * 86400000 - 9 * 3600 * 1000);
             const { count: _gbTodayCount } = await supabase
               .from("customer_points_ledger")
               .select("id", { count: "exact", head: true })
               .eq("identity_id", directIdentityId)
               .eq("action_type", "google")
-              .gte("created_at", _gbDayStart.toISOString())
-              .lte("created_at", _gbDayEnd.toISOString());
+              .gte("created_at", _gbJstMidnight.toISOString());
             if ((_gbTodayCount ?? 0) >= 1) {
               return new Response(JSON.stringify({ ok: true, skipped: true, reason: "daily_limit_exceeded" }), { headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
             }
@@ -6149,19 +6149,15 @@ document.getElementById('copyBtn').onclick=function(){
               fbIdentityId = (identForFbLine?.id as string) ?? null;
             }
 
-            // 1日1回チェック（feedback）
+            // 1日1回チェック（feedback）★ L5 fix: floor-based midnight 計算に統一
             if (fbIdentityId) {
-              const _fbNowJstMs = Date.now() + 9 * 60 * 60 * 1000;
-              const _fbJstDate  = new Date(_fbNowJstMs).toISOString().slice(0, 10);
-              const _fbDayStart = new Date(`${_fbJstDate}T00:00:00+09:00`);
-              const _fbDayEnd   = new Date(`${_fbJstDate}T23:59:59.999+09:00`);
+              const _fbJstMidnight = new Date(Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000) * 86400000 - 9 * 3600 * 1000);
               const { count: _fbTodayCount } = await supabase
                 .from("customer_points_ledger")
                 .select("id", { count: "exact", head: true })
                 .eq("identity_id", fbIdentityId)
                 .eq("action_type", "feedback")
-                .gte("created_at", _fbDayStart.toISOString())
-                .lte("created_at", _fbDayEnd.toISOString());
+                .gte("created_at", _fbJstMidnight.toISOString());
               if ((_fbTodayCount ?? 0) >= 1) {
                 return new Response(
                   JSON.stringify({ ok: false, daily_limit: true, message: "レポートのポイントは1日1回のみ加算されます（本日分は加算済みです）" }),
@@ -6499,15 +6495,14 @@ document.getElementById('copyBtn').onclick=function(){
     // ── IP レート制限（同一回線から1日1回まで）────────────────────────
     // ip_block_enabled が false の場合はスキップ（デフォルト true）
     if ((store as Record<string, unknown>).ip_block_enabled !== false) {
-      const _ipNowJstMs = Date.now() + 9 * 60 * 60 * 1000;
-      const _ipJstDate  = new Date(_ipNowJstMs).toISOString().slice(0, 10);
-      const _ipDayStart = new Date(`${_ipJstDate}T00:00:00+09:00`);
+      // ★ L5 fix: floor-based midnight 計算に統一
+      const _ipJstMidnight = new Date(Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000) * 86400000 - 9 * 3600 * 1000);
       const { count: _ipTodayCount } = await supabase
         .from("reviews")
         .select("id", { count: "exact", head: true })
         .eq("store_id", store_id)
         .eq("ip_hash", _ipHash)
-        .gte("created_at", _ipDayStart.toISOString());
+        .gte("created_at", _ipJstMidnight.toISOString());
       if ((_ipTodayCount ?? 0) >= 1) {
         return createHtmlResponse(`
           <div style="min-height:100vh;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;">
