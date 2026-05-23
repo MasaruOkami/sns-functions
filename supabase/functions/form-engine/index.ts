@@ -5444,6 +5444,10 @@ document.getElementById('copyBtn').onclick=function(){
             .select("points_scope, chain_id")
             .eq("store_id", wcSid)
             .maybeSingle();
+          // ★ N4 fix: 店舗が存在しない場合は早期リターン（null のまま処理続行すると不正な survey_url を返す）
+          if (!wcStoreProfile) {
+            return new Response(JSON.stringify({ ok: false, error: "store_not_found" }), { status: 404, headers: { ...corsHeaders(null), "Content-Type": "application/json" } });
+          }
           const wcScopeType = ((wcStoreProfile as Record<string,unknown>)?.points_scope as string) === "chain" && (wcStoreProfile as Record<string,unknown>)?.chain_id
             ? "chain" : "store";
           const wcScopeId = wcScopeType === "chain"
@@ -5585,8 +5589,10 @@ document.getElementById('copyBtn').onclick=function(){
           if (!existingUid) {
             await supabase.from("reviews").update({ line_user_id: liffUid }).eq("id", liffRevId);
           }
-          // 実際に使用する LINE UID は常に LIFF 認証ユーザー
-          const effectiveUid = liffUid;
+          // ★ N3 fix: existingUid が既にある場合はそのユーザーを正とする
+          // effectiveUid を liffUid に固定すると、別 LINE UID からのアクセス時に
+          // review オーナー（existingUid）ではなく LIFF ユーザーにポイントが付与されてしまう
+          const effectiveUid = existingUid ?? liffUid;
           const workerSecretLiff = Deno.env.get("SNS_WORKER_SECRET") ?? "";
           const _liffAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
           const _liffApHeaders = { "Content-Type": "application/json", "x-worker-secret": workerSecretLiff, ...(_liffAnonKey ? { "apikey": _liffAnonKey, "Authorization": `Bearer ${_liffAnonKey}` } : {}) };
@@ -5667,8 +5673,9 @@ document.getElementById('copyBtn').onclick=function(){
           let lineUserIdForUse: string | null = null;
           let storeIdForUse = storeId;
           if (sidForUse) {
+            // ★ N2 fix: store_id フィルタを追加して他店舗の sid による identity 混入を防ぐ
             const { data: revUc } = await supabase.from("reviews")
-              .select("line_user_id, store_id").eq("submission_id", sidForUse).maybeSingle();
+              .select("line_user_id, store_id").eq("submission_id", sidForUse).eq("store_id", storeId).maybeSingle();
             lineUserIdForUse = (revUc?.line_user_id as string) ?? null;
             if (revUc?.store_id) storeIdForUse = revUc.store_id as string;
           }
