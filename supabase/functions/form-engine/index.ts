@@ -1688,8 +1688,9 @@ function buildResultHtml(params: {
   const hasLineBot = Boolean(lineBotBasicId?.trim());
   // oaMessage URL: 「REVIEW:${submissionId}」を事前入力 → ユーザーが「送信」 → line-webhook-coupon がポイントカード URL を返信
   // ※ /?text= 形式: 一部端末で "text=REVIEW:..." が届くが webhook 側で text= プレフィックスを除去して対処
+  // ★ コロンをURLエンコードしない（REVIEW%3Axxx → REVIEW:xxx）一部LINEが%3Aを正しくデコードしないため
   const lineOaMsgUrl = hasLineBot
-    ? `https://line.me/R/oaMessage/@${String(lineBotBasicId).replace(/^@/, "")}/?text=${encodeURIComponent("REVIEW:" + submissionId)}`
+    ? `https://line.me/R/oaMessage/@${String(lineBotBasicId).replace(/^@/, "")}/?text=REVIEW:${encodeURIComponent(submissionId)}`
     : "";
   // フォールバック: 友達追加 URL（新規ユーザー向け保険）
   const lineAddFriendUrl = hasLineBot

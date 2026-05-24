@@ -560,18 +560,39 @@ Deno.serve(async (req) => {
           const reviewWindowMs = (sharedChannelStoreIds && sharedChannelStoreIds.length > 1) ? 4 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
           const oneDayAgo = new Date(Date.now() - reviewWindowMs).toISOString();
 
-          // 直近24時間以内の line_user_id 未設定レビューを探す
-          let reviewQuery = supabase
-            .from("reviews")
-            .select("id, submission_id, store_id")
-            .is("line_user_id", null)
-            .gte("created_at", oneDayAgo)
-            .order("created_at", { ascending: false })
-            .limit(1);
-          // 複数店舗でチャネルを共有している場合は全店舗横断で検索する（先にsharedChannelStoreIdsを優先）
-          if (sharedChannelStoreIds && sharedChannelStoreIds.length > 1) reviewQuery = reviewQuery.in("store_id", sharedChannelStoreIds);
-          else if (resolvedStoreId) reviewQuery = reviewQuery.eq("store_id", resolvedStoreId);
-          const { data: recentReview } = await reviewQuery.maybeSingle();
+          // ── follow.start.data による submission_id 直接リンク（addFriendURL?start=submissionId）──
+          // start.data がある場合はそれを submission_id として優先; なければ直近レビューにフォールバック
+          let recentReview: { id: string; submission_id: string; store_id: string } | null = null;
+          const followStartRaw: string | null = (ev as Record<string, unknown> & { follow?: { start?: { data?: string } } }).follow?.start?.data ?? null;
+          if (followStartRaw && !followStartRaw.startsWith('checkin_')) {
+            let followStartDecoded = followStartRaw;
+            try { followStartDecoded = decodeURIComponent(followStartRaw); } catch { /* keep raw */ }
+            if (followStartDecoded && !followStartDecoded.startsWith('checkin_')) {
+              const { data: revByStart } = await supabase
+                .from("reviews")
+                .select("id, submission_id, store_id")
+                .eq("submission_id", followStartDecoded)
+                .is("line_user_id", null)
+                .maybeSingle();
+              recentReview = (revByStart as typeof recentReview) ?? null;
+              if (recentReview) console.log("[follow] start.data linked submission:", followStartDecoded);
+            }
+          }
+          if (!recentReview) {
+            // 直近24時間以内の line_user_id 未設定レビューを探す（フォールバック）
+            let reviewQuery = supabase
+              .from("reviews")
+              .select("id, submission_id, store_id")
+              .is("line_user_id", null)
+              .gte("created_at", oneDayAgo)
+              .order("created_at", { ascending: false })
+              .limit(1);
+            // 複数店舗でチャネルを共有している場合は全店舗横断で検索する（先にsharedChannelStoreIdsを優先）
+            if (sharedChannelStoreIds && sharedChannelStoreIds.length > 1) reviewQuery = reviewQuery.in("store_id", sharedChannelStoreIds);
+            else if (resolvedStoreId) reviewQuery = reviewQuery.eq("store_id", resolvedStoreId);
+            const { data: fallbackReview } = await reviewQuery.maybeSingle();
+            recentReview = (fallbackReview as typeof recentReview) ?? null;
+          }
 
           const effectiveStoreId = recentReview?.store_id ?? resolvedStoreId;
 
@@ -652,6 +673,10 @@ Deno.serve(async (req) => {
       let rawText = String(ev.message.text ?? "").trim();
       if (rawText.startsWith("text=")) rawText = rawText.slice(5);
       if (rawText.startsWith("TEXT=")) rawText = rawText.slice(5);
+      // URLエンコードされたまま届く端末対策: "REVIEW%3Axxx" → "REVIEW:xxx"
+      if (rawText.includes('%')) {
+        try { rawText = decodeURIComponent(rawText); } catch { /* keep as-is */ }
+      }
       const text = rawText.toUpperCase();
       console.log("[line-webhook-coupon] message event", { userId: userId?.slice(0, 8) + "...", resolvedStoreId, textLen: rawText.length });
 
