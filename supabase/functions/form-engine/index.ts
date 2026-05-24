@@ -3498,16 +3498,13 @@ function buildResultHtml(params: {
         <div style="font-size:13px;font-weight:700;color:#065f46;margin-top:6px;">獲得しました！</div>
       </div>
       <div style="text-align:center;margin-bottom:12px;">
-        <div style="font-size:14px;font-weight:800;color:#1f2937;margin-bottom:4px;">📲 LINEでポイントを保存する</div>
-        <div style="font-size:12px;color:#6b7280;line-height:1.6;">友達追加するとポイントが保存され、<br>次回来店でもクーポンと交換できます。</div>
+        <div style="font-size:14px;font-weight:800;color:#1f2937;margin-bottom:4px;">LINEと連携してポイントを保存</div>
+        <div style="font-size:12px;color:#6b7280;line-height:1.6;">ボタンをタップ→メッセージを「送信」するとポイントカードが発行されます。</div>
       </div>
       ${couponRows ? `<div style="margin-bottom:12px;">${couponRows}</div>` : ""}
-      <a href="${lineAddFriendUrl}" target="_blank" rel="noopener" style="display:block;width:100%;padding:15px;background:#06C755;color:#fff;border-radius:14px;font-weight:800;font-size:16px;text-align:center;text-decoration:none;box-sizing:border-box;margin-bottom:10px;box-shadow:0 4px 14px rgba(6,199,85,.3);">
-        📲 LINE友達追加してポイントを保存
+      <a href="${lineOaMsgUrl}" target="_blank" rel="noopener" style="display:block;width:100%;padding:15px;background:#06C755;color:#fff;border-radius:14px;font-weight:800;font-size:16px;text-align:center;text-decoration:none;box-sizing:border-box;margin-bottom:10px;box-shadow:0 4px 14px rgba(6,199,85,.3);">
+        LINEと連携する
       </a>
-      <button onclick="${closeJs}" style="display:block;width:100%;padding:12px;background:transparent;color:#9ca3af;border:1px solid #e5e7eb;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;">
-        ✅ すでに友達追加済みの方 → 口コミを見る
-      </button>
       ` : `
       <!-- ★ アンケートポイント強調（LINE連携済み） -->
       <div style="background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:2px solid #6ee7b7;border-radius:18px;padding:18px 16px 14px;text-align:center;margin-bottom:14px;">
