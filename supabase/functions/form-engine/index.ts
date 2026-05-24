@@ -1830,27 +1830,34 @@ function buildResultHtml(params: {
     .join("");
 
   if (isCouponOnlyView) {
+    // 発行済みクーポン表示は廃止 → ウォレットページへ meta refresh リダイレクト
+    const couponOnlyWalletUrl = (dashboardUrl && submissionId)
+      ? `${dashboardUrl}/s/${encodeURIComponent(store_id)}/wallet/${encodeURIComponent(submissionId)}`
+      : "";
+    if (couponOnlyWalletUrl) {
+      const escapedUrl = couponOnlyWalletUrl.replace(/"/g, "&quot;");
+      return `<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="0; url=${escapedUrl}">
+<meta name="robots" content="noindex,nofollow">
+</head><body></body></html>`;
+    }
     return `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
-  <title>クーポン</title>
+  <title>ポイントカード</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 20px; min-height: 100vh; background: #f2f2f7; font-family: -apple-system, BlinkMacSystemFont, sans-serif; display: flex; align-items: center; justify-content: center; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-    .card { background: #fff; border-radius: 20px; padding: 24px; width: 100%; max-width: 480px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-    .card h4 { margin: 0 0 12px; }
-    .coupon-use-hint { font-size: 12px; color: #6b7280; margin: 0 0 12px; line-height: 1.5; }
-    .btn-use-coupon { width: 100%; padding: 14px; border: none; border-radius: 12px; background: ${themeColor}; color: #fff; font-weight: 600; font-size: 15px; cursor: pointer; }
-    .btn-use-coupon:hover { filter: brightness(1.05); }
-    .coupon-used-msg { padding: 12px; background: #d1fae5; color: #065f46; border-radius: 12px; font-weight: 600; text-align: center; }
-    .coupon-stopped-msg { padding: 12px; background: #fee2e2; color: #991b1b; border-radius: 12px; font-weight: 600; text-align: center; }
+    body { margin: 0; padding: 20px; min-height: 100vh; background: #f2f2f7; font-family: -apple-system, BlinkMacSystemFont, sans-serif; display: flex; align-items: center; justify-content: center; }
+    .card { background: #fff; border-radius: 20px; padding: 24px; width: 100%; max-width: 480px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; }
   </style>
 </head>
 <body data-review-id="${review.id.replace(/"/g, "&quot;")}">
-  ${sectionCoupon}
+  <div class="card"><p style="color:#374151;font-size:15px;">ポイントカードをご確認ください。</p></div>
   <script>
     var btnUse = document.getElementById('btn-use-coupon');
     var usedMsg = document.getElementById('coupon-used-msg');
@@ -5084,6 +5091,8 @@ document.getElementById('copyBtn').onclick=function(){
         if (widget) widget.style.opacity = '1';
       })();
       loading.classList.add('show');
+      var submitBtn = document.getElementById('submit-btn');
+      if (submitBtn) submitBtn.disabled = true;
       var rcInput = form.querySelector('input[name="referral_code"]');
       var payload = {
         store_id: form.querySelector('input[name="store_id"]').value,
@@ -5092,27 +5101,39 @@ document.getElementById('copyBtn').onclick=function(){
         anon_id: (form.querySelector('#anon_id') || {}).value || null,
         referral_code: rcInput ? ((rcInput.value || '').trim().toUpperCase() || null) : null,
       };
-      var res = await fetch(window.location.href, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      // LINE WebView 対策: document.write はインラインスクリプトが実行されない場合がある。
-      // X-Submission-Id ヘッダーが返ってきた場合は location.replace() でGET遷移（安定）。
-      var sid = res.headers.get('X-Submission-Id');
-      if (sid) {
-        var u = new URL(window.location.href);
-        u.searchParams.set('store_id', payload.store_id || '');
-        u.searchParams.set('sid', sid);
-        u.searchParams.delete('vid');
-        u.searchParams.delete('_nc');
-        window.location.replace(u.toString());
-      } else {
-        var html = await res.text();
-        document.open();
-        document.write(html);
-        document.close();
-        window.scrollTo(0, 0);
+      try {
+        var res = await fetch(window.location.href, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        // LINE WebView 対策: document.write はインラインスクリプトが実行されない場合がある。
+        // X-Submission-Id ヘッダーが返ってきた場合は location.replace() でGET遷移（安定）。
+        var sid = res.headers.get('X-Submission-Id');
+        if (sid) {
+          var u = new URL(window.location.href);
+          u.searchParams.set('store_id', payload.store_id || '');
+          u.searchParams.set('sid', sid);
+          u.searchParams.delete('vid');
+          u.searchParams.delete('_nc');
+          window.location.replace(u.toString());
+        } else {
+          var html = await res.text();
+          document.open();
+          document.write(html);
+          document.close();
+          window.scrollTo(0, 0);
+        }
+      } catch (err) {
+        // ★ Bug fix: fetch失敗（Edge Functionタイムアウト・ネットワークエラー）時は
+        //   ローディング画面を非表示にして送信ボタンを再有効化する。
+        //   try/catchがなかったため、ローディング画面がずっと表示されたままになっていた。
+        console.error('[form-engine] submit fetch failed:', err);
+        loading.classList.remove('show');
+        if (submitBtn) submitBtn.disabled = false;
+        var loadingP = loading.querySelector('p');
+        if (loadingP) loadingP.textContent = window.__T && window.__T.error_retry ? window.__T.error_retry : '送信に失敗しました。もう一度お試しください。';
+        alert(window.__T && window.__T.error_retry ? window.__T.error_retry : '送信に失敗しました。もう一度お試しください。');
       }
     });
   </script>
@@ -6656,22 +6677,38 @@ document.getElementById('copyBtn').onclick=function(){
         .filter(Boolean)
         .join("\n");
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        max_tokens: 1000,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userContent },
-        ],
-      });
-      const raw = completion.choices[0]?.message?.content ?? "{}";
-      const parsed = JSON.parse(raw) as Record<string, unknown>;
-      review_options = {
-        style1: String(parsed.style1 ?? ""),
-        style2: String(parsed.style2 ?? ""),
-        style3: String(parsed.style3 ?? ""),
-      };
+      // ★ Bug fix: OpenAI呼び出しをtry/catchで囲み、タイムアウト(25秒)を設定する。
+      //   未処理例外が発生するとEdge Functionがタイムアウト→クライアント側fetchが例外を投げ、
+      //   ローディング画面がずっと表示されたままになっていた。
+      //   失敗時はreview_optionsを空のままにして処理を継続する。
+      try {
+        const aiAbort = new AbortController();
+        const aiTimer = setTimeout(() => aiAbort.abort(), 25000);
+        let completion: Awaited<ReturnType<typeof openai.chat.completions.create>>;
+        try {
+          completion = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            max_tokens: 1000,
+            response_format: { type: "json_object" },
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userContent },
+            ],
+          }, { signal: aiAbort.signal });
+        } finally {
+          clearTimeout(aiTimer);
+        }
+        const raw = completion.choices[0]?.message?.content ?? "{}";
+        const parsed = JSON.parse(raw) as Record<string, unknown>;
+        review_options = {
+          style1: String(parsed.style1 ?? ""),
+          style2: String(parsed.style2 ?? ""),
+          style3: String(parsed.style3 ?? ""),
+        };
+      } catch (aiErr) {
+        console.error("[form-engine] OpenAI generation failed, continuing without review_options:", aiErr);
+        // review_options は空 {} のままで処理を継続（レビューは保存される）
+      }
     }
 
     const coupon_awarded = (() => {
