@@ -143,7 +143,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     coupon_scope_store_only: "※この店舗のみでご利用いただけます",
     line_add_title: "LINE友だち登録でさらにクーポンGET！",
     line_add_bonus: "LINE友だち追加でさらに「{bonus}」をプレゼント！",
-    google_review_btn: "Google口コミを書く",
+    google_review_btn: "Googleに口コミを書いてお店を応援！！",
     line_save_coupon_btn: "LINEでクーポンを保存",
     line_save_coupon_success: "LINEに届きました！お会計時はLINEを確認してください",
     line_save_coupon_hint: "タップでLINEが開きます。友だち追加後にクーポンが届きます",
@@ -154,14 +154,14 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     loyalty_breakdown_sns: "SNS拡散",
     loyalty_breakdown_google: "Google等・口コミ",
     loyalty_breakdown_feedback: "店舗へ要望送信",
-    loyalty_hint_title_high: "⭐ 口コミ投稿でクーポンをゲット！",
+    loyalty_hint_title_high: "⭐ 口コミ投稿のご協力をお願いします",
     loyalty_hint_review_label: "口コミ投稿",
-    loyalty_hint_goal: "目標達成！",
-    loyalty_hint_coupon_earned: "🎁 クーポン獲得",
-    loyalty_hint_post_hint: "上の口コミ案をコピーして投稿 → 戻るとポイントが加算されます",
-    loyalty_hint_low: "💡 店舗へ要望を送信すると<strong>＋{fb}P</strong>獲得！<br>口コミ投稿（＋{google}P）より<strong>1P多い</strong>のでお得です。<br>ご意見はお店の改善に活かします🙏",
+    loyalty_hint_goal: "ありがとうございます",
+    loyalty_hint_coupon_earned: "🙏 お店の励みになります",
+    loyalty_hint_post_hint: "上の口コミ案をコピーして、ぜひご投稿ください",
+    loyalty_hint_low: "💡 店舗へのご要望もぜひお聞かせください。<br>いただいたご意見はお店の改善に活かします🙏",
     available_points: "利用可能ポイント",
-    review_earn_point_hint: "✍️ 口コミを書くと ＋{n}P が加算されます",
+    review_earn_point_hint: "✍️ 口コミでお店を応援していただけると嬉しいです",
     phone_register_hint: "電話番号を登録するとポイントを管理できます。<br>{n}P 貯めてクーポンと交換！",
     phone_register_btn: "登録する",
     phone_register_note: "※電話番号はハッシュ化して保存。ポイント管理のみに使用します。",
@@ -286,14 +286,14 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     loyalty_breakdown_sns: "SNS Share",
     loyalty_breakdown_google: "Google Review",
     loyalty_breakdown_feedback: "Store Feedback",
-    loyalty_hint_title_high: "⭐ Earn a coupon by posting a review!",
+    loyalty_hint_title_high: "⭐ Please share your review",
     loyalty_hint_review_label: "Review",
-    loyalty_hint_goal: "Goal reached!",
-    loyalty_hint_coupon_earned: "🎁 Coupon earned",
-    loyalty_hint_post_hint: "Post using the review above → return to this page to earn points",
-    loyalty_hint_low: "💡 Send feedback to the store and earn <strong>+{fb}P</strong>!<br><strong>1P more</strong> than a review (+{google}P) — a better deal!<br>Your opinions help us improve 🙏",
+    loyalty_hint_goal: "Thank you",
+    loyalty_hint_coupon_earned: "🙏 It means a lot to us",
+    loyalty_hint_post_hint: "Copy the review above and please post it",
+    loyalty_hint_low: "💡 We'd love to hear your feedback for the store too.<br>Your opinions help us improve 🙏",
     available_points: "Available Points",
-    review_earn_point_hint: "✍️ Post a review to earn +{n}P",
+    review_earn_point_hint: "✍️ We'd be grateful if you shared a review to support us",
     phone_register_hint: "Register your phone number to manage points.<br>Earn {n}P and redeem for coupons!",
     phone_register_btn: "Register",
     phone_register_note: "* Phone number is hashed and used only for point management.",
@@ -389,14 +389,14 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     loyalty_breakdown_sns: "SNS分享",
     loyalty_breakdown_google: "Google评价",
     loyalty_breakdown_feedback: "发送店铺建议",
-    loyalty_hint_title_high: "⭐ 发布评价即可获得优惠券！",
+    loyalty_hint_title_high: "⭐ 期待您发布评价",
     loyalty_hint_review_label: "发布评价",
-    loyalty_hint_goal: "目标达成！",
-    loyalty_hint_coupon_earned: "🎁 获得优惠券",
-    loyalty_hint_post_hint: "使用上方评价发布 → 返回本页即可加积分",
-    loyalty_hint_low: "💡 向店铺发送建议可获得<strong>＋{fb}P</strong>！<br>比发布评价（＋{google}P）<strong>多1P</strong>，更划算！<br>您的意见将用于改善服务🙏",
+    loyalty_hint_goal: "感谢您",
+    loyalty_hint_coupon_earned: "🙏 这是对本店的鼓励",
+    loyalty_hint_post_hint: "复制上方评价内容，欢迎发布",
+    loyalty_hint_low: "💡 也欢迎向店铺提出您的建议。<br>您的意见将用于改善服务🙏",
     available_points: "可用积分",
-    review_earn_point_hint: "✍️ 发布评价可获得 +{n}P",
+    review_earn_point_hint: "✍️ 期待您发布评价来支持本店",
     phone_register_hint: "注册手机号码以管理积分。<br>累计{n}P可兑换优惠券！",
     phone_register_btn: "注册",
     phone_register_note: "※手机号码经哈希处理后保存，仅用于积分管理。",
@@ -492,14 +492,14 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     loyalty_breakdown_sns: "SNS 공유",
     loyalty_breakdown_google: "Google 리뷰",
     loyalty_breakdown_feedback: "매장 건의 발송",
-    loyalty_hint_title_high: "⭐ 리뷰 게시하고 쿠폰 받기！",
+    loyalty_hint_title_high: "⭐ 리뷰 작성에 협조 부탁드립니다",
     loyalty_hint_review_label: "리뷰 게시",
-    loyalty_hint_goal: "목표 달성！",
-    loyalty_hint_coupon_earned: "🎁 쿠폰 획득",
-    loyalty_hint_post_hint: "위의 리뷰안을 사용해 게시 → 이 페이지로 돌아오면 포인트 적립",
-    loyalty_hint_low: "💡 매장에 건의를 보내면 <strong>＋{fb}P</strong> 획득！<br>리뷰 게시（＋{google}P）보다 <strong>1P 많아</strong> 더 유리！<br>의견은 매장 개선에 활용됩니다🙏",
+    loyalty_hint_goal: "감사합니다",
+    loyalty_hint_coupon_earned: "🙏 매장에 큰 힘이 됩니다",
+    loyalty_hint_post_hint: "위의 리뷰안을 복사해 꼭 게시해 주세요",
+    loyalty_hint_low: "💡 매장에 대한 건의도 들려주세요.<br>의견은 매장 개선에 활용됩니다🙏",
     available_points: "사용 가능 포인트",
-    review_earn_point_hint: "✍️ 리뷰 게시 시 +{n}P 적립",
+    review_earn_point_hint: "✍️ 리뷰로 매장을 응원해 주시면 감사하겠습니다",
     phone_register_hint: "전화번호를 등록하면 포인트를 관리할 수 있습니다.<br>{n}P 모아 쿠폰으로 교환！",
     phone_register_btn: "등록하기",
     phone_register_note: "※전화번호는 해시화하여 저장. 포인트 관리에만 사용합니다.",
@@ -595,14 +595,14 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     loyalty_breakdown_sns: "Compartir SNS",
     loyalty_breakdown_google: "Reseña Google",
     loyalty_breakdown_feedback: "Sugerencia a tienda",
-    loyalty_hint_title_high: "⭐ ¡Publica una reseña y consigue un cupón!",
+    loyalty_hint_title_high: "⭐ Comparte tu reseña, por favor",
     loyalty_hint_review_label: "Reseña",
-    loyalty_hint_goal: "¡Objetivo alcanzado!",
-    loyalty_hint_coupon_earned: "🎁 Cupón obtenido",
-    loyalty_hint_post_hint: "Publica con la reseña de arriba → vuelve a esta página para ganar puntos",
-    loyalty_hint_low: "💡 Envía sugerencias a la tienda y gana <strong>+{fb}P</strong>.<br><strong>1P más</strong> que publicar una reseña (+{google}P) — ¡más ventajoso!<br>Tus opiniones ayudan a mejorar el servicio 🙏",
+    loyalty_hint_goal: "Gracias",
+    loyalty_hint_coupon_earned: "🙏 Significa mucho para nosotros",
+    loyalty_hint_post_hint: "Copia la reseña de arriba y publícala, por favor",
+    loyalty_hint_low: "💡 También nos encantaría conocer tus sugerencias para la tienda.<br>Tus opiniones ayudan a mejorar el servicio 🙏",
     available_points: "Puntos Disponibles",
-    review_earn_point_hint: "✍️ Publica una reseña para ganar +{n}P",
+    review_earn_point_hint: "✍️ Te agradeceríamos que compartieras una reseña para apoyarnos",
     phone_register_hint: "Registra tu número de teléfono para gestionar puntos.<br>¡Acumula {n}P y canjéalos por cupones!",
     phone_register_btn: "Registrar",
     phone_register_note: "* El teléfono se almacena con hash y solo se usa para la gestión de puntos.",
@@ -698,14 +698,14 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     loyalty_breakdown_sns: "Partage SNS",
     loyalty_breakdown_google: "Avis Google",
     loyalty_breakdown_feedback: "Suggestion au magasin",
-    loyalty_hint_title_high: "⭐ Postez un avis et obtenez un coupon !",
+    loyalty_hint_title_high: "⭐ Partagez votre avis, s'il vous plaît",
     loyalty_hint_review_label: "Avis",
-    loyalty_hint_goal: "Objectif atteint !",
-    loyalty_hint_coupon_earned: "🎁 Coupon obtenu",
-    loyalty_hint_post_hint: "Postez avec l'avis ci-dessus → revenez sur cette page pour gagner des points",
-    loyalty_hint_low: "💡 Envoyez une suggestion au magasin et gagnez <strong>+{fb}P</strong> !<br><strong>1P de plus</strong> qu'un avis (+{google}P) — plus avantageux !<br>Vos opinions nous aident à améliorer le service 🙏",
+    loyalty_hint_goal: "Merci",
+    loyalty_hint_coupon_earned: "🙏 Cela compte beaucoup pour nous",
+    loyalty_hint_post_hint: "Copiez l'avis ci-dessus et postez-le, s'il vous plaît",
+    loyalty_hint_low: "💡 Nous aimerions aussi connaître vos suggestions pour le magasin.<br>Vos opinions nous aident à améliorer le service 🙏",
     available_points: "Points Disponibles",
-    review_earn_point_hint: "✍️ Postez un avis pour gagner +{n}P",
+    review_earn_point_hint: "✍️ Nous vous serions reconnaissants de partager un avis pour nous soutenir",
     phone_register_hint: "Enregistrez votre numéro pour gérer vos points.<br>Cumulez {n}P et échangez contre des coupons !",
     phone_register_btn: "Enregistrer",
     phone_register_note: "* Le numéro est stocké sous forme de hash et utilisé uniquement pour la gestion des points.",
@@ -801,14 +801,14 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     loyalty_breakdown_sns: "แชร์ SNS",
     loyalty_breakdown_google: "รีวิว Google",
     loyalty_breakdown_feedback: "ส่งข้อเสนอแนะ",
-    loyalty_hint_title_high: "⭐ โพสต์รีวิวแล้วรับคูปอง！",
+    loyalty_hint_title_high: "⭐ ขอความร่วมมือในการรีวิว",
     loyalty_hint_review_label: "โพสต์รีวิว",
-    loyalty_hint_goal: "ถึงเป้าหมายแล้ว！",
-    loyalty_hint_coupon_earned: "🎁 ได้รับคูปอง",
-    loyalty_hint_post_hint: "โพสต์โดยใช้รีวิวด้านบน → กลับมาหน้านี้เพื่อรับแต้ม",
-    loyalty_hint_low: "💡 ส่งข้อเสนอแนะถึงร้านค้าแล้วรับ <strong>＋{fb}P</strong>！<br><strong>มากกว่า 1P</strong> เมื่อเทียบกับการโพสต์รีวิว（＋{google}P）！<br>ความเห็นของคุณจะช่วยพัฒนาบริการ🙏",
+    loyalty_hint_goal: "ขอบคุณค่ะ",
+    loyalty_hint_coupon_earned: "🙏 เป็นกำลังใจให้ร้านค้า",
+    loyalty_hint_post_hint: "คัดลอกรีวิวด้านบนแล้วช่วยโพสต์ด้วยนะคะ",
+    loyalty_hint_low: "💡 อยากฟังข้อเสนอแนะถึงร้านค้าจากคุณด้วยค่ะ<br>ความเห็นของคุณจะช่วยพัฒนาบริการ🙏",
     available_points: "แต้มที่ใช้ได้",
-    review_earn_point_hint: "✍️ โพสต์รีวิวเพื่อรับ +{n}P",
+    review_earn_point_hint: "✍️ หากช่วยรีวิวสนับสนุนร้านค้าจะขอบคุณมากค่ะ",
     phone_register_hint: "ลงทะเบียนหมายเลขโทรศัพท์เพื่อจัดการแต้ม<br>สะสม {n}P แลกคูปองได้！",
     phone_register_btn: "ลงทะเบียน",
     phone_register_note: "※หมายเลขโทรศัพท์จะถูกเข้ารหัสและใช้เพื่อการจัดการแต้มเท่านั้น",
@@ -904,14 +904,14 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     loyalty_breakdown_sns: "Chia sẻ SNS",
     loyalty_breakdown_google: "Đánh giá Google",
     loyalty_breakdown_feedback: "Gửi góp ý đến cửa hàng",
-    loyalty_hint_title_high: "⭐ Đăng đánh giá để nhận phiếu giảm giá！",
+    loyalty_hint_title_high: "⭐ Mong bạn chia sẻ đánh giá",
     loyalty_hint_review_label: "Đăng đánh giá",
-    loyalty_hint_goal: "Đạt mục tiêu！",
-    loyalty_hint_coupon_earned: "🎁 Nhận phiếu giảm giá",
-    loyalty_hint_post_hint: "Đăng bằng nội dung đánh giá trên → quay lại trang này để cộng điểm",
-    loyalty_hint_low: "💡 Gửi góp ý đến cửa hàng để nhận <strong>＋{fb}P</strong>！<br><strong>Nhiều hơn 1P</strong> so với đăng đánh giá（＋{google}P）！<br>Ý kiến của bạn giúp cải thiện dịch vụ🙏",
+    loyalty_hint_goal: "Cảm ơn bạn",
+    loyalty_hint_coupon_earned: "🙏 Là động lực cho cửa hàng",
+    loyalty_hint_post_hint: "Sao chép nội dung đánh giá trên và đăng giúp nhé",
+    loyalty_hint_low: "💡 Chúng tôi cũng rất mong nghe góp ý của bạn cho cửa hàng.<br>Ý kiến của bạn giúp cải thiện dịch vụ🙏",
     available_points: "Điểm khả dụng",
-    review_earn_point_hint: "✍️ Đăng đánh giá để nhận +{n}P",
+    review_earn_point_hint: "✍️ Rất cảm ơn nếu bạn chia sẻ đánh giá để ủng hộ cửa hàng",
     phone_register_hint: "Đăng ký số điện thoại để quản lý điểm.<br>Tích {n}P đổi phiếu giảm giá！",
     phone_register_btn: "Đăng ký",
     phone_register_note: "※Số điện thoại được mã hóa hash và chỉ dùng để quản lý điểm.",
@@ -1269,11 +1269,75 @@ type ResultReview = {
   coupon_awarded: string;
   created_at: string;
   used_at?: string | null;
+  coupon_used_count?: number | null;
   image_url?: string | null;
   improvement_feedback_sent_at?: string | null;
   improvement_feedback_text?: string | null;
   line_user_id?: string | null;
 };
+
+// テーマカラーが白背景に対して薄すぎる（同系色で見にくい）場合、文字・白文字ボタンとして
+// LINE Push メッセージ文言をrewardModeに応じて生成
+function buildLinePushText(opts: {
+  headerText: string;   // 「アンケートありがとうございました！」など
+  rewardMode: string;   // "points" | "coupon" | "none"
+  cwWalletMode: boolean;
+  isLowScore: boolean;
+  reviewPageUrl: string;
+  walletPageUrl: string;
+}): string {
+  const { headerText, rewardMode, cwWalletMode, isLowScore, reviewPageUrl, walletPageUrl } = opts;
+  const isCoupon = rewardMode === "coupon" || cwWalletMode;
+  const isNone   = rewardMode === "none";
+  // walletPageUrl が reviewPageUrl と異なる場合（DASHBOARD_URL が設定されている本番環境）は
+  // 生成画面URLをLINEメッセージに含めず、ウォレットURLのみを送信する
+  const hasWallet = walletPageUrl && walletPageUrl !== reviewPageUrl;
+
+  if (isNone) {
+    return isLowScore
+      ? `✅ ${headerText}\n\n📝 結果画面はこちら👇\n${reviewPageUrl}`
+      : `✅ ${headerText}\n\nよろしければ口コミでお店を応援してください🙏\n📝 生成画面はこちら👇\n${reviewPageUrl}`;
+  }
+  if (isCoupon) {
+    // クーポン選択店舗：クーポン使用は結果画面内で完結するため、結果画面URLのみ送信
+    return isLowScore
+      ? `✅ ${headerText}\n\n📝 結果画面はこちら👇\n${reviewPageUrl}`
+      : `✅ ${headerText}\n\nよろしければ口コミでお店を応援してください🙏\n📝 生成画面はこちら👇\n${reviewPageUrl}`;
+  }
+  // points (default)：結果画面URL＋ポイントカードURL の両方を送信
+  if (hasWallet) {
+    return isLowScore
+      ? `✅ ${headerText}\n\n📝 結果画面はこちら👇\n${reviewPageUrl}\n\n🎴 累積ポイントはこちらで確認\n${walletPageUrl}`
+      : `✅ ${headerText}\n\nよろしければ口コミでお店を応援してください🙏\n📝 生成画面はこちら👇\n${reviewPageUrl}\n\n🎴 累積ポイントはこちらで確認\n${walletPageUrl}`;
+  }
+  return isLowScore
+    ? `✅ ${headerText}\n\nアンケート結果画面でポイント獲得！\n📝 結果画面はこちら👇\n${reviewPageUrl}`
+    : `✅ ${headerText}\n\nよろしければ口コミでお店を応援してください🙏\n📝 生成画面はこちら👇\n${reviewPageUrl}`;
+}
+
+// 十分なコントラストになるまで暗くして返す。全店舗で「見えにくい色」を排除する。
+function safeThemeColor(raw: unknown): string {
+  const fallback = "#6366f1";
+  let hex = String(raw ?? "").trim();
+  if (hex.startsWith("#")) hex = hex.slice(1);
+  if (!/^[0-9a-fA-F]{6}$/.test(hex)) return (String(raw ?? "").trim() || fallback);
+  let r = parseInt(hex.slice(0, 2), 16);
+  let g = parseInt(hex.slice(2, 4), 16);
+  let b = parseInt(hex.slice(4, 6), 16);
+  const relLum = (R: number, G: number, B: number): number => {
+    const f = (c: number) => { const s = c / 255; return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4); };
+    return 0.2126 * f(R) + 0.7152 * f(G) + 0.0722 * f(B);
+  };
+  // 白(輝度1.0)に対するコントラスト比 = 1.05 / (L + 0.05)。3.2 以上を確保（薄すぎる色は暗くする）
+  const contrastVsWhite = () => 1.05 / (relLum(r, g, b) + 0.05);
+  let guard = 0;
+  while (contrastVsWhite() < 3.2 && guard < 40) {
+    r = Math.floor(r * 0.92); g = Math.floor(g * 0.92); b = Math.floor(b * 0.92);
+    guard++;
+  }
+  const toHex = (x: number) => Math.max(0, Math.min(255, x)).toString(16).padStart(2, "0");
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
 
 function buildResultHtml(params: {
   review: ResultReview;
@@ -1289,13 +1353,37 @@ function buildResultHtml(params: {
   walletData?: { total_earned: number; balance: number; scope_id: string } | null;
   dashboardUrl?: string;
 }): string {
-  const { review, store, lang, submissionId, scoutLpBaseUrl, lineLiffId, lineBotBasicId, formEngineBaseUrl, couponOnlyView, cookieAlreadyUsedForStore, walletData, dashboardUrl } = params;
-  const themeColor = (store.theme_color as string) || "#6366f1";
-  const lineAddUrl = (store.line_official_url as string) || "";
+  const { review, store, lang, submissionId, scoutLpBaseUrl, lineLiffId: _lineLiffIdParam, lineBotBasicId: _lineBotBasicIdParam, formEngineBaseUrl, couponOnlyView, cookieAlreadyUsedForStore, walletData, dashboardUrl } = params;
+  // LINE連携OFF: LIFF・LINE Bot・友だち追加URLを全て無効化（電話番号登録・Cookieウォレットにフォールバック）
+  const lineIntegrationEnabled = (store as Record<string, unknown>).line_integration_enabled !== false;
+  const lineLiffId = lineIntegrationEnabled ? _lineLiffIdParam : null;
+  const lineBotBasicId = lineIntegrationEnabled ? _lineBotBasicIdParam : null;
+  const themeColor = safeThemeColor(store.theme_color);
+  const lineAddUrl = lineIntegrationEnabled ? ((store.line_official_url as string) || "") : "";
   const hasLineUrl = Boolean(lineAddUrl?.trim());
   const store_id = review.store_id;
   const review_options = review.review_options || {};
-  const coupon_awarded = review.coupon_awarded || "";
+  // クーポン文言: 店舗の現在の設定を優先（設定変更を既存ページにも即時反映）
+  // 優先順: coupon_high/low_score → coupon_tiers[0].name → review保存時の値
+  const coupon_awarded = (() => {
+    const stored = review.coupon_awarded || "";
+    const thHigh = Number(store.score_threshold_high ?? 4);
+    const liveText = Number(review.score) >= thHigh
+      ? (store.coupon_high_score as string)?.trim() || ""
+      : (store.coupon_low_score as string)?.trim() || "";
+    const tierName = Array.isArray(store.coupon_tiers) && (store.coupon_tiers as { name?: string }[]).length > 0
+      ? String((store.coupon_tiers as { name?: string }[])[0]?.name ?? "").trim()
+      : "";
+    // ウォレット方式はダッシュボードで編集できる coupon_tiers を優先（legacy の high/low_score は管理画面から編集不可なため）
+    const cwEnabled = (store as Record<string, unknown>).coupon_wallet_enabled === true;
+    return cwEnabled ? (tierName || liveText || stored) : (liveText || tierName || stored);
+  })();
+  const couponUsageConditions = (() => {
+    if (Array.isArray(store.coupon_tiers) && (store.coupon_tiers as { usage_conditions?: string }[]).length > 0) {
+      return String((store.coupon_tiers as { usage_conditions?: string }[])[0]?.usage_conditions ?? "").trim();
+    }
+    return "";
+  })();
   const imageUrl = review.image_url || null;
   const hasReviewContent = review_options.style1?.trim() || review_options.style2?.trim() || review_options.style3?.trim();
   const showFullReviewUI = Boolean(hasReviewContent);
@@ -1313,6 +1401,8 @@ function buildResultHtml(params: {
       ? t(lang, "msg_low_score")
       : (store.success_message as string)?.trim() || "";
   const scoreAboveThreshold = review.score > thresholdMid;
+  // 低評価でも口コミボタンを表示する設定が ON の場合は高評価と同じUIを出す
+  const showReviewUI = scoreAboveThreshold || store.low_score_review_button_enabled === true;
   const thankYouMessage = scoreAboveThreshold ? t(lang, "msg_thank_high") : t(lang, "msg_thank_low");
   const allReviewLinks = [
     { key: "google", n: t(lang, "google_review_btn"), s: "Google", u: store.review_url_google as string, c: "#4285F4" },
@@ -1327,6 +1417,11 @@ function buildResultHtml(params: {
   const showSuccessMessage = successMessage && (scoreAboveThreshold || successMessage !== t(lang, "msg_high_score"));
   const recruitmentUrl = (store.recruitment_url as string)?.trim() || "";
   const isCouponEnabled = store.is_coupon_enabled === true;
+  const rewardMode = String((store as Record<string,unknown>).reward_mode || "points").toLowerCase();
+  // 低評価（score_threshold_high 未満）時にクーポンを出すかどうか（OFFなら非表示）
+  const couponSuppressedLowScore =
+    (store as Record<string, unknown>).coupon_low_score_enabled === false &&
+    Number(review.score) < Number(store.score_threshold_high ?? 4);
   const scoutProgramEnabled = store.scout_program_enabled === true;
   const scoutMode = String(store.scout_display_mode || "referral").toLowerCase();
   const scoutRecruitmentLineUrl = ((store.scout_recruitment_line_url as string) || lineAddUrl || "").trim();
@@ -1384,9 +1479,11 @@ function buildResultHtml(params: {
   const sectionOrderBase = Array.isArray(sectionOrderRaw) && sectionOrderRaw.length > 0
     ? sectionOrderRaw
     : ["review", "coupon", "line", "scout"];
-  // review を先頭に固定、loyalty を2番目に固定（review → 矢印 → LINE/ポイントカード の順）
   const filteredBase = sectionOrderBase.filter(k => k !== "review" && k !== "loyalty");
-  const sectionOrder = ["review", "loyalty", ...filteredBase];
+  // pointsモード: loyalty を2番目に固定。coupon/noneモード: loyalty なし
+  const sectionOrder = rewardMode === "points"
+    ? ["review", "loyalty", ...filteredBase]
+    : ["review", ...filteredBase];
 
   const screenNavigating = t(lang, "screen_navigating");
 
@@ -1395,44 +1492,45 @@ function buildResultHtml(params: {
     String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
   const postSiteButtonsForStyle = (styleKey: string): string => {
     if (!hasReviewLinks) return "";
-    const reviewPts = Number(store.point_rule_google ?? 3);
-    const hintEsc = String(t(lang, "post_hint_copy_then_open"))
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/"/g, "&quot;");
+    const isPtsMode = rewardMode === "points";
     const highlightClass = isHighScore && googleLink ? " post-cta-highlight" : "";
+    const guideTitle = isPtsMode
+      ? "🙏 口コミ投稿のお願い"
+      : (rewardMode === "coupon" ? "🎁 口コミ投稿のお願い" : "🙏 口コミ投稿のお願い");
     const stepGuide = `<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
-      <div style="font-size:12px;font-weight:800;color:#15803d;margin-bottom:8px;">🎁 口コミ投稿で＋${reviewPts}P！</div>
+      <div style="font-size:12px;font-weight:800;color:#15803d;margin-bottom:8px;">${guideTitle}</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#1f2937;">
           <span style="background:#15803d;color:#fff;border-radius:50%;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;">1</span>
-          <span>下のボタンをタップ <span style="color:#6b7280;">→ 口コミ文が自動コピーされます</span></span>
+          <span>「口コミ文をコピー」ボタンをタップ</span>
         </div>
         <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#1f2937;">
           <span style="background:#15803d;color:#fff;border-radius:50%;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;">2</span>
-          <span>開いたページに貼り付けて口コミを投稿</span>
+          <span>口コミサイトを開いて、貼り付けて投稿</span>
         </div>
+        ${isPtsMode ? `
         <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#1f2937;">
           <span style="background:#d97706;color:#fff;border-radius:50%;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;">3</span>
-          <span><strong style="color:#d97706;">「戻る」でこのページに戻る</strong> → ポイント受け取りボタンが出ます！</span>
-        </div>
+          <span><strong style="color:#d97706;">「戻る」でこのページに戻る</strong></span>
+        </div>` : ""}
       </div>
     </div>`;
+    const copyBtn = `<button type="button" class="link-btn" style="background:#fff;color:#15803d;border:2px solid #15803d;font-weight:800;" data-style="${styleKey}" onclick="copyReviewTextBtn('${styleKey}', this)">📋 口コミ文をコピー</button>`;
     return `<div class="post-site-btns${highlightClass}">
       ${stepGuide}
+      ${copyBtn}
       ${allReviewLinks
         .map((l) => {
           const isGoogle = l.key === "google";
           const cls = isGoogle ? "link-btn link-btn-google" : "link-btn link-btn-secondary";
           const secBg = isGoogle ? "" : `background:${themeColor};`;
           const label = String(l.n).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-          const ptsBadge = `<span style="display:inline-block;margin-left:8px;background:rgba(255,255,255,0.25);border-radius:999px;padding:1px 8px;font-size:13px;font-weight:800;">＋${reviewPts}P</span>`;
-          const copyHint = `<span style="display:block;font-size:11px;opacity:0.82;margin-top:4px;font-weight:500;">&#x1F4CB; タップで口コミテキストを自動コピー → 貼り付けて投稿 → 戻るとポイントGET</span>`;
+          const ptsBadge = "";
           const rawUrl = String(l.u).replace(/"/g, "&quot;");
           const onclickAttr = isGoogle
             ? `handleGoogleBtnClick(event,'${styleKey}','${rawUrl}')`
             : `handleReviewAnchorClick(event,'${styleKey}',this)`;
-          return `<a href="${escAttr(String(l.u))}" class="${cls}"${secBg ? ` style="${secBg.replace(/"/g, "&quot;")}"` : ""} data-style="${styleKey}" onclick="${onclickAttr}">${label}${ptsBadge}${copyHint}</a>`;
+          return `<a href="${escAttr(String(l.u))}" class="${cls}"${secBg ? ` style="${secBg.replace(/"/g, "&quot;")}"` : ""} data-style="${styleKey}" onclick="${onclickAttr}">${label}${ptsBadge}</a>`;
         })
         .join("")}
     </div>`;
@@ -1443,10 +1541,10 @@ function buildResultHtml(params: {
 
   const sectionReview = `<div class="card">
     <div style="margin-bottom:16px;">
-      <span style="display:inline-block;background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1d4ed8;padding:6px 16px;border-radius:999px;font-weight:800;font-size:15px;box-shadow:0 2px 8px rgba(29,78,216,0.2);margin-bottom:8px;">＋${surveyPointsEarly}P 獲得！</span>
+      ${rewardMode === "points" ? `<span style="display:inline-block;background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1d4ed8;padding:6px 16px;border-radius:999px;font-weight:800;font-size:15px;box-shadow:0 2px 8px rgba(29,78,216,0.2);margin-bottom:8px;">＋${surveyPointsEarly}P 獲得！</span>` : ""}
       <p style="margin:0;font-size:0.95rem;color:#1f2937;white-space:pre-line;line-height:1.5;">${String(thankYouMessage).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")}</p>
     </div>
-    ${showFullReviewUI ? `
+    ${showFullReviewUI && showReviewUI ? `
     <h2 style="text-align:center; margin-top:0;">${t(lang, "review_select_title")}</h2>
     <div class="tabs">
       <button class="tab active" data-style="style1">${t(lang, "style1_title")}</button>
@@ -1484,13 +1582,36 @@ function buildResultHtml(params: {
       </div>`}
     </div>
     `).join("")}
-    ${review.score <= thresholdMid ? `
+    ${showReviewUI && hasReviewLinks ? "" : showReviewUI ? `
+    <hr class="card-divider">
+    <h4 style="margin-top:0;">📝 ${t(lang, "post_to_sites_support")}</h4>
+    <p style="font-size:14px; margin:0 0 12px;">${t(lang, "post_hint")}</p>
+    ` : ""}
+    ` : showReviewUI ? `
+    <h4>${t(lang, "post_to_sites_links")}</h4>
+    <p style="font-size:14px; margin:0 0 12px;">${t(lang, "post_hint")}</p>
+    ` : ""}
+    ${(googleLink || otherLinks.length > 0) && !showFullReviewUI && showReviewUI ? `
+    <p style="text-align:center; font-size:14px; margin:0 0 12px; color:#4b5563;">${String(t(lang, "msg_review_encourage")).replace(/&/g, "&amp;")}</p>
+    ${googleLink ? `
+    <div class="link-btns google-primary${isHighScore ? " post-cta-highlight" : ""}">
+      <button type="button" class="link-btn link-btn-google" data-ext-url="${escAttr(String(googleLink.u))}" onclick="copyStoreNameAndOpenReview(this.getAttribute('data-ext-url'))">${String(googleLink.n).replace(/</g, "&lt;")}</button>
+    </div>
+    ` : ""}
+    ${otherLinks.length > 0 ? `
+    <div class="link-btns link-btns-other"${!googleLink ? (isHighScore ? ' class="post-cta-highlight"' : "") : " style=\"margin-top:12px;\""}>
+      ${otherLinks.map((l) => `<button type="button" class="link-btn link-btn-secondary" style="background:${themeColor}" data-ext-url="${escAttr(String(l.u))}" onclick="openExternalBrowser(this.getAttribute('data-ext-url'))">${String(l.s).replace(/</g, "&lt;")}</button>`).join("")}
+    </div>
+    ` : ""}
+    ` : ""}
+    ${!scoreAboveThreshold && store.low_score_report_enabled !== false ? `
     <div class="store-feedback-row" style="margin-top:16px;">
       ${(() => {
         const fbPts = Number(store.point_rule_google ?? 3);
         const fbBonusPts = fbPts + 1;
+        const fbIsPtsMode = rewardMode === "points";
         const fbEnabled = !review.improvement_feedback_sent_at;
-        const fbOriginal = (t(lang, "store_feedback_btn") + ` ＋${fbBonusPts}P`).replace(/"/g, "&quot;");
+        const fbOriginal = (t(lang, "store_feedback_btn") + (fbIsPtsMode ? ` ＋${fbBonusPts}P` : "")).replace(/"/g, "&quot;");
         const fbDashUrl = escAttr(dashboardUrl ?? "");
         const fbSid = escAttr(submissionId ?? "");
         const fbStoreId = escAttr(store_id);
@@ -1509,40 +1630,18 @@ function buildResultHtml(params: {
         return `<div style="background:linear-gradient(135deg,#fff7ed,#fef3c7);border:2.5px solid #f59e0b;border-radius:18px;padding:18px 16px 16px;box-shadow:0 4px 20px rgba(245,158,11,.2);">
           <div style="text-align:center;margin-bottom:12px;">
             <div style="font-size:14px;font-weight:800;color:#92400e;margin-bottom:4px;">💌 ご意見をお店に直接届けましょう</div>
-            <div style="font-size:12px;color:#b45309;line-height:1.7;">お客様のご意見は店舗改善に活かします。<br>口コミ投稿より<strong>1P多く</strong>獲得できてお得！</div>
+            <div style="font-size:12px;color:#b45309;line-height:1.7;">お客様のご意見は店舗改善に活かします。</div>
           </div>
+          ${fbIsPtsMode ? `
           <div style="background:#f59e0b;border-radius:12px;padding:10px 12px;text-align:center;margin-bottom:14px;">
             <div style="font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;margin-bottom:2px;">送信で獲得できるポイント</div>
             <div style="font-size:42px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.02em;">＋${fbBonusPts}P</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;">口コミ投稿（＋${fbPts}P）より 1P 多い！</div>
-          </div>
+          </div>` : ""}
           <button type="button" id="btn-store-feedback" class="btn-store-feedback store-feedback-cta-highlight" style="width:100%;padding:16px;border:none;border-radius:14px;background:#d97706;color:#fff;font-weight:800;font-size:16px;text-align:center;cursor:pointer;letter-spacing:.02em;box-shadow:0 4px 14px rgba(217,119,6,.45);" data-sent="0" data-original-text="${fbOriginal}" data-review-id="${fbReviewId}" data-store-id="${fbStoreId}" data-sub-id="${fbSid}" data-dash-url="${fbDashUrl}">${fbLabel}</button>
         </div>
-<script>(function(){var _b=document.getElementById('btn-store-feedback');if(!_b||_b.disabled)return;_b.onclick=function(){if(_b.disabled)return;_b.disabled=true;var _ot=_b.getAttribute('data-original-text')||_b.textContent||'';_b.textContent='\u9001\u4fe1\u4e2d\u2026';var _ae=document.querySelector('.content.active .review-text');var _stid=_b.getAttribute('data-store-id');var _sid=_b.getAttribute('data-sub-id');var _base=window.location.href.split('?')[0]+'?store_id='+encodeURIComponent(_stid)+(_sid?'&sid='+encodeURIComponent(_sid):'');var _hdrs={'Content-Type':'application/json'};fetch(_base,{method:'POST',headers:_hdrs,body:JSON.stringify({action:'send_improvement_feedback',review_id:_b.getAttribute('data-review-id'),store_id:_stid,text:_ae?(_ae.innerText||'').trim():''})}).then(function(r){return r.json();}).then(function(d){if(d.daily_limit){_b.textContent='\u26a0\ufe0f \u672c\u65e5\u5206\u306f\u52a0\u7b97\u6e08\u307f';_b.style.background='#f3f4f6';_b.style.color='#6b7280';if(typeof _showSimpleBanner==='function')_showSimpleBanner('\u26a0\ufe0f \u30ec\u30dd\u30fc\u30c8\u306e\u30dd\u30a4\u30f3\u30c8\u306f1\u65e51\u56de\u306e\u307f\u3067\u3059\uff08\u672c\u65e5\u5206\u306f\u52a0\u7b97\u6e08\u307f\uff09','#b45309',6000);return;}if(d.ok){var _pts=d.points_awarded||0;_b.textContent=_pts>0?('\u2705 \uff0b'+_pts+'P \u52a0\u7b97\uff01'):'\u2705 \u9001\u4fe1\u3057\u307e\u3057\u305f';if(_pts>0){var _c=document.getElementById('loyalty-point-card')||document.getElementById('loyalty-wallet-summary');if(_c&&d.balance!=null){var _big=_c.querySelector('div[style*="font-size:58px"]');if(_big)_big.innerHTML=d.balance+'<span style="font-size:18px;font-weight:600;"> P<\/span>';var _bdg=document.createElement('div');_bdg.style.cssText='text-align:center;padding:10px 0 4px;font-size:30px;font-weight:800;color:#059669;opacity:1;transition:opacity 1s;';_bdg.textContent='\uff0b'+_pts+'P';_c.insertBefore(_bdg,_c.firstChild);setTimeout(function(){_bdg.style.opacity='0';},3000);setTimeout(function(){try{_bdg.remove();}catch(e){}},4200);}(_c=_c||document.querySelector('.loyalty-card'))&&_c.scrollIntoView({behavior:'smooth',block:'center'});var _bal2=d.balance!=null?d.balance:_pts;if(typeof window._showPtsPopup==='function'){window._showPtsPopup(_pts,_bal2,'\u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u9001\u4fe1');}else if(typeof _showSimpleBanner==='function'){_showSimpleBanner('\ud83c\udf89 \u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af \uff0b'+_pts+'P \u52a0\u7b97\uff01','#16a34a',5000);}if(typeof window._refreshWalletDisplay==='function')window._refreshWalletDisplay();}else{if(typeof _showSimpleBanner==='function')_showSimpleBanner('\u2705 \u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u3092\u9001\u4fe1\u3057\u307e\u3057\u305f','#374151',3000);}}else{_b.disabled=false;_b.textContent=_ot;}}).catch(function(){_b.disabled=false;_b.textContent=_ot;});};})();<\/script>`;
+<script>(function(){var _b=document.getElementById('btn-store-feedback');if(!_b||_b.disabled)return;_b.onclick=function(){if(_b.disabled)return;_b.disabled=true;var _ot=_b.getAttribute('data-original-text')||_b.textContent||'';_b.textContent='\u9001\u4fe1\u4e2d\u2026';var _ae=document.querySelector('.content.active .review-text');var _stid=_b.getAttribute('data-store-id');var _sid=_b.getAttribute('data-sub-id');var _base=window.location.href.split('?')[0]+'?store_id='+encodeURIComponent(_stid)+(_sid?'&sid='+encodeURIComponent(_sid):'');var _hdrs={'Content-Type':'application/json'};fetch(_base,{method:'POST',headers:_hdrs,body:JSON.stringify({action:'send_improvement_feedback',review_id:_b.getAttribute('data-review-id'),store_id:_stid,text:_ae?(_ae.innerText||'').trim():''})}).then(function(r){return r.json();}).then(function(d){if(d.daily_limit){_b.textContent='\u26a0\ufe0f \u672c\u65e5\u5206\u306f\u52a0\u7b97\u6e08\u307f';_b.style.background='#f3f4f6';_b.style.color='#6b7280';if(typeof _showSimpleBanner==='function')_showSimpleBanner('\u26a0\ufe0f \u30ec\u30dd\u30fc\u30c8\u306e\u30dd\u30a4\u30f3\u30c8\u306f1\u65e51\u56de\u306e\u307f\u3067\u3059\uff08\u672c\u65e5\u5206\u306f\u52a0\u7b97\u6e08\u307f\uff09','#b45309',6000);return;}if(d.ok){var _pts=${rewardMode === "points" ? "(d.points_awarded||0)" : "0"};_b.textContent=_pts>0?('\u2705 \uff0b'+_pts+'P \u52a0\u7b97\uff01'):'\u2705 \u9001\u4fe1\u3057\u307e\u3057\u305f';if(_pts>0){var _c=document.getElementById('loyalty-point-card')||document.getElementById('loyalty-wallet-summary');if(_c&&d.balance!=null){var _big=_c.querySelector('div[style*="font-size:58px"]');if(_big)_big.innerHTML=d.balance+'<span style="font-size:18px;font-weight:600;"> P<\/span>';var _bdg=document.createElement('div');_bdg.style.cssText='text-align:center;padding:10px 0 4px;font-size:30px;font-weight:800;color:#059669;opacity:1;transition:opacity 1s;';_bdg.textContent='\uff0b'+_pts+'P';_c.insertBefore(_bdg,_c.firstChild);setTimeout(function(){_bdg.style.opacity='0';},3000);setTimeout(function(){try{_bdg.remove();}catch(e){}},4200);}(_c=_c||document.querySelector('.loyalty-card'))&&_c.scrollIntoView({behavior:'smooth',block:'center'});var _bal2=d.balance!=null?d.balance:_pts;if(typeof window._showPtsPopup==='function'){window._showPtsPopup(_pts,_bal2,'\u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u9001\u4fe1');}else if(typeof _showSimpleBanner==='function'){_showSimpleBanner('\ud83c\udf89 \u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af \uff0b'+_pts+'P \u52a0\u7b97\uff01','#16a34a',5000);}if(typeof window._refreshWalletDisplay==='function')window._refreshWalletDisplay();}else{if(typeof _showSimpleBanner==='function')_showSimpleBanner('\u2705 \u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u3092\u9001\u4fe1\u3057\u307e\u3057\u305f','#374151',3000);}}else{_b.disabled=false;_b.textContent=_ot;}}).catch(function(){_b.disabled=false;_b.textContent=_ot;});};})();<\/script>`;
       })()}
     </div>
-    ` : ""}
-    ${scoreAboveThreshold && hasReviewLinks ? "" : scoreAboveThreshold ? `
-    <hr class="card-divider">
-    <h4 style="margin-top:0;">📝 ${t(lang, "post_to_sites_support")}</h4>
-    <p style="font-size:14px; margin:0 0 12px;">${t(lang, "post_hint")}</p>
-    ` : ""}
-    ` : scoreAboveThreshold ? `
-    <h4>${t(lang, "post_to_sites_links")}</h4>
-    <p style="font-size:14px; margin:0 0 12px;">${t(lang, "post_hint")}</p>
-    ` : ""}
-    ${(googleLink || otherLinks.length > 0) && !showFullReviewUI && scoreAboveThreshold ? `
-    <p style="text-align:center; font-size:14px; margin:0 0 12px; color:#4b5563;">${String(t(lang, "msg_review_encourage")).replace(/&/g, "&amp;")}</p>
-    ${googleLink ? `
-    <div class="link-btns google-primary${isHighScore ? " post-cta-highlight" : ""}">
-      <button type="button" class="link-btn link-btn-google" data-ext-url="${escAttr(String(googleLink.u))}" onclick="copyStoreNameAndOpenReview(this.getAttribute('data-ext-url'))">${String(googleLink.n).replace(/</g, "&lt;")}</button>
-    </div>
-    ` : ""}
-    ${otherLinks.length > 0 ? `
-    <div class="link-btns link-btns-other"${!googleLink ? (isHighScore ? ' class="post-cta-highlight"' : "") : " style=\"margin-top:12px;\""}>
-      ${otherLinks.map((l) => `<button type="button" class="link-btn link-btn-secondary" style="background:${themeColor}" data-ext-url="${escAttr(String(l.u))}" onclick="openExternalBrowser(this.getAttribute('data-ext-url'))">${String(l.s).replace(/</g, "&lt;")}</button>`).join("")}
-    </div>
-    ` : ""}
     ` : ""}
   </div>
   ${imageUrl ? `
@@ -1557,9 +1656,18 @@ function buildResultHtml(params: {
   ` : ""}`;
 
   const couponUniqueUrl = formEngineBaseUrl ? `${formEngineBaseUrl.replace(/\/$/, "")}?store_id=${encodeURIComponent(store_id)}&sid=${encodeURIComponent(submissionId)}&coupon_only=1` : "";
-  const hasLineSaveCoupon = Boolean(couponUniqueUrl);
+  const hasLineSaveCoupon = Boolean(couponUniqueUrl) && lineIntegrationEnabled;
   const isCouponOnlyView = couponOnlyView === true;
-  const couponAlreadyUsed = review.used_at != null;
+  // 複数枚（本当に N 回使える）クーポン対応
+  const couponUseCount = Math.max(1, Number((store as Record<string, unknown>).coupon_use_count ?? 1) || 1);
+  const couponUsedCount = Math.max(0, Number(review.coupon_used_count ?? 0) || 0);
+  const couponRemaining = Math.max(0, couponUseCount - couponUsedCount);
+  const couponMultiUse = couponUseCount > 1;
+  // クーポンウォレット（LINEユーザー単位で累積・残高で管理）モード
+  const couponWalletEnabled = (store as Record<string, unknown>).coupon_wallet_enabled === true;
+  const couponWalletBalance = walletData ? Math.max(0, walletData.balance) : 0;
+  // 「使用済み（=これ以上使えない）」: 複数枚は残0、単数は used_at
+  const couponAlreadyUsed = couponMultiUse ? (couponRemaining <= 0) : (review.used_at != null);
   const couponReacquireEnabledRaw = store.coupon_reacquire_enabled as boolean | null | undefined;
   const couponReacquireDaysRaw = Number(store.coupon_reacquire_days);
   const couponAllowMultipleLegacy = store.coupon_allow_multiple === true;
@@ -1571,29 +1679,76 @@ function buildResultHtml(params: {
       ? couponReacquireDaysRaw
       : (Number.isFinite(couponIntervalDaysLegacy) && couponIntervalDaysLegacy > 0 ? couponIntervalDaysLegacy : 365),
   );
-  const couponBrowserLimitMsg = couponReacquireEnabled
-    ? `この端末では${couponReacquireDays}日が経過してから再利用してください。`
-    : "この店舗ではクーポンは1回限りのため、再利用できません。";
-  const sectionCoupon = isCouponEnabled ? `
+  // クーポン複数枚の発行モード:
+  //  'interval'     (既定) … 1枚使うと次の1枚は日数を空けて（次回来店時）
+  //  'survey_review'      … 1枚目=アンケート回答で即時 / 2枚目=口コミ投稿して戻ったら
+  const couponMultiMode = String((store as Record<string, unknown>).coupon_multi_mode || "interval");
+  const isSurveyReviewMode = couponMultiUse && couponMultiMode === "survey_review";
+  // 複数枚クーポンの「次の1枚」までの間隔（日）。reacquire 設定があればそれ、無ければ1日（＝当日2枚使用を防止）
+  const couponMultiGapDays = couponReacquireEnabled ? couponReacquireDays : 1;
+  const couponBrowserLimitMsg = couponMultiUse
+    ? `本日は1枚ご利用済みです。残り${couponRemaining}枚は${couponMultiGapDays}日後（次回ご来店時）に使えます。`
+    : couponReacquireEnabled
+      ? `この端末では${couponReacquireDays}日が経過してから再利用してください。`
+      : "この店舗ではクーポンは1回限りのため、再利用できません。";
+  // survey_review モードでは日数の間隔ブロックを使わない（1枚目=即時, 2枚目=口コミ後で同日可）
+  const couponCookieBlocks = isSurveyReviewMode ? false : (cookieAlreadyUsedForStore === true);
+  // クーポン使用ボタンのロック: 口コミ導線が表示されている場合、口コミ投稿から戻るまで使用不可
+  //  survey_review モードでは「2枚目（=既に1枚使用済み）」だけを口コミ投稿後までロックする
+  const couponLockRequired = showReviewUI && hasReviewLinks && !isCouponOnlyView &&
+    (isSurveyReviewMode ? couponUsedCount >= 1 : true);
+  const sectionCoupon = (isCouponEnabled && !couponSuppressedLowScore) ? `
   <div class="card coupon-card" data-coupon-only="${isCouponOnlyView}">
     <h4 style="margin-bottom:4px;">🎁 ${t(lang, "coupon_title_prefix")}</h4>
     <div class="coupon-body-area">
     <p style="font-size:1.1rem; font-weight:700; color:${themeColor}; margin:0 0 12px;">【${String(coupon_awarded).replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, " ")}】</p>
+    ${couponMultiUse ? `<p style="display:inline-block;background:#fef3c7;border:1.5px solid #fbbf24;border-radius:999px;padding:3px 14px;font-size:13px;font-weight:800;color:#92400e;margin:0 0 12px;">🎟 全${couponUseCount}枚 ／ 残り <span style="font-size:16px;">${couponRemaining}</span> 枚</p>` : ""}
+    ${isSurveyReviewMode && !couponAlreadyUsed ? `<p style="font-size:13px;font-weight:800;color:#15803d;margin:0 0 10px;">${couponUsedCount === 0 ? "① アンケート回答特典（今すぐ使えます）" : "②（2枚目）"}</p>` : ""}
     <p style="font-size:12px; color:#6b7280; margin:0 0 4px;">${t(lang, "issued")}：${couponIssuedLine}</p>
     <p style="font-size:12px; color:#6b7280; margin:0 0 12px;">${couponUsableToday ? t(lang, "coupon_usable_today_hint") : t(lang, "coupon_usable_next_hint")}</p>
     <p class="coupon-use-hint">${t(lang, "coupon_usage_instructions")}</p>
-    <div class="coupon-use-area${couponAlreadyUsed || cookieAlreadyUsedForStore ? " used" : ""}">
+    <div class="coupon-use-area${couponAlreadyUsed || couponCookieBlocks ? " used" : ""}">
       ${couponEmergencyStop ? `
       <div class="coupon-stopped-msg">⛔ ${t(lang, "coupon_stopped")}</div>
       ` : couponAlreadyUsed ? `
-      <div id="coupon-used-msg" class="coupon-used-msg">✅ ${t(lang, "used_label")}</div>
+      <div id="coupon-used-msg" class="coupon-used-msg">✅ ${couponMultiUse ? `全${couponUseCount}枚 ${t(lang, "used_label")}` : t(lang, "used_label")}</div>
       ` : couponExpired ? `
       <div id="coupon-used-msg" class="coupon-used-msg" style="background:#f3f4f6;color:#374151;">⛔ このクーポンは有効期限切れです。</div>
-      ` : cookieAlreadyUsedForStore ? `
+      ` : couponCookieBlocks ? `
       <div id="coupon-used-msg" class="coupon-used-msg" style="background:#fef3c7;color:#92400e;">${couponBrowserLimitMsg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
       ` : `
-      <button type="button" id="btn-use-coupon" class="btn-use-coupon">${t(lang, "use_coupon_btn")}</button>
+      <button type="button" id="btn-use-coupon" class="btn-use-coupon"${couponLockRequired ? ` disabled style="opacity:.4;pointer-events:none;"` : ""}>${t(lang, "use_coupon_btn")}${couponMultiUse ? `（残り${couponRemaining}枚）` : ""}</button>
+      ${couponLockRequired ? `<div id="coupon-lock-msg" style="margin-top:10px;background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 12px;font-size:12.5px;font-weight:700;color:#92400e;">🔒 ${isSurveyReviewMode ? "口コミページから戻ると、2枚目が使えるようになります" : "上の口コミページから戻ると使用できるようになります"}</div>` : ""}
       <div id="coupon-used-msg" class="coupon-used-msg" style="display:none;">✅ ${t(lang, "used_label")}</div>
+      ${couponLockRequired ? `
+      <script>(function(){
+        var btn=document.getElementById('btn-use-coupon');
+        var lock=document.getElementById('coupon-lock-msg');
+        if(!btn)return;
+        var sid=${JSON.stringify(submissionId ?? "")};
+        var recKey='fe_rv_'+${JSON.stringify(store_id)};
+        var okKey='fe_cpn_ok_'+sid;
+        var hidden=false; // このページが一度でも非表示になったか（＝口コミページへ離脱したか）
+        function unlock(){btn.disabled=false;btn.style.opacity='';btn.style.pointerEvents='';if(lock)lock.style.display='none';}
+        function check(requireHidden){
+          try{
+            if(localStorage.getItem(okKey)){unlock();return true;}
+            if(requireHidden&&!hidden)return false; // 離脱せずにクリック直後 → まだ解除しない
+            var raw=localStorage.getItem(recKey);
+            if(raw){
+              var rec=null;try{rec=JSON.parse(raw);}catch(e1){}
+              if(rec&&rec.sid===sid){try{localStorage.setItem(okKey,'1');}catch(e2){}unlock();return true;}
+            }
+          }catch(e){}
+          return false;
+        }
+        if(check(false))return; // ページ再読み込みでの帰還はここで解除
+        document.addEventListener('visibilitychange',function(){
+          if(document.hidden){hidden=true;}
+          else{check(true);}
+        });
+        window.addEventListener('pageshow',function(e){if(e&&e.persisted){hidden=true;}check(true);});
+      })();</script>` : ""}
       `}
     </div>
     <p style="font-size:12px; color:#6b7280; margin:8px 0 0;">${couponScopeText}</p>
@@ -1697,10 +1852,13 @@ function buildResultHtml(params: {
     ? `https://line.me/R/ti/p/@${String(lineBotBasicId).replace(/^@/, "")}?start=${encodeURIComponent(submissionId)}`
     : "";
   // LIFF が設定されている場合は LIFF URL を使う（自動LINE ID取得 → ポイント付与）
-  // ただし ip_block_enabled=false（デモモード）の場合はLIFFをスキップして直接ウォレットへ
+  // ip_block_enabled=false（デモモード）でも LIFF が設定されていれば LIFF を優先する。
+  // デモモードの直接ウォレットリンクは LIFF 未設定時のフォールバックとして残す。
   const _isDemo = (store as Record<string, unknown>).ip_block_enabled === false;
-  const liffLinkUrl = (lineLiffId && !_isDemo)
-    ? `https://liff.line.me/${String(lineLiffId).trim()}?liff_link=1&review_id=${encodeURIComponent(String(review.id))}&store_id=${encodeURIComponent(store_id)}`
+  // ★ liff_link=1 はLIFFエンドポイントではなくLIFF URLのパラメータに含める
+  // （エンドポイントURLにクエリパラメータがあるとliff.stateと二重?になりSafariでエラーになるため）
+  const liffLinkUrl = lineLiffId
+    ? `https://liff.line.me/${String(lineLiffId).trim()}?review_id=${encodeURIComponent(String(review.id))}&store_id=${encodeURIComponent(store_id)}&liff_id=${encodeURIComponent(String(lineLiffId).trim())}&liff_link=1${lineBotBasicId ? "&bot_basic_id=" + encodeURIComponent(String(lineBotBasicId).replace(/^@/, "")) : ""}`
     : "";
   const lineBtnUrl = liffLinkUrl || lineOaMsgUrl || lineAddFriendUrl;
 
@@ -1718,13 +1876,11 @@ function buildResultHtml(params: {
         : `${t(lang,"loyalty_breakdown_survey")} <strong>＋${surveyPoints}P</strong>　／　${t(lang,"loyalty_breakdown_feedback")} <strong>＋${feedbackBonusPoints}P</strong>`);
   const loyaltyHintHtml = scoreAboveThreshold
     ? `<div id="loyalty-hint-normal" style="background:linear-gradient(135deg,#fff7ed,#fef3c7);border:2px solid #f59e0b;border-radius:12px;padding:14px;margin-bottom:12px;">
-        <div style="font-weight:800;color:#92400e;margin-bottom:10px;font-size:14px;">${t(lang,"loyalty_hint_title_high")}</div>
+        <div style="font-weight:800;color:#92400e;margin-bottom:10px;font-size:14px;text-align:center;">${t(lang,"loyalty_hint_title_high")}</div>
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border-radius:8px;padding:10px;margin-bottom:8px;flex-wrap:wrap;">
           <div style="text-align:center;min-width:54px;">
-            <div style="font-size:10px;color:#6b7280;margin-bottom:2px;">${t(lang,"loyalty_hint_review_label")}</div>
-            <div style="font-size:22px;font-weight:800;color:#d97706;">＋${googlePoints}P</div>
+            <div style="font-size:13px;font-weight:700;color:#d97706;">${t(lang,"loyalty_hint_review_label")}</div>
           </div>
-          <div style="font-size:20px;color:#f59e0b;font-weight:700;">→</div>
           <div style="text-align:center;background:#dcfce7;border-radius:8px;padding:8px 12px;">
             <div style="font-size:10px;color:#16a34a;font-weight:600;margin-bottom:2px;">${t(lang,"loyalty_hint_goal")}</div>
             <div style="font-size:15px;font-weight:800;color:#16a34a;">${t(lang,"loyalty_hint_coupon_earned")}</div>
@@ -1773,15 +1929,14 @@ function buildResultHtml(params: {
         ? `${dashboardUrl}/s/${encodeURIComponent(store_id)}/wallet/${encodeURIComponent(submissionId)}`
         : "";
 
-      // ① デモモード（ip_block_enabled=false）→ ウォレットページへ直接リンク（LIFF不要）
-      if ((store as Record<string, unknown>).ip_block_enabled === false && walletPageUrl) {
+      // ① LIFF設定あり かつ 既に LINE 連携済み → ウォレット直接リンク（再連携不要）
+      if (liffLinkUrl && walletPageUrl && review.line_user_id) {
         return `<a id="coupon-view-btn" href="${walletPageUrl}"
           style="display:block;width:100%;margin-top:12px;padding:16px;background:${themeColor};color:#fff;font-weight:700;font-size:16px;text-align:center;border-radius:14px;text-decoration:none;box-sizing:border-box;letter-spacing:.03em;box-shadow:0 4px 16px ${themeColor}55;">
           ${t(lang,"view_points_btn")}
         </a>`;
       }
-
-      // ② LIFF経由（LINE認証 → ウォレットURLをLINEメッセージで送付）: LINE連携済みユーザーも未連携ユーザーも統一フロー
+      // ① LIFF設定あり・未連携 → LIFF経由（LINE認証 → ウォレットURLをLINEメッセージで送付）
       if (liffLinkUrl) {
         return `<a id="coupon-view-btn" href="${liffLinkUrl}"
           style="display:block;width:100%;margin-top:12px;padding:16px;background:${themeColor};color:#fff;font-weight:700;font-size:16px;text-align:center;border-radius:14px;text-decoration:none;box-sizing:border-box;letter-spacing:.03em;box-shadow:0 4px 16px ${themeColor}55;">
@@ -1789,7 +1944,15 @@ function buildResultHtml(params: {
         </a>`;
       }
 
-      // ② LIFFなし・既にLINE連携済みの場合 → ウォレットページへ直接リンク
+      // ② デモモード（ip_block_enabled=false）& LIFF未設定 → ウォレットページへ直接リンク
+      if ((store as Record<string, unknown>).ip_block_enabled === false && walletPageUrl) {
+        return `<a id="coupon-view-btn" href="${walletPageUrl}"
+          style="display:block;width:100%;margin-top:12px;padding:16px;background:${themeColor};color:#fff;font-weight:700;font-size:16px;text-align:center;border-radius:14px;text-decoration:none;box-sizing:border-box;letter-spacing:.03em;box-shadow:0 4px 16px ${themeColor}55;">
+          ${t(lang,"view_points_btn")}
+        </a>`;
+      }
+
+      // ③ LIFFなし・既にLINE連携済みの場合 → ウォレットページへ直接リンク
       if (walletPageUrl && review.line_user_id) {
         return `<a id="coupon-view-btn" href="${walletPageUrl}"
           style="display:block;width:100%;margin-top:12px;padding:16px;background:${themeColor};color:#fff;font-weight:700;font-size:16px;text-align:center;border-radius:14px;text-decoration:none;box-sizing:border-box;letter-spacing:.03em;box-shadow:0 4px 16px ${themeColor}55;">
@@ -1797,7 +1960,7 @@ function buildResultHtml(params: {
         </a>`;
       }
 
-      // ③ LINE OAメッセージURLまたはLINE追加URLへ（LINE連携済みユーザーのみ）
+      // ④ LINE OAメッセージURLまたはLINE追加URLへ（LINE連携済みユーザーのみ）
       if (lineAddFriendUrl && review.line_user_id) {
         return `<a id="coupon-view-btn" href="${lineAddFriendUrl}"
           style="display:block;width:100%;margin-top:12px;padding:16px;background:#06C755;color:#fff;font-weight:700;font-size:16px;text-align:center;border-radius:14px;text-decoration:none;box-sizing:border-box;letter-spacing:.03em;box-shadow:0 4px 16px rgba(6,199,85,.4);">
@@ -1805,7 +1968,7 @@ function buildResultHtml(params: {
         </a>`;
       }
 
-      // ④ 最終フォールバック: ウォレット直リンク（anon_idユーザー含む全員）
+      // ⑤ 最終フォールバック: ウォレット直リンク（anon_idユーザー含む全員）
       if (walletPageUrl) {
         return `<a id="coupon-view-btn" href="${walletPageUrl}"
           style="display:block;width:100%;margin-top:12px;padding:16px;background:${themeColor};color:#fff;font-weight:700;font-size:16px;text-align:center;border-radius:14px;text-decoration:none;box-sizing:border-box;letter-spacing:.03em;box-shadow:0 4px 16px ${themeColor}55;">
@@ -1817,8 +1980,193 @@ function buildResultHtml(params: {
     })()}
   </div>`;
 
-  // coupon・line セクションは一時停止中（コードは保持）
-  const sectionMap: Record<string, string> = { review: sectionReview, coupon: /* sectionCoupon */ "", line: /* sectionLine */ "", scout: sectionScout, loyalty: sectionLoyalty };
+  // クーポンウォレット表示（LINEユーザー単位で累積した残高 + 使用ボタン）
+  const couponNameEsc = String(coupon_awarded).replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, " ");
+  const couponUsageCondEsc = (couponUsageConditions || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const sectionCouponWallet = (isCouponEnabled && !couponSuppressedLowScore) ? (() => {
+    // coupon_tiers を正規化（fallback: review保存時のクーポン名 + 1枚）
+    const cwTiers: { name: string; points_required: number; usage_conditions: string }[] =
+      Array.isArray(store.coupon_tiers) && (store.coupon_tiers as unknown[]).length > 0
+        ? (store.coupon_tiers as { name?: string; points_required?: number; usage_conditions?: string }[]).map((ct) => ({
+            name: String(ct.name ?? coupon_awarded ?? "クーポン").trim(),
+            points_required: Math.max(1, Number(ct.points_required ?? 1)),
+            usage_conditions: String(ct.usage_conditions ?? "").trim(),
+          }))
+        : [{ name: coupon_awarded || "クーポン", points_required: 1, usage_conditions: couponUsageConditions || "" }];
+    const isMulti = cwTiers.length > 1;
+    const tiersJson = JSON.stringify(cwTiers);
+    const firstNameEsc = cwTiers[0].name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const singleCondEsc = !isMulti ? couponUsageCondEsc : "";
+    const btnLabel = isMulti ? "クーポンを選ぶ" : t(lang, "use_coupon_btn");
+    const disabledAttr = couponWalletBalance < 1 ? ` disabled style="opacity:.4;pointer-events:none;"` : "";
+    return `
+  <div class="card coupon-card" id="coupon-wallet-card">
+    <h4 style="margin-bottom:4px;">🎁 ${t(lang, "coupon_title_prefix")}</h4>
+    ${!isMulti ? `<p style="font-size:1.05rem;font-weight:700;color:${themeColor};margin:0 0 8px;">【${firstNameEsc}】</p>
+    ${singleCondEsc ? `<p style="font-size:11px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:6px 10px;margin:0 0 12px;line-height:1.6;">📋 利用条件：${singleCondEsc}</p>` : ""}` : ""}
+    <div style="background:#fff7ed;border:2px solid ${themeColor};border-radius:16px;padding:14px 16px;text-align:center;margin:0 0 14px;">
+      <div style="font-size:12.5px;font-weight:800;color:#92400e;letter-spacing:.04em;">クーポン残高</div>
+      <div style="font-size:46px;font-weight:800;color:${themeColor};line-height:1.1;"><span id="cw-balance">${couponWalletBalance}</span><span style="font-size:18px;font-weight:700;"> 枚</span></div>
+    </div>
+    <div class="coupon-use-area" id="cw-use-area">
+      <button type="button" id="btn-use-coupon-wallet" class="btn-use-coupon"${disabledAttr}>${btnLabel}（残り<span id="cw-balance-btn">${couponWalletBalance}</span>枚）</button>
+    </div>
+    <!-- クーポン選択ポップアップ（複数ティア時のみ使用） -->
+    <div id="cw-select-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:flex-end;justify-content:center;">
+      <div style="background:#fff;border-radius:24px 24px 0 0;padding:20px 18px 32px;max-width:480px;width:100%;max-height:82vh;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,0.2);">
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="display:inline-block;width:40px;height:4px;background:#e5e7eb;border-radius:2px;margin-bottom:14px;"></div>
+          <div style="font-size:16px;font-weight:800;color:#1f2937;">🎁 クーポンを選んでください</div>
+          <div style="font-size:12px;color:#6b7280;margin-top:4px;">残高：<span id="cw-select-bal">${couponWalletBalance}</span>枚</div>
+        </div>
+        <div id="cw-tier-list"></div>
+        <button type="button" id="cw-select-cancel" style="display:block;width:100%;padding:13px;margin-top:8px;background:#fff;color:#6b7280;border:1.5px solid #e5e7eb;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">キャンセル</button>
+      </div>
+    </div>
+    <!-- 確認モーダル -->
+    <div id="cw-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:10000;align-items:center;justify-content:center;padding:24px;">
+      <div id="cw-modal-card" style="background:#fff;border-radius:20px;padding:26px 22px 22px;max-width:340px;width:100%;text-align:center;box-shadow:0 12px 48px rgba(0,0,0,0.25);">
+        <div style="font-size:46px;line-height:1;margin-bottom:10px;">🎁</div>
+        <div id="cw-modal-name" style="font-size:17px;font-weight:800;color:#1f2937;margin-bottom:8px;line-height:1.45;">【${firstNameEsc}】</div>
+        <div id="cw-modal-cond" style="display:none;font-size:11px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:5px 10px;margin:0 0 10px;line-height:1.5;text-align:left;"></div>
+        <p style="font-size:13px;color:#6b7280;margin:0 0 18px;line-height:1.6;">スタッフにこの画面をお見せください。<br>確認後に下のボタンを押してください。</p>
+        <button type="button" id="cw-modal-confirm" style="display:block;width:100%;padding:15px;background:${themeColor};color:#fff;border:none;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;margin-bottom:10px;">このクーポンを使用する</button>
+        <button type="button" id="cw-modal-cancel" style="display:block;width:100%;padding:13px;background:#fff;color:#6b7280;border:1.5px solid #e5e7eb;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">キャンセル</button>
+      </div>
+    </div>
+    <!-- 使用完了ポップアップ -->
+    <div id="cw-used-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:10001;align-items:center;justify-content:center;padding:24px;">
+      <div style="background:#fff;border-radius:20px;padding:28px 24px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+        <div style="font-size:64px;line-height:1;margin-bottom:12px;">✅</div>
+        <div style="font-size:22px;font-weight:800;color:#16a34a;margin-bottom:8px;">使用しました！</div>
+        <div id="cw-used-name" style="font-size:16px;font-weight:700;color:#111;margin-bottom:6px;">【${firstNameEsc}】</div>
+        <div style="font-size:13px;color:#6b7280;margin-bottom:28px;line-height:1.6;">ご利用ありがとうございました。</div>
+        <button type="button" id="cw-used-close" style="display:block;width:100%;padding:14px;background:#16a34a;color:#fff;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;">閉じる</button>
+      </div>
+    </div>
+    <script>(function(){
+      var TIERS=${tiersJson};
+      var IS_MULTI=${isMulti ? "true" : "false"};
+      var CW_THEME=${JSON.stringify(themeColor)};
+      var balEl=document.getElementById('cw-balance');
+      var balBtn=document.getElementById('cw-balance-btn');
+      var balSelEl=document.getElementById('cw-select-bal');
+      var useArea=document.getElementById('cw-use-area');
+      var selectOv=document.getElementById('cw-select-overlay');
+      var tierList=document.getElementById('cw-tier-list');
+      var overlay=document.getElementById('cw-modal-overlay');
+      var usedOverlay=document.getElementById('cw-used-overlay');
+      var confirmBtn=document.getElementById('cw-modal-confirm');
+      var cancelBtn=document.getElementById('cw-modal-cancel');
+      var usedClose=document.getElementById('cw-used-close');
+      var modalName=document.getElementById('cw-modal-name');
+      var modalCond=document.getElementById('cw-modal-cond');
+      var usedName=document.getElementById('cw-used-name');
+      var selectCancel=document.getElementById('cw-select-cancel');
+      if(!useArea||!overlay)return;
+      var storeId=${JSON.stringify(store_id)};
+      var reviewId=${JSON.stringify(review.id)};
+      var api=window.location.href.split('?')[0]+'?store_id='+encodeURIComponent(storeId);
+      var busy=false;
+      var currentBalance=${couponWalletBalance};
+      var selectedTier=TIERS[0]||{name:'',points_required:1,usage_conditions:''};
+      function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+      function updateBalance(n){
+        currentBalance=n;
+        if(balEl)balEl.textContent=n;
+        if(balBtn)balBtn.textContent=n;
+        if(balSelEl)balSelEl.textContent=n;
+      }
+      function buildTierList(){
+        if(!tierList)return;
+        var bal=currentBalance;
+        tierList.innerHTML=TIERS.map(function(t,i){
+          var cost=t.trigger?1:(t.points_required||1);
+          var can=bal>=cost;
+          var TRIGGER_LABELS={'survey':'アンケート回答後に付与','review':'口コミ投稿後に付与'};
+          var triggerHint=t.trigger?(TRIGGER_LABELS[t.trigger]||t.trigger):'';
+          var after=can?'使用後残高：'+(bal-cost)+'枚':'あと'+(cost-bal)+'枚必要';
+          var sub=triggerHint?(triggerHint+(can?' / '+after:'')):(t.points_required+'枚使用 / '+after);
+          var cond=t.usage_conditions?'<div style="font-size:11px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 8px;margin-top:6px;line-height:1.5;">📋 利用条件：'+esc(t.usage_conditions)+'</div>':'';
+          return '<div style="border:2px solid '+(can?CW_THEME:'#e5e7eb')+';border-radius:14px;padding:12px 14px;margin-bottom:10px;background:'+(can?'#fff':'#f9fafb')+';display:flex;align-items:flex-start;gap:10px;">'
+            +'<div style="flex:1;">'
+            +'<div style="font-size:15px;font-weight:800;color:'+(can?'#1f2937':'#9ca3af')+';">'+esc(t.name)+'</div>'
+            +'<div style="font-size:12px;color:'+(can?'#6b7280':'#9ca3af')+';margin-top:3px;">'+esc(sub)+'</div>'
+            +cond+'</div>'
+            +'<button type="button" data-i="'+i+'" class="cw-tier-btn" style="white-space:nowrap;padding:9px 14px;border:none;border-radius:10px;font-weight:700;font-size:13px;background:'+(can?CW_THEME:'#e5e7eb')+';color:'+(can?'#fff':'#9ca3af')+';cursor:'+(can?'pointer':'not-allowed')+';align-self:center;"'+(can?'':' disabled')+'>使用する</button>'
+            +'</div>';
+        }).join('');
+        var btns=tierList.querySelectorAll('.cw-tier-btn:not([disabled])');
+        for(var j=0;j<btns.length;j++){(function(btn){
+          btn.onclick=function(){
+            selectedTier=TIERS[parseInt(btn.getAttribute('data-i'),10)];
+            closeSelect();openModal(selectedTier);
+          };
+        })(btns[j]);}
+      }
+      function openSelect(){if(selectOv){buildTierList();selectOv.style.display='flex';}}
+      function closeSelect(){if(selectOv)selectOv.style.display='none';}
+      function openModal(tier){
+        if(modalName)modalName.textContent='【'+tier.name+'】';
+        if(modalCond){
+          if(tier.usage_conditions){modalCond.textContent='利用条件：'+tier.usage_conditions;modalCond.style.display='block';}
+          else{modalCond.style.display='none';}
+        }
+        overlay.style.display='flex';
+      }
+      function closeModal(){overlay.style.display='none';}
+      function showUsedPopup(remaining){
+        updateBalance(remaining);
+        if(usedName)usedName.textContent='【'+selectedTier.name+'】';
+        if(usedOverlay)usedOverlay.style.display='flex';
+        var lbl=IS_MULTI?'クーポンを選ぶ':${JSON.stringify(t(lang, "use_coupon_btn"))};
+        if(remaining>0){
+          useArea.innerHTML='<button type="button" id="btn-use-coupon-wallet" class="btn-use-coupon">'+lbl+'（残り'+remaining+'枚）</button>';
+          bindUseBtn();
+        }else{useArea.innerHTML='';}
+      }
+      function bindUseBtn(){
+        var b=document.getElementById('btn-use-coupon-wallet');
+        if(!b)return;
+        b.onclick=function(){
+          if(b.disabled)return;
+          if(IS_MULTI){openSelect();}
+          else{selectedTier=TIERS[0]||selectedTier;openModal(selectedTier);}
+        };
+      }
+      if(usedClose)usedClose.onclick=function(){if(usedOverlay)usedOverlay.style.display='none';};
+      cancelBtn.onclick=closeModal;
+      overlay.onclick=function(e){if(e.target===overlay)closeModal();};
+      if(selectOv)selectOv.onclick=function(e){if(e.target===selectOv)closeSelect();};
+      if(selectCancel)selectCancel.onclick=closeSelect;
+      confirmBtn.onclick=function(){
+        if(busy)return;busy=true;confirmBtn.disabled=true;confirmBtn.textContent='処理中…';
+        var token='use_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+        fetch(api,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({action:'use_coupon_wallet',review_id:reviewId,token:token,
+            coupon_name:selectedTier.name,points_to_deduct:selectedTier.trigger?1:(selectedTier.points_required||1)})})
+          .then(function(r){return r.json();})
+          .then(function(d){
+            busy=false;confirmBtn.disabled=false;confirmBtn.textContent='このクーポンを使用する';closeModal();
+            if(d.ok){showUsedPopup(d.balance);}
+            else if(d.message==='不足'){showUsedPopup(0);}
+            else if(d.message==='insufficient'){showUsedPopup(0);}
+            else{alert('エラーが発生しました。もう一度お試しください。');}
+          }).catch(function(){busy=false;confirmBtn.disabled=false;confirmBtn.textContent='このクーポンを使用する';closeModal();alert('通信エラー。もう一度お試しください。');});
+      };
+      bindUseBtn();
+    })();<\/script>
+  </div>`;
+  })() : "";
+
+  // points: loyalty のみ／coupon: クーポン+LINE／none: 報酬なし（LINE友だち追加のみ表示）
+  const sectionMap: Record<string, string> = {
+    review:  sectionReview,
+    coupon:  rewardMode === "coupon" ? (couponWalletEnabled ? sectionCouponWallet : sectionCoupon) : "",
+    line:    (rewardMode !== "points" && !couponWalletEnabled) ? sectionLine : "",
+    scout:   couponWalletEnabled ? "" : sectionScout,
+    loyalty: rewardMode === "points" ? sectionLoyalty : "",
+  };
   const arrowSeparator = `<div style="text-align:center;padding:4px 0 6px;"><div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:2px;">${t(lang,"arrow_earn_hint")}</div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>`;
   const filteredOrder = sectionOrder.filter((k) => sectionMap[k]);
   const orderedSectionsHtml = filteredOrder
@@ -1929,6 +2277,12 @@ function buildResultHtml(params: {
     .link-btns.google-primary .link-btn-google { width: 100%; padding: 18px 24px; font-size: 17px; background: #4285F4 !important; box-shadow: 0 4px 16px rgba(66,133,244,0.4); }
     .link-btns.google-primary .link-btn-google:hover { filter: brightness(1.08); }
     .link-btn-secondary { font-size: 13px; padding: 10px 14px; }
+    /* Google口コミボタンを目立たせる: ビビッドな枠＋点滅 */
+    .link-btn-google { box-sizing: border-box; border: 4px solid #FF3B30 !important; animation: googleCtaBlink 1s ease-in-out infinite !important; }
+    @keyframes googleCtaBlink {
+      0%, 49%   { border-color: #FF3B30; box-shadow: 0 0 14px 3px rgba(255,59,48,0.65), 0 4px 16px rgba(66,133,244,0.45); }
+      50%, 100% { border-color: #FFE100; box-shadow: 0 0 18px 6px rgba(255,225,0,0.8), 0 4px 16px rgba(66,133,244,0.45); }
+    }
     .recruit-card { background: linear-gradient(135deg, #f5f5f7 0, #e8e8ed 100%); border: 1px solid rgba(0,0,0,0.08); }
     .scout-direct-interview-reward { font-size: 15px; font-weight: 600; background: linear-gradient(135deg, #ecfdf5 0, #d1fae5 100%); padding: 14px 16px; border-radius: 12px; margin: 12px 0 0; border: 1px solid #a7f3d0; color: #065f46; line-height: 1.5; }
     .scout-sid-value { font-family: ui-monospace, monospace; font-size: 14px; font-weight: 600; color: #111; margin-right: 8px; }
@@ -2150,6 +2504,30 @@ function buildResultHtml(params: {
       return el ? String(el.innerText || el.textContent || '') : '';
     }
 
+    // ── 「口コミ文をコピー」ボタン（コピー → 口コミサイトへ誘導するフロー） ──
+    window.copyReviewTextBtn = function(styleKey, btn) {
+      var textEl = document.getElementById('text-' + styleKey);
+      var text = copyTextFromReviewEl(textEl).trim();
+      if (!text) return;
+      var copied = false;
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;width:1px;height:1px;';
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        if (document.execCommand('copy')) { copied = true; }
+        document.body.removeChild(ta);
+      } catch(ex) {}
+      if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(function(){});
+        copied = true;
+      }
+      showCopiedToast();
+      if (btn) {
+        btn.textContent = '✅ コピーしました！下のボタンから投稿してください';
+        btn.style.background = '#f0fdf4';
+      }
+    };
+
     // ── <a href> ベースの口コミリンク処理 ──────────────────────────────
     // 全ブラウザで preventDefault してコピーを先に確実に実行してからリンクを開く。
     // （target="_blank" の自然遷移ではページフォーカスが外れ clipboard API が失敗するため）
@@ -2196,6 +2574,7 @@ function buildResultHtml(params: {
       // visibilitychange / requestAnimationFrame / setTimeout に依存しない
       // CSS animation は背景タブ・外部ブラウザが開いていても確実に動作する
       (function() {
+        if (!${rewardMode === "points"}) return; // ポイントモード以外は受け取りバーを出さない
         var barId = 'review-return-bar';
         if (document.getElementById(barId)) return;
         if (!document.getElementById('_rbar_kf')) {
@@ -2409,11 +2788,26 @@ function buildResultHtml(params: {
               usedMsg.style.display = 'block';
               var area = document.querySelector('.coupon-use-area');
               if (area) area.classList.add('used');
-              if (data.already_used && data.message) usedMsg.textContent = '✅ ' + data.message;
+              // 複数枚: まだ残りがある場合は「次回ご来店時に使えます」を表示（使用済み扱いにしない）
+              if (data.message) {
+                usedMsg.textContent = '✅ ' + data.message;
+                if (data.ok && data.fully_used === false && area) area.classList.remove('used');
+              } else if (data.already_used) {
+                usedMsg.textContent = '✅ ' + (data.message || '');
+              }
+              // survey_review モード: 次の枚（口コミ後ロック）を表示するため少し待って再読込
+              if (data.reload) { setTimeout(function() { window.location.reload(); }, 1800); }
             } else if (data.expired) {
               btnUse.style.display = 'none';
               usedMsg.style.display = 'block';
               usedMsg.textContent = '⛔ ' + (data.message || 'このクーポンは有効期限切れです。');
+            } else if (data.locked) {
+              // 2枚目: 口コミ導線未タップ → サーバーが拒否。案内を表示してボタンは戻す
+              btnUse.disabled = false;
+              btnUse.textContent = USE_COUPON_BTN;
+              var lk = document.getElementById('coupon-lock-msg');
+              if (lk) { lk.style.display = 'block'; lk.textContent = '🔒 ' + (data.message || '先にGoogle口コミを書いてください。'); }
+              else alert(data.message || '先にGoogle口コミを書いてください。');
             } else {
               btnUse.disabled = false;
               btnUse.textContent = USE_COUPON_BTN;
@@ -2479,6 +2873,7 @@ function buildResultHtml(params: {
     // ── ポイントカード発行 + 口コミ後アップグレード ──
     (function() {
       var storeKey = 'fe_rv_' + ${JSON.stringify(store_id)};
+      var REWARD_MODE = ${JSON.stringify(rewardMode)};
       var LINE_LIFF_URL = ${JSON.stringify(liffLinkUrl ?? "")};
       var surveyPts = ${surveyPoints};
       var googlePts = ${googlePoints};
@@ -2490,6 +2885,13 @@ function buildResultHtml(params: {
       var COUPON_TIERS = ${JSON.stringify(couponTiersArray)};
       var POINT_EXPIRY_DAYS = ${pointExpiryDays};
       var MIN_AWAY_MS = 3000;
+      var _leftPage = false; // ページが実際に非表示になったか
+      var _returnedAfterAway = false; // 非表示→復帰サイクルが完了したか（クーポンモードの戻り判定）
+      // ページロード時点でクリック記録が既にある＝口コミページから再読み込みで戻ってきた
+      try {
+        var _r0 = JSON.parse(localStorage.getItem(storeKey) || 'null');
+        if (_r0 && _r0.sid === SUBMISSION_ID) _returnedAfterAway = true;
+      } catch(e0r) {}
       var bonusBtn = document.getElementById('google-bonus-btn');
       var bonusMsg = document.getElementById('google-bonus-msg');
       var _btnHref = bonusBtn ? bonusBtn.getAttribute('href') : 'N/A';
@@ -2538,6 +2940,13 @@ function buildResultHtml(params: {
 
       // ── ポイント獲得ポップアップ（大きく目立つモーダル）────────────────
       function showPointsEarnedPopup(pts, newBal, actionLabel) {
+        // ポイントモード以外: ポイント表現は出さない（クーポンモードはお礼バナーのみ）
+        if (REWARD_MODE !== 'points') {
+          if (REWARD_MODE === 'coupon' && typeof _showSimpleBanner === 'function') {
+            _showSimpleBanner('🙏 ありがとうございます！クーポンをぜひご利用ください', '#16a34a', 6000);
+          }
+          return;
+        }
         var ov = document.createElement('div');
         ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
         var box = document.createElement('div');
@@ -2574,7 +2983,21 @@ function buildResultHtml(params: {
 
       // ── Google口コミポイント付与 ──────────────────────────────────────
       async function claimGoogleBonus() {
-        showFloatBanner('⏳ 口コミポイントを加算中…', '#374151', 8000);
+        // ポイントモード以外: 加算処理は裏で行い、表示はお礼のみ
+        if (REWARD_MODE !== 'points') {
+          try {
+            await fetch(API_URL + '?store_id=' + encodeURIComponent(STORE_ID) + (SUBMISSION_ID ? '&sid=' + encodeURIComponent(SUBMISSION_ID) : ''), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'claim_google_bonus', review_id: REVIEW_ID }),
+              keepalive: true
+            });
+          } catch(e) {}
+          showFloatBanner('🙏 口コミへのご協力ありがとうございます！', '#16a34a', 4000);
+          if (bonusBtn) bonusBtn.style.display = 'none';
+          return;
+        }
+        showFloatBanner('⏳ 処理中…', '#374151', 8000);
         try {
           var res = await fetch(API_URL + '?store_id=' + encodeURIComponent(STORE_ID) + (SUBMISSION_ID ? '&sid=' + encodeURIComponent(SUBMISSION_ID) : ''), {
             method: 'POST',
@@ -2586,33 +3009,30 @@ function buildResultHtml(params: {
           if (data.ok && !data.skipped) {
             var newTotal = data.total_points;
             var newBal = data.balance != null ? data.balance : newTotal;
-            showFloatBanner('🎉 口コミ ＋' + googlePts + 'P 加算！', '#16a34a', 3000);
-            if (bonusMsg) { bonusMsg.style.color = '#16a34a'; bonusMsg.textContent = '✅ 口コミポイント ＋' + googlePts + 'P を加算しました！'; }
+            showFloatBanner('🙏 口コミへのご協力ありがとうございます！', '#16a34a', 3000);
+            if (bonusMsg) { bonusMsg.style.color = '#16a34a'; bonusMsg.textContent = '🙏 口コミへのご協力ありがとうございます！'; }
             // ★ ポイントカード表示を最新値に更新
             var _exMs = POINT_EXPIRY_DAYS > 0 ? Date.now() + POINT_EXPIRY_DAYS * 86400000 : null;
             if (newBal != null) { injectPointCard(newTotal, newBal, ptThreshold, themeColorP, googlePts, buildCoupons(newBal), _exMs); }
-            // ★ リダイレクトの代わりに目立つポップアップを表示
-            showPointsEarnedPopup(googlePts, newBal, '口コミ投稿');
+            // ★ リダイレクトの代わりにお礼バナーを表示（ポイント表現は出さない）
+            showFloatBanner('🙏 口コミへのご協力ありがとうございます！', '#16a34a', 4000);
             if (typeof window._refreshWalletDisplay === 'function') window._refreshWalletDisplay();
           } else if (data.skipped) {
-            showFloatBanner('⚠️ 口コミポイントは1日1回のみ加算されます（本日分は加算済み）', '#b45309', 5000);
-            if (bonusMsg) { bonusMsg.style.color = '#b45309'; bonusMsg.textContent = '⚠️ 口コミポイントは1日1回のみです（本日分は加算済み）'; }
-            // ★ 加算済みでもポップアップ表示（check_wallet失敗時はgooglePtsをフォールバック）
-            var _skipBal = googlePts;
+            showFloatBanner('🙏 口コミへのご協力ありがとうございます！', '#16a34a', 4000);
+            if (bonusMsg) { bonusMsg.style.color = '#16a34a'; bonusMsg.textContent = '🙏 口コミへのご協力ありがとうございます！'; }
+            // ★ check_wallet を呼んで残高カードを最新化（表示はお礼のみ）
             try {
               var cwRes = await fetch(API_URL + '?store_id=' + encodeURIComponent(STORE_ID) + '&sid=' + encodeURIComponent(SUBMISSION_ID) + '&action=check_wallet');
               var cwData = await cwRes.json();
-              if (cwData.ready && cwData.balance != null) { _skipBal = cwData.balance; }
+              if (cwData.ready && cwData.balance != null && typeof window._refreshWalletDisplay === 'function') { window._refreshWalletDisplay(); }
             } catch(ce) {}
-            showPointsEarnedPopup(googlePts, _skipBal, '口コミ投稿');
           } else {
-            // ★ NO_IDENTITY等のエラー時も感謝ポップアップ表示（LINE未連携ユーザー向け）
-            showPointsEarnedPopup(googlePts, googlePts, '口コミ投稿');
-            showFloatBanner('✅ 口コミへのご協力ありがとうございます！', '#16a34a', 4000);
+            // ★ NO_IDENTITY等のエラー時もお礼バナー表示（LINE未連携ユーザー向け）
+            showFloatBanner('🙏 口コミへのご協力ありがとうございます！', '#16a34a', 4000);
           }
         } catch(e) {
-          // ★ 通信エラー時も感謝ポップアップ
-          showPointsEarnedPopup(googlePts, googlePts, '口コミ投稿');
+          // ★ 通信エラー時もお礼バナー
+          showFloatBanner('🙏 口コミへのご協力ありがとうございます！', '#16a34a', 4000);
         }
         if (bonusBtn) bonusBtn.style.display = 'none';
       }
@@ -2661,7 +3081,7 @@ function buildResultHtml(params: {
                   showFloatBanner(lineMsg, '#16a34a', 5000);
                   var _wBanner = document.createElement('div');
                   _wBanner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#16a34a;padding:14px 20px 20px;z-index:99999;box-shadow:0 -4px 20px rgba(0,0,0,.25);text-align:center;';
-                  _wBanner.innerHTML = '<div style="font-size:13px;color:#dcfce7;margin-bottom:8px;">' + (lineDelta > 0 ? '✅ ＋' + lineDelta + 'P獲得！累計 ' + lineEarned + 'P　口コミを書いてさらに＋' + googlePts + 'P👇' : '✅ LINE連携完了！') + '</div>'
+                  _wBanner.innerHTML = '<div style="font-size:13px;color:#dcfce7;margin-bottom:8px;">' + (lineDelta > 0 ? '✅ ＋' + lineDelta + 'P獲得！累計 ' + lineEarned + 'P　よろしければ口コミでお店を応援してください👇' : '✅ LINE連携完了！') + '</div>'
                     + '<button onclick="this.parentNode.remove()" style="display:inline-block;padding:12px 32px;background:#fff;color:#16a34a;font-weight:800;font-size:15px;border-radius:10px;border:none;cursor:pointer;">とじる</button>';
                   document.body.appendChild(_wBanner);
                 }
@@ -2682,6 +3102,8 @@ function buildResultHtml(params: {
         var _savedForBar = null;
         try { _savedForBar = localStorage.getItem(storeKey); } catch(e2) {}
         if (!_savedForBar) return;
+        // ポイントモード以外: 受け取りバーは出さない（お礼＋アンロックは upgradeBtn が帰還検出時に実行）
+        if (REWARD_MODE !== 'points') return;
         var barId = 'review-return-bar';
         if (document.getElementById(barId)) return;
         if (!document.getElementById('_rbar_kf')) {
@@ -2722,6 +3144,31 @@ function buildResultHtml(params: {
       // ── 口コミページからの帰還検出 ────────────────────────────────────
       function upgradeBtn() {
         if (upgraded) return;
+        // ポイントモード以外: 実際にページを離れて戻ってきた時のみお礼＋クーポンアンロック
+        if (REWARD_MODE !== 'points') {
+          if (!_returnedAfterAway || document.hidden) return; // 「非表示→復帰」完了前 or 非表示中は何もしない
+          upgraded = true;
+          try { localStorage.setItem('fe_cpn_ok_' + SUBMISSION_ID, '1'); } catch(e7) {}
+          try {
+            var _cb = document.getElementById('btn-use-coupon');
+            var _cl = document.getElementById('coupon-lock-msg');
+            if (_cb) { _cb.disabled = false; _cb.style.opacity = ''; _cb.style.pointerEvents = ''; }
+            if (_cl) _cl.style.display = 'none';
+          } catch(e8) {}
+          try { localStorage.removeItem(storeKey); } catch(ex2) {}
+          clearTimeout(_barShownTimer);
+          showFloatBanner('🙏 口コミ投稿ありがとうございます！', '#16a34a', 5000);
+          // 加算処理は裏で実行（表示なし）
+          try {
+            fetch(API_URL + '?store_id=' + encodeURIComponent(STORE_ID) + (SUBMISSION_ID ? '&sid=' + encodeURIComponent(SUBMISSION_ID) : ''), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'claim_google_bonus', review_id: REVIEW_ID }),
+              keepalive: true
+            }).catch(function(){});
+          } catch(e9) {}
+          return;
+        }
         upgraded = true;
         try { localStorage.removeItem(storeKey); } catch(ex) {}
         clearTimeout(_barShownTimer);
@@ -2799,10 +3246,19 @@ function buildResultHtml(params: {
       });
 
       document.addEventListener('visibilitychange', function() {
-        if (document.visibilityState === 'visible') { checkReturn(); }
+        if (document.visibilityState === 'visible') {
+          if (_leftPage) _returnedAfterAway = true; // 非表示→復帰サイクル完了
+          checkReturn();
+        } else {
+          _leftPage = true; // 実際に非表示になった
+        }
       });
-      // bfcache 復元（スマホ戻るボタン）
-      window.addEventListener('pageshow', function(e) { checkReturn(); });
+      // 注: pagehide はナビゲーション開始時（ページがまだ見えている間）にも発火するため戻り判定には使わない
+      // bfcache 復元（スマホ戻るボタン）= 確実に「戻ってきた」
+      window.addEventListener('pageshow', function(e) {
+        if (e && e.persisted) { _leftPage = true; _returnedAfterAway = true; }
+        checkReturn();
+      });
       window.addEventListener('focus', function() { checkReturn(); });
       // Android WebView / iOS バックグラウンドからの復帰
       document.addEventListener('resume', function() { checkReturn(); });
@@ -2979,16 +3435,13 @@ function buildResultHtml(params: {
         overlay.onclick = function(e) { if(e.target===overlay) closeReviewPrompt(); };
         var card = document.createElement('div');
         card.style.cssText = 'background:#fff;border-radius:22px;padding:24px 20px 20px;max-width:320px;width:100%;box-shadow:0 12px 48px rgba(0,0,0,0.22);transform:translateY(24px);transition:transform 0.35s;text-align:center;';
+        var _isPtsMode = REWARD_MODE === 'points';
         card.innerHTML =
           '<div style="font-size:36px;margin-bottom:8px;">🎉</div>' +
           '<div style="font-size:16px;font-weight:800;color:#111;margin-bottom:6px;">LINE連携できました！</div>' +
-          '<div style="font-size:13px;color:#6b7280;margin-bottom:18px;line-height:1.6;">次は口コミを書いてさらにポイントを獲得しましょう</div>' +
-          '<div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:12px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:8px;">' +
-            '<span style="font-size:20px;">✍️</span>' +
-            '<span style="font-size:14px;color:#92400e;">口コミを書くと <strong style="font-size:18px;color:#d97706;">' + GOOGLE_PTS_LABEL + '</strong> 獲得！</span>' +
-          '</div>' +
+          '<div style="font-size:13px;color:#6b7280;margin-bottom:18px;line-height:1.6;">次は口コミの投稿をお願いします🙏</div>' +
           (GOOGLE_REVIEW_URL
-            ? '<button onclick="closeReviewPrompt();copyStoreNameAndOpenReview(GOOGLE_REVIEW_URL);" style="display:block;width:100%;padding:13px;background:#4285F4;color:#fff;font-weight:700;font-size:14px;border-radius:12px;border:none;cursor:pointer;margin-bottom:10px;">📝 口コミを書く（＋' + googlePts + 'P）</button>'
+            ? '<button onclick="closeReviewPrompt();copyStoreNameAndOpenReview(GOOGLE_REVIEW_URL);" style="display:block;width:100%;padding:13px;background:#4285F4;color:#fff;font-weight:700;font-size:14px;border-radius:12px;border:none;cursor:pointer;margin-bottom:10px;">📝 口コミを書く</button>'
             : '') +
           '<button onclick="closeReviewPrompt()" style="display:block;width:100%;padding:11px;background:transparent;color:#9ca3af;border:1px solid #e5e7eb;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;">あとで</button>';
         overlay.appendChild(card);
@@ -3029,6 +3482,7 @@ function buildResultHtml(params: {
 
       // ポイントカード描画（今回獲得P + 累計Pのみ — クーポンはモーダルで表示）
       function injectPointCard(earned, balance, threshold, tc, earnedToday, coupons, expiresAtMs) {
+        if (REWARD_MODE !== 'points') return; // ポイントモード以外はポイントカードを表示しない
         var existing = document.getElementById('loyalty-point-card');
         if (existing) existing.remove();
         // サーバー描画のウォレットサマリーを隠す（JS版に置き換え）
@@ -3407,8 +3861,51 @@ function buildResultHtml(params: {
     };
   </script>
 
-  <!-- ポイントカードポップアップ -->
+  <!-- 回答完了ポップアップ（モード別） -->
   ${(() => {
+    // 報酬なしモード: ポップアップなし
+    if (rewardMode === "none") return "";
+
+    // クーポンモード: ポイントに触れず「口コミ投稿でクーポン」訴求
+    if (rewardMode === "coupon") {
+      if (!isCouponEnabled || couponEmergencyStop || couponSuppressedLowScore) return "";
+      const couponNameEsc = String(coupon_awarded || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, " ");
+      const closeJsC = `var _po=document.getElementById('pts-popup-overlay');if(_po){_po.style.opacity='0';_po.style.display='none';}var el=document.querySelector('.card');if(el){el.scrollIntoView({behavior:'smooth'});}`;
+      return `
+  <div id="pts-popup-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity 0.35s;" onclick="${closeJsC}">
+    <div style="background:#fff;border-radius:22px;padding:24px 20px 20px;max-width:340px;width:100%;box-shadow:0 12px 48px rgba(0,0,0,0.22);transform:translateY(24px);transition:transform 0.35s;text-align:center;" onclick="event.stopPropagation();" id="pts-popup-card">
+      <div style="background:linear-gradient(135deg,#fff7ed,#ffedd5);border:2px solid #fdba74;border-radius:18px;padding:18px 16px 16px;text-align:center;margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:800;color:#9a3412;letter-spacing:.09em;margin-bottom:6px;">🎉 アンケート回答ありがとうございます</div>
+        <div style="font-size:56px;line-height:1;margin-bottom:8px;">🎁</div>
+        <div style="font-size:16px;font-weight:800;color:#9a3412;">クーポンをご用意しました</div>
+        ${couponNameEsc ? `<div style="font-size:15px;font-weight:700;color:${themeColor};margin-top:8px;">【${couponNameEsc}】</div>` : ""}
+      </div>
+      <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">✍️</span>
+        <span style="font-size:13px;color:#1e40af;text-align:left;font-weight:600;">よろしければ、お店の感想を口コミでもお聞かせください🙏</span>
+      </div>
+      <button onclick="${closeJsC}" style="display:block;width:100%;padding:14px;background:${themeColor};color:#fff;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;">
+        口コミを書く →
+      </button>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var _svKey = 'fe_sv_' + SUBMISSION_ID;
+      try { if (sessionStorage.getItem(_svKey)) return; sessionStorage.setItem(_svKey, '1'); } catch(e) {}
+      setTimeout(function() {
+        var o = document.getElementById('pts-popup-overlay');
+        var c = document.getElementById('pts-popup-card');
+        if (o) { o.style.display = 'flex'; requestAnimationFrame(function(){ o.style.opacity = '1'; if(c) c.style.transform = 'translateY(0)'; }); }
+      }, 600);
+    })();
+  </script>`;
+    }
+
+    // ── 以下、ポイントモードのポイントカードポップアップ ──────────────
+    // LINE連携済み → ポップアップを表示しない（POST時にプッシュ済みのため重複送信を避ける）
+    if (review.line_user_id) return "";
+
     const closeJs = `var _po=document.getElementById('pts-popup-overlay');if(_po){_po.style.opacity='0';_po.style.display='none';}var el=document.querySelector('.card');if(el){el.scrollIntoView({behavior:'smooth'});}`;
 
     // ── 再来店ユーザー（LINE連携済み・過去ポイントあり）──────────────
@@ -3430,7 +3927,7 @@ function buildResultHtml(params: {
       <!-- 口コミヒント -->
       <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:8px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
         <span style="font-size:18px;">✍️</span>
-        <span style="font-size:13px;color:#92400e;text-align:left;">口コミ投稿で <strong style="color:#d97706;">＋${googlePoints}P</strong> 獲得！</span>
+        <span style="font-size:13px;color:#92400e;text-align:left;">よろしければ、お店の感想を口コミでもお聞かせください🙏</span>
       </div>
       <button onclick="${closeJs}" style="display:block;width:100%;padding:14px;background:${themeColor};color:#fff;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;">
         口コミを生成する →
@@ -3489,10 +3986,10 @@ function buildResultHtml(params: {
       ? `残高 <strong style="color:${themeColor};font-size:22px;">${walletData.balance}P</strong>`
       : `今回 <strong style="color:${themeColor};font-size:22px;">＋${surveyPoints}P</strong>`;
     return `
-  <div id="pts-popup-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity 0.35s;" onclick="${closeJs}">
+  <div id="pts-popup-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity 0.35s;" onclick="${hasLineBot && !walletData ? "" : closeJs}">
     <div style="background:#fff;border-radius:22px;padding:24px 20px 20px;max-width:340px;width:100%;box-shadow:0 12px 48px rgba(0,0,0,0.22);transform:translateY(24px);transition:transform 0.35s;" onclick="event.stopPropagation();" id="pts-popup-card">
       ${hasLineBot && !walletData ? `
-      <!-- ★ アンケートポイント強調（LINE未連携） -->
+      <!-- ★ アンケートポイント強調（LINE未連携）閉じられない -->
       <div style="background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:2px solid #6ee7b7;border-radius:18px;padding:18px 16px 14px;text-align:center;margin-bottom:14px;">
         <div style="font-size:11px;font-weight:800;color:#065f46;letter-spacing:.09em;margin-bottom:4px;">🎉 アンケート回答完了</div>
         <div style="font-size:76px;font-weight:900;color:#059669;line-height:1;letter-spacing:-.02em;">＋${surveyPoints}P</div>
@@ -3500,12 +3997,15 @@ function buildResultHtml(params: {
       </div>
       <div style="text-align:center;margin-bottom:12px;">
         <div style="font-size:14px;font-weight:800;color:#1f2937;margin-bottom:4px;">LINEと連携してポイントを保存</div>
-        <div style="font-size:12px;color:#6b7280;line-height:1.6;">ボタンをタップ→メッセージを「送信」するとポイントカードが発行されます。</div>
+        <div style="font-size:12px;color:#6b7280;line-height:1.6;">${liffLinkUrl ? "タップするとLINEで自動連携します。" : "ボタンをタップ→LINEアプリでメッセージを「送信」するとポイントカードが発行されます。"}</div>
       </div>
       ${couponRows ? `<div style="margin-bottom:12px;">${couponRows}</div>` : ""}
-      <a href="${lineOaMsgUrl}" target="_blank" rel="noopener" style="display:block;width:100%;padding:15px;background:#06C755;color:#fff;border-radius:14px;font-weight:800;font-size:16px;text-align:center;text-decoration:none;box-sizing:border-box;margin-bottom:10px;box-shadow:0 4px 14px rgba(6,199,85,.3);">
+      <a href="${liffLinkUrl || lineOaMsgUrl}" target="_blank" rel="noopener" style="display:block;width:100%;padding:15px;background:#06C755;color:#fff;border-radius:14px;font-weight:800;font-size:16px;text-align:center;text-decoration:none;box-sizing:border-box;margin-bottom:10px;box-shadow:0 4px 14px rgba(6,199,85,.3);">
         LINEと連携する
       </a>
+      <button onclick="${closeJs}" style="display:block;width:100%;padding:10px;background:transparent;color:#9ca3af;border:none;border-radius:12px;font-size:13px;cursor:pointer;margin-top:2px;">
+        今はしない
+      </button>
       ` : `
       <!-- ★ アンケートポイント強調（LINE連携済み） -->
       <div style="background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:2px solid #6ee7b7;border-radius:18px;padding:18px 16px 14px;text-align:center;margin-bottom:14px;">
@@ -3518,8 +4018,8 @@ function buildResultHtml(params: {
       </div>
       <div style="margin-bottom:12px;">${couponRows || '<div style="text-align:center;font-size:12px;color:#9ca3af;">特典はまだ設定されていません</div>'}</div>
       <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:8px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-        <span style="font-size:18px;">🎁</span>
-        <span style="font-size:13px;color:#92400e;">口コミ投稿で <strong style="font-size:15px;color:#d97706;">＋${googlePoints}P</strong> 獲得！</span>
+        <span style="font-size:18px;">✍️</span>
+        <span style="font-size:13px;color:#92400e;">よろしければ、お店の感想を口コミでもお聞かせください🙏</span>
       </div>
       <button onclick="${closeJs}" style="display:block;width:100%;padding:14px;background:${themeColor};color:#fff;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;">
         閉じる
@@ -3555,7 +4055,10 @@ serve(async (req: Request): Promise<Response> => {
     const reqUrl = new URL(req.url);
     const ncParam = reqUrl.searchParams.get("_nc");
     const actionCheck = reqUrl.searchParams.get("action");
-    const liffLinkCheck = reqUrl.searchParams.get("liff_link"); // LIFF ページはリダイレクト対象外
+    // LIFF ページはリダイレクト対象外（liff.state の中に liff_link がある場合も考慮）
+    const _lsRaw = reqUrl.searchParams.get("liff.state") ?? "";
+    const _lsCheck = (() => { try { const d = _lsRaw.startsWith("?") ? _lsRaw.slice(1) : _lsRaw; return _lsRaw ? new URLSearchParams(d).get("liff_link") : null; } catch { return null; } })();
+    const liffLinkCheck = reqUrl.searchParams.get("liff_link") || _lsCheck;
     if (!ncParam && !actionCheck && !liffLinkCheck) {
       const redirectParams = new URLSearchParams();
       reqUrl.searchParams.forEach((v, k) => { if (k !== "_nc") redirectParams.set(k, v); });
@@ -3574,75 +4077,240 @@ serve(async (req: Request): Promise<Response> => {
   );
   const openai = new OpenAI({ apiKey: Deno.env.get("OPENAI_API_KEY")! });
   const url = new URL(req.url);
-  const storeId = url.searchParams.get("store_id")?.trim();
-  const sidParam = url.searchParams.get("sid")?.trim();
-  const actionParam = url.searchParams.get("action")?.trim();
 
   // ---------- liff.state 解析（LIFF認証リダイレクト後にパラメーターが liff.state に移動する）----------
+  // LIFF URL のクエリ（?store_id=... 等）は初回アクセス時に liff.state に包まれて渡るため、
+  // 直接クエリに無ければ liff.state からも取得する（store_id 等を取りこぼさない）
   let _liffStateParams: URLSearchParams | null = null;
   const _rawLiffState = url.searchParams.get("liff.state");
   if (_rawLiffState) {
+    // "?store_id=..." / "/?store_id=..." / "/path?store_id=..." / "store_id=..." いずれの形でも
+    // 最初の "?" 以降をクエリとして解釈する（無ければ全体をクエリ扱い）
+    const _qs = (s: string) => { const i = s.indexOf("?"); return i >= 0 ? s.slice(i + 1) : s; };
     try {
-      const _decoded = _rawLiffState.startsWith("?") ? _rawLiffState.slice(1) : _rawLiffState;
-      _liffStateParams = new URLSearchParams(_decoded);
+      _liffStateParams = new URLSearchParams(_qs(_rawLiffState));
+      // store_id が取れない場合は二重エンコードを疑い、もう一度デコードして再解析
+      if (!_liffStateParams.get("store_id") && _rawLiffState.indexOf("%") !== -1) {
+        try { _liffStateParams = new URLSearchParams(_qs(decodeURIComponent(_rawLiffState))); } catch(_e3) {}
+      }
     } catch(_e) {}
   }
   const _p = (key: string) => url.searchParams.get(key) || _liffStateParams?.get(key) || null;
 
+  const storeId = _p("store_id")?.trim();
+  const sidParam = _p("sid")?.trim();
+  const actionParam = _p("action")?.trim();
+
+  // ---------- GET: LIFF OAuth コールバック（liff.login() 後に LINE が code+liffClientId を付けてリダイレクト）----------
+  // code + liffClientId が両方ある場合は LIFF SDK を読み込んでトークン交換を完了させる
+  // SDK が自動的に元の LIFF URL（liff.state に liff_link=1 等を含む）へ再リダイレクトする
+  if (req.method === "GET") {
+    const _oauthCode = url.searchParams.get("code");
+    const _liffClientId = url.searchParams.get("liffClientId");
+    if (_oauthCode && _liffClientId) {
+      // liffClientId は LIFF ID の channel 部分（例: "2009882234-2GmGgsFa" の "2009882234"）
+      let _oauthLiffId = _liffClientId; // フォールバック: channel ID のみ
+      const { data: _credsLiff } = await supabase
+        .from("store_line_credentials")
+        .select("line_liff_id")
+        .like("line_liff_id", `${_liffClientId}-%`)
+        .limit(1);
+      const _foundCredsLiff = (_credsLiff as Array<{ line_liff_id?: string }>)?.[0]?.line_liff_id;
+      if (_foundCredsLiff) {
+        _oauthLiffId = _foundCredsLiff;
+      } else {
+        const { data: _profLiff } = await supabase
+          .from("store_profiles")
+          .select("line_liff_id")
+          .like("line_liff_id", `${_liffClientId}-%`)
+          .limit(1);
+        const _foundProfLiff = (_profLiff as Array<{ line_liff_id?: string }>)?.[0]?.line_liff_id;
+        if (_foundProfLiff) _oauthLiffId = _foundProfLiff;
+      }
+      const _oauthCallbackHtml = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loading...</title>
+<style>*{box-sizing:border-box;}body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}</style>
+</head>
+<body>
+<div style="text-align:center;color:#6b7280;font-size:14px;">
+  <div style="font-size:36px;margin-bottom:10px;animation:sp 1s linear infinite;">⏳</div>
+  <div>認証中...</div>
+</div>
+<style>@keyframes sp{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}</style>
+<script>
+(function(){
+  var L=${JSON.stringify(_oauthLiffId)};
+  var sc=document.createElement("script");
+  sc.src="https://static.line-scdn.net/liff/edge/2/sdk.js";
+  sc.onload=function(){
+    liff.init({liffId:L}).catch(function(){});
+  };
+  document.head.appendChild(sc);
+})();
+</script>
+</body>
+</html>`;
+      return createHtmlResponse(_oauthCallbackHtml);
+    }
+  }
+
   // ---------- GET: LIFF リンクページ（LINE友達ID自動取得 → レビュー紐付け）----------
   if (req.method === "GET" && (_p("liff_link") === "1")) {
-    const liffReviewId = (_p("review_id") ?? "").trim();
-    const liffStoreId  = (_p("store_id") ?? storeId ?? "").trim();
-    // LIFF ID を store_line_credentials / store_profiles から取得
-    const { data: liffCredsRow } = await supabase
-      .from("store_line_credentials").select("line_liff_id").eq("store_id", liffStoreId).maybeSingle();
-    const { data: liffStoreRow } = await supabase
-      .from("store_profiles").select("line_liff_id").eq("store_id", liffStoreId).maybeSingle();
-    const liffAppId = ((liffCredsRow as { line_liff_id?: string } | null)?.line_liff_id
-      || (liffStoreRow as { line_liff_id?: string } | null)?.line_liff_id || "").trim();
+    const liffReviewId   = (_p("review_id") ?? "").trim();
+    const liffStoreId    = (_p("store_id") ?? storeId ?? "").trim();
+    const liffBotBasicId = (_p("bot_basic_id") ?? "").trim().replace(/^@/, "");
+    // URL パラメータの liff_id を最優先フォールバックとして使用
+    const liffIdFromUrl = (_p("liff_id") ?? "").trim();
+    // LIFF ID を store_line_credentials / store_profiles から取得（DB優先・URLパラメータでフォールバック）
+    let liffAppId = liffIdFromUrl; // まず URL パラメータをデフォルトにセット
+    if (liffStoreId) {
+      const { data: liffCredsRow } = await supabase
+        .from("store_line_credentials").select("line_liff_id").eq("store_id", liffStoreId).maybeSingle();
+      const { data: liffStoreRow } = await supabase
+        .from("store_profiles").select("line_liff_id").eq("store_id", liffStoreId).maybeSingle();
+      const liffAppIdFromDb = ((liffCredsRow as { line_liff_id?: string } | null)?.line_liff_id
+        || (liffStoreRow as { line_liff_id?: string } | null)?.line_liff_id || "").trim();
+      if (liffAppIdFromDb) liffAppId = liffAppIdFromDb; // DB値があれば上書き
+    }
     const apiOrigin = new URL(req.url).origin;
     const resultBase2 = customDomainBase || `${apiOrigin}/functions/v1`;
     const liffHtml = `<!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ポイント登録中...</title>
-<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
-<style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f0fdf4;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;}.wrap{max-width:320px;}.icon{font-size:52px;margin-bottom:16px;}.title{font-size:18px;font-weight:800;color:#1f2937;margin-bottom:8px;}.sub{font-size:13px;color:#6b7280;line-height:1.6;}</style>
+<title>LINE連携</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fef9c3;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:background .2s;}
+.wrap{max-width:340px;width:100%;text-align:center;}
+.sp{display:inline-block;width:44px;height:44px;border:4px solid #fde68a;border-top-color:#d97706;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ttl{font-size:19px;font-weight:800;color:#1f2937;margin-bottom:6px;}
+.sub{font-size:13px;color:#374151;line-height:1.7;min-height:20px;word-break:break-all;}
+#log{margin-top:12px;width:100%;background:#111827;border-radius:8px;padding:8px;text-align:left;font-family:monospace;font-size:10px;color:#86efac;max-height:160px;overflow-y:auto;word-break:break-all;}
+</style>
 </head><body>
-<div class="wrap"><div class="icon" id="icon">⏳</div><div class="title" id="title">ポイントを登録中…</div><div class="sub" id="sub">少々お待ちください</div></div>
+<div class="wrap" id="wrap">
+  <div class="sp"></div>
+  <div class="ttl">LINE連携</div>
+  <div class="sub" id="sub">HTML読込OK（JS未起動）</div>
+  <div id="log"></div>
+</div>
+<!-- 診断ブロック1: SyntaxErrorなし・DOM確認 -->
 <script>
-var REVIEW_ID=${JSON.stringify(liffReviewId)};
-var STORE_ID=${JSON.stringify(liffStoreId)};
-var LIFF_ID=${JSON.stringify(liffAppId)};
-var API_URL=${JSON.stringify(resultBase2+"/form-engine")};
-function setUI(ic,ti,sb){document.getElementById("icon").textContent=ic;document.getElementById("title").textContent=ti;document.getElementById("sub").textContent=sb||"";}
-liff.init({liffId:LIFF_ID}).then(async function(){
-  if(!liff.isLoggedIn()){liff.login({redirectUri:window.location.href});return;}
-  try{
-    var prof=await liff.getProfile();
-    var uid=prof.userId;
-    var res=await fetch(API_URL+"?store_id="+encodeURIComponent(STORE_ID),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"liff_link_review",review_id:REVIEW_ID,line_user_id:uid})});
-    var data=await res.json();
-    if(data.ok||data.already_linked){
-      if(data.wallet_url){
-        setUI("✅","ポイントカードを確認中…","そのまましばらくお待ちください");
-        setTimeout(function(){
-          try{
-            // LIFF 内外いずれでも window.location.href で遷移を試みる
-            window.location.href=data.wallet_url;
-          }catch(e){
-            // フォールバック: LINE 内ブラウザで外部 URL として開く
-            try{liff.openWindow({url:data.wallet_url,external:true});}catch(e2){}
-          }
-        },600);
-      }else{
-        // wallet_url がない場合のみ「URLが届きます」表示（フォールバック）
-        setUI("✅","ポイントカードを発行しました！","LINEにURLが届きます。タップしてご確認ください");
-        setTimeout(function(){try{liff.closeWindow();}catch(e){}},2500);
-      }
-    }else{setUI("⚠️","エラーが発生しました",data.error||"もう一度お試しください");}
-  }catch(e){setUI("❌","エラー",e.message||"通信に失敗しました");}
-}).catch(function(err){setUI("❌","初期化エラー",err.message||"LIFF初期化に失敗しました");});
+(function(){
+  document.body.style.background="#dbeafe";
+  document.getElementById("sub").textContent="JS起動OK / SDK読込中...";
+  document.getElementById("log").textContent="[diag1 ok]";
+})();
+</script>
+<!-- メインスクリプトブロック2 -->
+<script>
+(function(){
+  /* ブロック2起動確認: 背景を緑に */
+  document.body.style.background="#dcfce7";
+  var _sub=document.getElementById("sub");
+  var _logEl=document.getElementById("log");
+  var _t0=Date.now();
+  function _st(t){ if(_sub) _sub.textContent=t; }
+  function _lg(t){ if(_logEl){ var d=document.createElement("div"); d.textContent="["+(((Date.now()-_t0)/1000).toFixed(1))+"s] "+t; _logEl.appendChild(d); _logEl.scrollTop=9999; } }
+  _st("変数確認中...");
+  var R=${JSON.stringify(liffReviewId)};
+  var S=${JSON.stringify(liffStoreId)};
+  var L=${JSON.stringify(liffAppId)};
+  var B=${JSON.stringify(liffBotBasicId)};
+  var BASE=location.protocol+"//"+location.host+location.pathname;
+  _lg("R="+R);
+  _lg("S="+S);
+  _lg("L="+L);
+  _lg("B="+B);
+  try{ localStorage.setItem("_lp_liff",L||""); localStorage.removeItem("_lp"); }catch(e){}
+  function showErr(msg){
+    _lg("ERR:"+msg);
+    document.body.style.background="#fee2e2";
+    var w=document.getElementById("wrap");
+    if(w) w.innerHTML="<div style='font-size:34px;margin-bottom:8px'>⚠️</div>"
+      +"<div style='font-size:14px;font-weight:800;color:#b91c1c;margin-bottom:6px'>エラー</div>"
+      +"<div style='font-size:11px;color:#374151;word-break:break-all;margin-bottom:12px;line-height:1.5'>"+String(msg)+"</div>"
+      +"<button onclick='location.reload()' style='padding:8px 20px;background:#6366f1;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer'>再試行</button>";
+  }
+  function showOk(url){
+    _lg("OK url="+url);
+    document.body.style.background="#f0fdf4";
+    var w=document.getElementById("wrap");
+    if(w) w.innerHTML="<div style='font-size:48px;margin-bottom:10px'>✅</div>"
+      +"<div style='font-size:17px;font-weight:800;color:#065f46;margin-bottom:6px'>LINE連携完了！</div>"
+      +"<div style='font-size:12px;color:#6b7280'>生成画面へ移動します…</div>";
+    if(url) setTimeout(function(){ location.href=url; },1200);
+  }
+  function doLink(at){
+    _st("連携処理中...");
+    _lg("doLink at="+at.slice(0,10)+"...");
+    fetch(BASE+"?store_id="+encodeURIComponent(S),{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({action:"liff_link_review",review_id:R,liff_access_token:at})
+    }).then(function(r){_lg("http "+r.status);return r.text();})
+    .then(function(t){
+      _lg("resp:"+t.slice(0,100));
+      var d; try{d=JSON.parse(t);}catch(e){showErr("JSON parse err: "+t.slice(0,80));return;}
+      if(d.ok||d.review_url||d.wallet_url){ showOk(d.review_url||d.wallet_url||""); }
+      else{ showErr(d.error||"連携失敗: "+t.slice(0,60)); }
+    }).catch(function(e){ showErr("fetch err: "+(e&&e.message||String(e))); });
+  }
+  function showFriendAdd(at){
+    _lg("showFriendAdd B="+B);
+    document.body.style.background="#f0f9ff";
+    var w=document.getElementById("wrap");
+    if(!w) return;
+    var _addUrl="https://line.me/R/ti/p/@"+B;
+    w.innerHTML=
+      "<div style='font-size:44px;margin-bottom:10px'>👋</div>"
+      +"<div style='font-size:16px;font-weight:800;color:#1f2937;margin-bottom:6px'>友達追加してLINE連携</div>"
+      +"<div style='font-size:12px;color:#6b7280;line-height:1.6;margin-bottom:16px'>すでに友達の方はそのまま「連携を完了する」をタップしてください</div>"
+      +"<button id='_fabtn' style='display:block;width:100%;padding:12px;background:#06C755;color:#fff;border-radius:10px;font-weight:800;font-size:14px;text-align:center;border:none;cursor:pointer;margin-bottom:10px;'>友達追加してから連携する</button>"
+      +"<button id='_cbtn' style='display:block;width:100%;padding:11px;background:#e5e7eb;color:#374151;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;'>連携を完了する（すでに友達の方）</button>";
+    /* 友達追加ボタン: LINEを別ウィンドウで開きつつ連携も実行 */
+    document.getElementById("_fabtn").onclick=function(){
+      try{
+        if(liff&&liff.openWindow){ liff.openWindow({url:_addUrl,external:true}); }
+        else{ window.open(_addUrl,"_blank"); }
+      }catch(e){ window.open(_addUrl,"_blank"); }
+      doLink(at);
+    };
+    document.getElementById("_cbtn").onclick=function(){ doLink(at); };
+  }
+  if(!L){ showErr("LIFF IDなし URL:"+location.search.slice(0,100)); return; }
+  _st("SDK読込中...");
+  _lg("loading SDK");
+  var sc=document.createElement("script");
+  sc.src="https://static.line-scdn.net/liff/edge/2/sdk.js";
+  sc.onerror=function(){ showErr("SDK読込失敗 LINEアプリ内でお試しください"); };
+  sc.onload=function(){
+    _st("LIFF初期化中...");
+    _lg("SDK loaded, init L="+L);
+    var _timer=setTimeout(function(){ showErr("initタイムアウト(12s) L="+L); },12000);
+    liff.init({liffId:L}).then(function(){
+      clearTimeout(_timer);
+      var li=liff.isLoggedIn();
+      _lg("init ok loggedIn="+li);
+      _st("init完了 loggedIn="+li);
+      if(!li){ _lg("call liff.login()"); liff.login(); return; }
+      if(!R||!S){ showErr("R/Sなし R="+R+" S="+S); return; }
+      /* アクセストークンを同期取得（getProfile廃止・ハング回避） */
+      var at="";
+      try{ at=liff.getAccessToken()||""; }catch(e){ _lg("getAT err:"+e); }
+      _lg("accessToken="+at.slice(0,10)+"... len="+at.length);
+      _st("token取得: "+(at?"OK len="+at.length:"NG"));
+      if(!at){ showErr("アクセストークンなし loggedIn="+li); return; }
+      if(B){ showFriendAdd(at); } else { doLink(at); }
+    }).catch(function(e){ clearTimeout(_timer); showErr("init err: "+(e&&e.message||String(e))); });
+  };
+  document.head.appendChild(sc);
+})();
 </script>
 </body></html>`;
     return createHtmlResponse(liffHtml);
@@ -4440,7 +5108,7 @@ document.getElementById('copyBtn').onclick=function(){
     })();
     const { data: rev } = await supabase
       .from("reviews")
-      .select("id, store_id, submission_id, score, answers, review_options, coupon_awarded, created_at, used_at, image_url, improvement_feedback_sent_at, improvement_feedback_text, line_user_id")
+      .select("id, store_id, submission_id, score, answers, review_options, coupon_awarded, created_at, used_at, coupon_used_count, image_url, improvement_feedback_sent_at, improvement_feedback_text, line_user_id")
       .eq("submission_id", sidParam)
       .eq("store_id", storeId)
       .maybeSingle();
@@ -4517,6 +5185,7 @@ document.getElementById('copyBtn').onclick=function(){
           coupon_awarded: rev.coupon_awarded || "",
           created_at: rev.created_at || new Date().toISOString(),
           used_at: rev.used_at ?? null,
+          coupon_used_count: rev.coupon_used_count ?? 0,
           image_url: rev.image_url || null,
           improvement_feedback_sent_at: rev.improvement_feedback_sent_at ?? null,
           improvement_feedback_text: rev.improvement_feedback_text ?? null,
@@ -4567,9 +5236,57 @@ document.getElementById('copyBtn').onclick=function(){
       .from("form_questions")
       .select("*")
       .eq("store_id", storeId);
-    const questions = (questionsRaw || [])
+    const baseQuestions = (questionsRaw || [])
       .filter((q) => q.question_type !== "hidden")
       .sort((a, b) => (Number(a.step_number ?? a.sort_order) || 0) - (Number(b.step_number ?? b.sort_order) || 0));
+
+    // ── 回答者プロフィール（標準設問）: 店舗トグルが ON のとき末尾に追加 ──────────
+    // 選択肢の id は正規化値（male / 20s / kanto 等）。reviews.resp_* に保存しセグメントに使う。
+    const demoQuestions: Array<Record<string, unknown>> = [];
+    if (store.survey_ask_gender === true) demoQuestions.push({
+      question_key: "__demo_gender", question_type: "radio", required: false, sort_order: 9000, logic_show_if: null,
+      label: lang === "ja" ? "性別を教えてください" : "Your gender",
+      options: [
+        { id: "male", text: lang === "ja" ? "男性" : "Male" },
+        { id: "female", text: lang === "ja" ? "女性" : "Female" },
+        { id: "other", text: lang === "ja" ? "その他・回答しない" : "Other / Prefer not to say" },
+      ],
+    });
+    if (store.survey_ask_age === true) demoQuestions.push({
+      question_key: "__demo_age", question_type: "radio", required: false, sort_order: 9001, logic_show_if: null,
+      label: lang === "ja" ? "年齢を教えてください" : "Your age",
+      options: [
+        { id: "10s", text: lang === "ja" ? "10代" : "Teens" },
+        { id: "20s", text: lang === "ja" ? "20代" : "20s" },
+        { id: "30s", text: lang === "ja" ? "30代" : "30s" },
+        { id: "40s", text: lang === "ja" ? "40代" : "40s" },
+        { id: "50s", text: lang === "ja" ? "50代" : "50s" },
+        { id: "60s", text: lang === "ja" ? "60代以上" : "60s+" },
+      ],
+    });
+    if (store.survey_ask_area === true) demoQuestions.push({
+      question_key: "__demo_area", question_type: "radio", required: false, sort_order: 9002, logic_show_if: null,
+      label: lang === "ja" ? "お住まいの地域を教えてください" : "Your area",
+      options: [
+        { id: "hokkaido", text: lang === "ja" ? "北海道" : "Hokkaido" },
+        { id: "tohoku", text: lang === "ja" ? "東北" : "Tohoku" },
+        { id: "kanto", text: lang === "ja" ? "関東" : "Kanto" },
+        { id: "chubu", text: lang === "ja" ? "中部" : "Chubu" },
+        { id: "kinki", text: lang === "ja" ? "近畿" : "Kinki" },
+        { id: "chugoku", text: lang === "ja" ? "中国" : "Chugoku" },
+        { id: "shikoku", text: lang === "ja" ? "四国" : "Shikoku" },
+        { id: "kyushu", text: lang === "ja" ? "九州・沖縄" : "Kyushu/Okinawa" },
+      ],
+    });
+    if (store.survey_ask_birth_month === true) demoQuestions.push({
+      question_key: "__demo_birth_month", question_type: "select", required: false, sort_order: 9003, logic_show_if: null,
+      label: lang === "ja" ? "誕生月を教えてください（バースデー特典に使います）" : "Your birth month",
+      options: Array.from({ length: 12 }, (_, i) => ({
+        id: String(i + 1),
+        text: lang === "ja" ? `${i + 1}月` : `${i + 1}`,
+      })),
+    });
+    const questions = [...baseQuestions, ...demoQuestions];
 
     if (!questions?.length) {
       return createHtmlResponse(
@@ -4589,18 +5306,27 @@ document.getElementById('copyBtn').onclick=function(){
       preset = p as Record<string, unknown> | null;
     }
 
-    const themeColor = (store.theme_color as string) || "#6366f1";
-    const bgPath =
-      (store.cover_image_path as string) ||
-      (store.logo_image_path as string) ||
-      "";
+    const themeColor = safeThemeColor(store.theme_color);
+    const bgPath = (store.cover_image_path as string) || "";
     const bgUrl = bgPath
       ? supabase.storage.from("assets").getPublicUrl(bgPath).data.publicUrl
       : "";
 
+    const bgPos  = String((store as Record<string, unknown>).bg_image_position ?? "center center");
+    const bgSize = String((store as Record<string, unknown>).bg_image_size     ?? "cover");
     const bgStyle = bgUrl
-      ? `background-image: url('${bgUrl.replace(/'/g, "\\'")}'); background-size: cover; background-position: center; background-attachment: fixed;`
+      ? `background-image: url('${bgUrl.replace(/'/g, "\\'")}'); background-size: ${bgSize}; background-position: ${bgPos}; background-attachment: fixed;`
       : "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);";
+
+    // 背景画像がある場合：ガラスカードを不透明な白にして黒テキスト
+    // ない場合（グラデーション）：半透明ガラス＋白テキスト
+    const hasImage = Boolean(bgUrl);
+    const glassBg          = hasImage ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.25)";
+    const glassBackdrop    = hasImage ? "" : "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
+    const headerTextColor  = hasImage ? "#1f2937" : "#fff";
+    const headerLabelColor = hasImage ? "#374151" : "rgba(255,255,255,0.9)";
+    const headerDescColor  = hasImage ? "#374151" : "rgba(255,255,255,0.95)";
+    const headerShadow     = hasImage ? "" : "text-shadow: 0 1px 2px rgba(0,0,0,0.2);";
 
     const themeColorEsc = (themeColor || "#6366f1").replace(/'/g, "\\'").replace(/"/g, "&quot;");
     const escHtml = (s: string) =>
@@ -4672,14 +5398,43 @@ document.getElementById('copyBtn').onclick=function(){
       .select("line_liff_id")
       .eq("store_id", storeId)
       .maybeSingle();
-    const formLiffId = (lineCreds?.line_liff_id as string | null)?.trim() || (store.line_liff_id as string | null)?.trim() || null;
+    const formLineIntegrationEnabled = (store as Record<string, unknown>).line_integration_enabled !== false;
+    const formLiffId = formLineIntegrationEnabled
+      ? ((lineCreds?.line_liff_id as string | null)?.trim() || (store.line_liff_id as string | null)?.trim() || null)
+      : null;
+    // アンケート開始前にLINE本人特定を必須化（LIFFが設定されている店舗のみ有効）
+    const formLineAuthRequired = (store as Record<string, unknown>).line_auth_required === true && !!formLiffId;
+    const formRewardMode = String((store as Record<string, unknown>).reward_mode || "points").toLowerCase();
     const formSurveyPts = Number((store.point_rule_survey as number) ?? 1);
     const formGooglePts = Number((store.point_rule_google as number) ?? 3);
     const formPointThresholdVal = Number((store.point_threshold as number) ?? 4);
     const formPointThreshold2 = store.point_threshold_2 != null ? Number(store.point_threshold_2) : null;
     const formRewardTitle1 = (store.point_reward_title_1 as string)?.trim() || "クーポン";
     const formRewardTitle2 = (store.point_reward_title_2 as string)?.trim() || null;
-    const formLineBotId = ((store.line_bot_basic_id as string) || "").trim();
+    const formLineBotId = formLineIntegrationEnabled ? ((store.line_bot_basic_id as string) || "").trim() : "";
+    // submit後ローディング画面のお願い画像（店舗カスタム or デフォルトイラスト）
+    const appealImgPath = ((store as Record<string, unknown>).appeal_image_path as string) || "";
+    const appealImgUrl = appealImgPath
+      ? supabase.storage.from("assets").getPublicUrl(appealImgPath).data.publicUrl
+      : "";
+    const appealImgPos  = String((store as Record<string, unknown>).appeal_image_position ?? "center center");
+    const appealImgSize = Number((store as Record<string, unknown>).appeal_image_size ?? 180);
+    const appealVisualHtml = appealImgUrl
+      ? `<img src="${appealImgUrl.replace(/"/g, "&quot;")}" alt="" style="width:${appealImgSize}px;height:${appealImgSize}px;border-radius:50%;object-fit:cover;object-position:${appealImgPos};border:3px solid #fde9d6;box-shadow:0 8px 24px rgba(0,0,0,0.12);">`
+      : `<svg viewBox="0 0 200 200" width="150" height="150" xmlns="http://www.w3.org/2000/svg" style="border-radius:50%;box-shadow:0 8px 24px rgba(0,0,0,0.10);">
+          <circle cx="100" cy="100" r="100" fill="#fff7ed"/>
+          <path d="M48 200 Q48 138 100 138 Q152 138 152 200 Z" fill="#e8622a"/>
+          <path d="M84 142 L100 158 L116 142 L116 200 L84 200 Z" fill="#fff"/>
+          <circle cx="100" cy="96" r="38" fill="#ffe0bd"/>
+          <path d="M62 96 Q62 52 100 52 Q138 52 138 96 Q138 74 100 71 Q62 74 62 96 Z" fill="#44403c"/>
+          <path d="M80 100 q6 -8 13 0" stroke="#44403c" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M107 100 q6 -8 13 0" stroke="#44403c" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M90 116 q10 8 20 0" stroke="#44403c" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="93" cy="162" rx="8" ry="19" transform="rotate(14 93 162)" fill="#ffe0bd"/>
+          <ellipse cx="107" cy="162" rx="8" ry="19" transform="rotate(-14 107 162)" fill="#ffe0bd"/>
+          <path d="M148 60 l5 -10 M158 70 l9 -7 M162 84 l11 -3" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M52 60 l-5 -10 M42 70 l-9 -7 M38 84 l-11 -3" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>`;
 
     const formTier2Html = formPointThreshold2 && formRewardTitle2
       ? `<div style="position:absolute;top:-18px;right:0;font-size:10px;color:#f59e0b;white-space:nowrap;font-weight:600;">${formPointThreshold2}P ⭐${formRewardTitle2}</div>`
@@ -4718,11 +5473,11 @@ document.getElementById('copyBtn').onclick=function(){
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; ${bgStyle} font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #1f2937; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .glass { background: rgba(255,255,255,0.25); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); padding: 32px; max-width: 520px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
-    .form-label { margin: 0 0 4px; font-size: 0.85rem; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: 0.05em; }
-    h1 { margin: 0 0 12px; font-size: 1.5rem; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-    .form-subtitle { margin: 0 0 8px; font-size: 1rem; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-    .form-description { margin: 0 0 20px; font-size: 0.95rem; color: rgba(255,255,255,0.95); line-height: 1.5; text-shadow: 0 1px 1px rgba(0,0,0,0.15); }
+    .glass { background: ${glassBg}; ${glassBackdrop} border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); padding: 32px; max-width: 520px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+    .form-label { margin: 0 0 4px; font-size: 0.85rem; color: ${headerLabelColor}; text-transform: uppercase; letter-spacing: 0.05em; }
+    h1 { margin: 0 0 12px; font-size: 1.5rem; color: ${headerTextColor}; ${headerShadow} }
+    .form-subtitle { margin: 0 0 8px; font-size: 1rem; font-weight: 600; color: ${headerTextColor}; ${headerShadow} }
+    .form-description { margin: 0 0 20px; font-size: 0.95rem; color: ${headerDescColor}; line-height: 1.5; }
     .q-card { background: rgba(255,255,255,0.95); border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border-left: 4px solid ${themeColor}; }
     .q-card.hidden { display: none !important; }
     .q-card.visible { animation: fadeIn 0.4s ease forwards; }
@@ -4744,12 +5499,18 @@ document.getElementById('copyBtn').onclick=function(){
     button[type="submit"] { width: 100%; padding: 16px; border: none; border-radius: 12px; background: ${themeColor}; color: #fff; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.1s, box-shadow 0.2s; margin-top: 8px; }
     button[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
     button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; transform: none; pointer-events: none; }
-    #loading { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 9999; opacity: 0; transition: opacity 0.4s; }
+    #loading { display: none; position: fixed; inset: 0; background: #ffffff; align-items: flex-start; justify-content: center; z-index: 9999; opacity: 0; transition: opacity 0.4s; overflow-y: auto; }
     #loading.show { display: flex; opacity: 1; }
-    #loading > div { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    #loading .spinner { width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    #loading > div { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; padding: 44px 24px 32px; max-width: 420px; width: 100%; }
+    #loading .spinner { width: 48px; height: 48px; border: 4px solid #e5e7eb; border-top-color: ${themeColor}; border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    #loading p { color: #fff; margin-top: 16px; font-size: 1.1rem; }
+    #loading p { color: #374151; margin-top: 16px; font-size: 1.1rem; }
+    .appeal-main { margin-top: 18px; color: #111827; font-size: 28px; font-weight: 900; line-height: 1.4; text-align: center; letter-spacing: 0.01em; text-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .appeal-sub { display: flex; align-items: center; gap: 8px; margin-top: 16px; color: #6b7280; font-size: 13px; font-weight: 600; }
+    .spinner-sm { width: 16px; height: 16px; border: 2.5px solid #e5e7eb; border-top-color: ${themeColor}; border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
+    .appeal-google { margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #374151; font-weight: 800; font-size: 15px; padding: 12px 22px; border-radius: 999px; border: 2px solid #e5e7eb; box-shadow: 0 4px 14px rgba(0,0,0,0.10); }
+    @keyframes appealPop { 0%{transform:scale(0.88);opacity:0} 60%{transform:scale(1.04)} 100%{transform:scale(1);opacity:1} }
+    .appeal-main { animation: appealPop 0.45s ease both; }
   </style>
 </head>
 <body>
@@ -4757,6 +5518,7 @@ document.getElementById('copyBtn').onclick=function(){
     <p class="form-label">${escHtml(t(lang, "survey_title_suffix"))}</p>
     <h1>${escHtml(storeNameJa)}</h1>
     ${subtitleHtml ? `<p class="form-subtitle">${subtitleHtml}</p>` : ""}
+    ${formRewardMode === "points" ? `
     <div style="background:rgba(255,255,255,0.95);border-radius:14px;margin-bottom:20px;box-shadow:0 4px 16px rgba(0,0,0,0.12);overflow:hidden;">
       <div style="padding:14px 16px 16px;">
         <div style="font-size:11px;font-weight:700;color:#6b7280;margin-bottom:10px;text-align:center;letter-spacing:0.05em;">STEPでポイントを貯めよう</div>
@@ -4779,7 +5541,7 @@ document.getElementById('copyBtn').onclick=function(){
           ${formAllTiersHtml}
         </div>` : ""}
       </div>
-    </div>
+    </div>` : ""}
     <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
     <form id="form" method="POST" action="">
       <input type="hidden" name="store_id" value="${storeId}">
@@ -4798,11 +5560,27 @@ document.getElementById('copyBtn').onclick=function(){
           autocomplete="off" spellcheck="false" maxlength="20">
         <p style="font-size:11px;color:#b45309;margin-top:6px;">ご紹介いただいた方のコードを入力すると紹介者にポイントが付与されます</p>
       </div>` : ""}
-      <div id="questions-root"></div>
-      <button type="submit" id="submit-btn">${escHtml(t(lang, "submit_btn"))}</button>
+      ${formLineAuthRequired ? `<div id="liff-auth-blocker" style="display:block;padding:24px 18px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:14px;text-align:center;margin-bottom:8px;">
+        <div style="font-size:34px;margin-bottom:8px;">🟢</div>
+        <p style="font-size:15px;font-weight:800;color:#166534;margin:0 0 6px;">LINEで本人確認をしています…</p>
+        <p id="liff-auth-msg" style="font-size:13px;color:#15803d;margin:0;">そのままお待ちください。アンケートが表示されます。</p>
+      </div>` : ""}
+      <div id="questions-root"${formLineAuthRequired ? ` style="display:none;"` : ""}></div>
+      <button type="submit" id="submit-btn"${formLineAuthRequired ? ` disabled` : ""}>${escHtml(t(lang, "submit_btn"))}</button>
     </form>
   </div>
-  <div id="loading"><div><div class="spinner"></div><p>${escHtml(t(lang, "loading_ai"))}</p></div></div>
+  <div id="loading"><div>
+    ${appealVisualHtml}
+    ${(() => {
+      const _s = store as Record<string, unknown>;
+      const _g = String(_s.review_url_google ?? "").trim();
+      const _other = [_s.review_url_hotpepper, _s.review_url_tabelog, _s.review_url_retty, _s.review_url_ozmall, _s.review_url_ikyu].some((u) => String(u ?? "").trim());
+      if (_g) return `<div class="appeal-main">あなたの口コミが、<br>お店の励みになります！</div><div class="appeal-google">📝 この後<span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>に口コミを書いてくださいませ</div>`;
+      if (_other) return `<div class="appeal-main">あなたの口コミが、<br>お店の励みになります！</div>`;
+      return `<div class="appeal-main">送信しています…</div>`;
+    })()}
+    <div class="appeal-sub"><span class="spinner-sm"></span>${escHtml(t(lang, "loading_ai"))}</div>
+  </div></div>
   <script>
     window.__LANG = ${JSON.stringify(lang)};
     window.__T = ${JSON.stringify(TRANSLATIONS[lang])};
@@ -4843,14 +5621,27 @@ document.getElementById('copyBtn').onclick=function(){
     })();
 
     // LIFF で LINE userId を取得して hidden field にセット
+    var FORM_LINE_REQUIRED = ${formLineAuthRequired ? "true" : "false"};
+    function _revealSurvey(){ var q=document.getElementById('questions-root'); if(q)q.style.display=''; var bl=document.getElementById('liff-auth-blocker'); if(bl)bl.style.display='none'; var sb=document.getElementById('submit-btn'); if(sb)sb.disabled=false; }
+    function _blockSurvey(msg){ var q=document.getElementById('questions-root'); if(q)q.style.display='none'; var bl=document.getElementById('liff-auth-blocker'); if(bl){bl.style.display='block'; if(msg){var m=document.getElementById('liff-auth-msg'); if(m)m.textContent=msg;}} var sb=document.getElementById('submit-btn'); if(sb)sb.disabled=true; }
     ${formLiffId ? `
     (async function() {
       try {
         await liff.init({ liffId: ${JSON.stringify(formLiffId)} });
-        if (!liff.isLoggedIn()) { updateFormPtsWidget(0, true); return; } // 認証強制しない
+        if (!liff.isLoggedIn()) {
+          if (FORM_LINE_REQUIRED) {
+            // ★ LINE本人特定が必須 → 認証を強制（LINEログインへリダイレクト）
+            _blockSurvey('LINEログインへ移動します…');
+            try { liff.login({ redirectUri: window.location.href }); } catch(le) { liff.login(); }
+            return;
+          }
+          updateFormPtsWidget(0, true);
+          return; // 任意モードは匿名OK
+        }
         const profile = await liff.getProfile();
         if (profile && profile.userId) {
           document.getElementById('line_user_id').value = profile.userId;
+          if (FORM_LINE_REQUIRED) _revealSurvey(); // 本人特定できたのでアンケート表示
           // 既存ポイントを取得してウィジェット更新
           try {
             var ptUrl = window.location.href.split('?')[0] + '?store_id=' + encodeURIComponent('${storeId}') + '&action=get_points&line_user_id=' + encodeURIComponent(profile.userId);
@@ -4862,13 +5653,16 @@ document.getElementById('copyBtn').onclick=function(){
               updateFormPtsWidget(ptData.points, true);
             }
           } catch(pe) { updateFormPtsWidget(0, true); }
+        } else if (FORM_LINE_REQUIRED) {
+          _blockSurvey('LINEのプロフィール取得に失敗しました。LINEアプリから開き直してください。');
         }
       } catch(e) {
         console.warn('[form-engine] LIFF init failed:', e);
-        updateFormPtsWidget(0, true);
+        if (FORM_LINE_REQUIRED) { _blockSurvey('LINEログインが必要です。配布されたLINEのリンク／QRから開いてください。'); }
+        else updateFormPtsWidget(0, true);
       }
     })();
-    ` : `setTimeout(function() { updateFormPtsWidget(0, true); }, 300);`}
+    ` : `${formLineAuthRequired ? `_blockSurvey('LINE連携が未設定です。');` : `setTimeout(function() { updateFormPtsWidget(0, true); }, 300);`}`}
 
     function evalShowIf(cond, answers) {
       if (!cond || !cond.depends_on) return true;
@@ -4905,7 +5699,7 @@ document.getElementById('copyBtn').onclick=function(){
         } else if (q.question_type === 'textarea') {
           const val = (answers[q.question_key] ?? '').toString().replace(/</g, '&lt;').replace(/>/g, '&gt;');
           html += '<textarea name="' + q.question_key + '" placeholder="' + (q.placeholder || '') + '">' + val + '</textarea>';
-        } else if (q.question_type === 'rating') {
+        } else if (q.question_type === 'rating' || q.question_type === 'score') {
           const max = Number(q.options?.max) || 5;
           const cur = Number(answers[q.question_key]) || 0;
           html += '<div class="rating-stars">';
@@ -4955,7 +5749,7 @@ document.getElementById('copyBtn').onclick=function(){
         }
         div.innerHTML = html;
         root.appendChild(div);
-        if (q.question_type === 'rating') {
+        if (q.question_type === 'rating' || q.question_type === 'score') {
           var ratingKey = q.question_key;
           var starsWrap = div.querySelector('.rating-stars');
           var restoreStars = function() {
@@ -5097,8 +5891,16 @@ document.getElementById('copyBtn').onclick=function(){
         vid: (form.querySelector('#vid') || {}).value || null,
         answers: collectVisibleAnswers(),
         anon_id: (form.querySelector('#anon_id') || {}).value || null,
+        line_user_id: (form.querySelector('#line_user_id') || {}).value || null,
         referral_code: rcInput ? ((rcInput.value || '').trim().toUpperCase() || null) : null,
       };
+      // ★ LINE本人特定が必須の店舗で line_user_id が無い場合は送信を中止
+      if (FORM_LINE_REQUIRED && !payload.line_user_id) {
+        if (submitBtn) submitBtn.disabled = false;
+        loading.classList.remove('show');
+        alert('LINEで本人確認ができていません。LINEアプリから配布されたリンク／QRで開き直してください。');
+        return;
+      }
       try {
         var res = await fetch(window.location.href, {
           method: 'POST',
@@ -5230,6 +6032,61 @@ document.getElementById('copyBtn').onclick=function(){
             );
           }
         }
+        if (body.action === "use_coupon_wallet") {
+          // クーポンウォレット: LINEユーザー単位の残高から1枚消費（use_coupon_wallet RPC）
+          const { review_id, token, points_to_deduct } = body as { review_id?: string; token?: string; points_to_deduct?: number };
+          const pPoints = Math.max(1, Math.round(Number(points_to_deduct) || 1));
+          if (!review_id) {
+            return new Response(JSON.stringify({ error: "review_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          }
+          const { data: rev } = await supabase
+            .from("reviews")
+            .select("id, store_id, line_user_id")
+            .eq("id", review_id)
+            .eq("store_id", storeId ?? "")
+            .maybeSingle();
+          if (!rev) {
+            return new Response(JSON.stringify({ ok: false, error: "review_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          }
+          const { data: stCw } = await supabase
+            .from("store_profiles")
+            .select("coupon_wallet_enabled, points_scope, chain_id, coupon_emergency_stop")
+            .eq("store_id", (rev as { store_id: string }).store_id)
+            .maybeSingle();
+          if ((stCw as { coupon_emergency_stop?: boolean } | null)?.coupon_emergency_stop === true) {
+            return new Response(JSON.stringify({ ok: false, message: "coupon_stopped" }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          }
+          if ((stCw as { coupon_wallet_enabled?: boolean } | null)?.coupon_wallet_enabled !== true) {
+            return new Response(JSON.stringify({ ok: false, message: "not_enabled" }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          }
+          const cwLineUid = (rev as { line_user_id?: string | null }).line_user_id ?? null;
+          if (!cwLineUid) {
+            return new Response(JSON.stringify({ ok: false, message: "no_line_user" }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          }
+          const { data: cwIdentity } = await supabase
+            .from("customer_identity")
+            .select("id")
+            .eq("line_user_id", cwLineUid)
+            .maybeSingle();
+          if (!cwIdentity) {
+            return new Response(JSON.stringify({ ok: false, balance: 0, message: "insufficient" }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          }
+          const cwScopeType = ((stCw as Record<string, unknown>).points_scope === "chain" && (stCw as Record<string, unknown>).chain_id) ? "chain" : "store";
+          const cwScopeId = cwScopeType === "chain" ? String((stCw as Record<string, unknown>).chain_id) : (rev as { store_id: string }).store_id;
+          const { data: cwRpc, error: cwErr } = await supabase.rpc("use_coupon_wallet", {
+            p_identity_id: (cwIdentity as { id: string }).id,
+            p_store_id: (rev as { store_id: string }).store_id,
+            p_scope_type: cwScopeType,
+            p_scope_id: cwScopeId,
+            p_source_ref: token ?? null,
+            p_points: pPoints,
+          });
+          if (cwErr) {
+            return new Response(JSON.stringify({ ok: false, message: "error", detail: cwErr.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          }
+          const cwRow = (Array.isArray(cwRpc) ? cwRpc[0] : cwRpc) as { ok?: boolean; balance?: number; message?: string } | null;
+          return new Response(JSON.stringify({ ok: cwRow?.ok === true, balance: cwRow?.balance ?? 0, message: cwRow?.message ?? "" }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
         if (body.action === "use_coupon") {
           const { review_id } = body;
           if (!review_id) {
@@ -5240,7 +6097,7 @@ document.getElementById('copyBtn').onclick=function(){
           }
           const { data: rev } = await supabase
             .from("reviews")
-            .select("id, used_at, store_id, created_at")
+            .select("id, used_at, coupon_used_count, store_id, created_at, review_returned_at")
             .eq("id", review_id)
             .eq("store_id", storeId ?? "")
             .single();
@@ -5253,7 +6110,7 @@ document.getElementById('copyBtn').onclick=function(){
           const storeIdForCookie = (rev as { store_id?: string }).store_id ?? "";
           const { data: st } = await supabase
             .from("store_profiles")
-            .select("coupon_emergency_stop, coupon_interval_days, coupon_allow_multiple, coupon_reacquire_enabled, coupon_reacquire_days, coupon_expiry_type, coupon_expiry_days, coupon_expiry_date")
+            .select("coupon_emergency_stop, coupon_interval_days, coupon_allow_multiple, coupon_reacquire_enabled, coupon_reacquire_days, coupon_expiry_type, coupon_expiry_days, coupon_expiry_date, coupon_use_count, coupon_multi_mode")
             .eq("store_id", storeIdForCookie)
             .maybeSingle();
           if ((st as { coupon_emergency_stop?: boolean })?.coupon_emergency_stop === true) {
@@ -5285,10 +6142,28 @@ document.getElementById('copyBtn').onclick=function(){
               { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
-          const alreadyUsed = (rev as { used_at?: string | null }).used_at != null;
-          if (alreadyUsed) {
+          // 複数枚（本当に N 回使える）対応
+          const useCount = Math.max(1, Number((st as { coupon_use_count?: number | null })?.coupon_use_count ?? 1) || 1);
+          const usedCount = Math.max(0, Number((rev as { coupon_used_count?: number | null }).coupon_used_count ?? 0) || 0);
+          const multiUse = useCount > 1;
+          // survey_review モード: 1枚目=アンケート即時 / 2枚目=口コミ後（同日可・日数間隔なし）
+          const surveyReviewMode = multiUse && String((st as { coupon_multi_mode?: string | null })?.coupon_multi_mode || "interval") === "survey_review";
+          // ★ survey_review の2枚目以降は「Google口コミ導線をタップした記録」が必須（サーバー側で強制）
+          if (surveyReviewMode && usedCount >= 1) {
+            const reviewReturned = (rev as { review_returned_at?: string | null }).review_returned_at != null;
+            if (!reviewReturned) {
+              return new Response(
+                JSON.stringify({ ok: false, locked: true, message: "先にGoogle口コミを書いてください。上の「Google口コミを書く」ボタンをタップすると、2枚目が使えるようになります。" }),
+                { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+              );
+            }
+          }
+
+          // 「すべて使用済み」判定: 複数枚は残0、単数は used_at
+          const fullyUsed = multiUse ? usedCount >= useCount : ((rev as { used_at?: string | null }).used_at != null);
+          if (fullyUsed) {
             return new Response(
-              JSON.stringify({ ok: false, already_used: true, message: "このクーポンはすでに使用済みです。" }),
+              JSON.stringify({ ok: false, already_used: true, fully_used: true, message: multiUse ? `全${useCount}枚すべて使用済みです。` : "このクーポンはすでに使用済みです。" }),
               { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
@@ -5303,41 +6178,81 @@ document.getElementById('copyBtn').onclick=function(){
               ? reacquireDaysRaw
               : (Number.isFinite(intervalDaysLegacy) && intervalDaysLegacy > 0 ? intervalDaysLegacy : 365),
           );
+          // 複数枚の「次の1枚」までの間隔: reacquire設定があればそれ、無ければ1日（当日2枚使用を防止）
+          const gapDays = multiUse ? (reacquireEnabled ? intervalDays : 1) : intervalDays;
           const cookieName = "fe_cu_" + storeIdForCookie.replace(/[^a-zA-Z0-9_-]/g, "_");
           const cookieHeader = req.headers.get("cookie") || "";
           const hasStoreCookie = cookieHeader
             .split(";")
             .map((s) => s.trim())
             .some((p) => p === `${cookieName}=1` || p.startsWith(`${cookieName}=1;`));
-          if (hasStoreCookie) {
-            const blockedMsg = reacquireEnabled
-              ? `${intervalDays}日が経過してから再利用してください。`
-              : "この店舗ではクーポンは1回限りのため、再利用できません。";
+          // survey_review モードは日数間隔ブロックを使わない（2枚目は口コミ後に同日でも使える）
+          if (hasStoreCookie && !surveyReviewMode) {
+            const remainingNow = Math.max(0, useCount - usedCount);
+            const blockedMsg = multiUse
+              ? `本日は1枚ご利用済みです。残り${remainingNow}枚は${gapDays}日後（次回ご来店時）に使えます。`
+              : reacquireEnabled
+                ? `${intervalDays}日が経過してから再利用してください。`
+                : "この店舗ではクーポンは1回限りのため、再利用できません。";
             return new Response(
               JSON.stringify({ ok: false, already_used: true, message: blockedMsg }),
               { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           const nowIso = new Date().toISOString();
-          const { data: updated } = await supabase
-            .from("reviews")
-            .update({ used_at: nowIso })
-            .eq("id", review_id)
-            .eq("store_id", storeIdForCookie)
-            .is("used_at", null)
-            .select("id")
-            .maybeSingle();
-          if (!updated) {
+          let consumed = false;
+          if (multiUse) {
+            // 楽観ロック: coupon_used_count が想定値のときだけ +1（同時押し二重消費を防止）
+            const newCount = usedCount + 1;
+            const updatePayload: Record<string, unknown> = { coupon_used_count: newCount };
+            if (newCount >= useCount) updatePayload.used_at = nowIso; // 最後の1枚で used_at をセット
+            const { data: upd } = await supabase
+              .from("reviews")
+              .update(updatePayload)
+              .eq("id", review_id)
+              .eq("store_id", storeIdForCookie)
+              .eq("coupon_used_count", usedCount)
+              .select("id")
+              .maybeSingle();
+            consumed = !!upd;
+          } else {
+            const { data: upd } = await supabase
+              .from("reviews")
+              .update({ used_at: nowIso, coupon_used_count: 1 })
+              .eq("id", review_id)
+              .eq("store_id", storeIdForCookie)
+              .is("used_at", null)
+              .select("id")
+              .maybeSingle();
+            consumed = !!upd;
+          }
+          if (!consumed) {
             return new Response(
               JSON.stringify({ ok: false, already_used: true, message: "このクーポンはすでに使用済みです。" }),
               { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
-          const cookieMaxAge = intervalDays * 24 * 60 * 60;
-          const setCookie = `${cookieName}=1; Max-Age=${cookieMaxAge}; Path=/; SameSite=Lax`;
+          const remainingAfter = Math.max(0, useCount - (usedCount + 1));
+          const respHeaders: Record<string, string> = { ...corsHeaders, "Content-Type": "application/json" };
+          // survey_review モードは間隔ブロック用 Cookie を発行しない（同日2枚目可）
+          if (!surveyReviewMode) {
+            const cookieMaxAge = gapDays * 24 * 60 * 60;
+            respHeaders["Set-Cookie"] = `${cookieName}=1; Max-Age=${cookieMaxAge}; Path=/; SameSite=Lax`;
+          }
+          const usedMessage = surveyReviewMode
+            ? (remainingAfter > 0 ? `1枚目（アンケート特典）を使用しました。口コミページから戻ると2枚目が使えます。` : `2枚目を使用しました（全${useCount}枚使用済み）。`)
+            : multiUse
+              ? (remainingAfter > 0 ? `1枚使用しました。残り${remainingAfter}枚は次回ご来店時に使えます。` : `最後の1枚を使用しました（全${useCount}枚使用済み）。`)
+              : undefined;
           return new Response(
-            JSON.stringify({ ok: true, used: true }),
-            { headers: { ...corsHeaders, "Content-Type": "application/json", "Set-Cookie": setCookie } }
+            JSON.stringify({
+              ok: true, used: true,
+              remaining: remainingAfter,
+              fully_used: remainingAfter <= 0,
+              reload: surveyReviewMode && remainingAfter > 0, // 次の枚（口コミ後ロック）を表示するため再読込
+              message: usedMessage,
+            }),
+            { headers: respHeaders }
           );
         }
         if (body.action === "claim_survey_line") {
@@ -5389,12 +6304,25 @@ document.getElementById('copyBtn').onclick=function(){
         }
         if (body.action === "liff_link_review") {
           // LIFF 経由で LINE user ID とレビューを紐付け（既存友達も自動対応）
-          const { review_id: liffRevId, line_user_id: liffUid } = body as { review_id?: string; line_user_id?: string };
+          const { review_id: liffRevId, line_user_id: liffUidDirect, liff_access_token: liffAccessToken } = body as { review_id?: string; line_user_id?: string; liff_access_token?: string };
+          // アクセストークンが提供された場合は LINE Profile API で userId を取得
+          let liffUid: string | undefined = liffUidDirect;
+          if (!liffUid && liffAccessToken) {
+            try {
+              const _lineProfileRes = await fetchWithTimeout("https://api.line.me/v2/profile", {
+                headers: { "Authorization": `Bearer ${liffAccessToken}` }
+              }, 8000);
+              if (_lineProfileRes.ok) {
+                const _lineProfile = await _lineProfileRes.json() as { userId?: string };
+                liffUid = _lineProfile.userId;
+              }
+            } catch (_e) { /* タイムアウト等 */ }
+          }
           if (!liffRevId || !liffUid) {
-            return new Response(JSON.stringify({ error: "review_id and line_user_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+            return new Response(JSON.stringify({ error: "review_id and line_user_id (or liff_access_token) required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
           const { data: revLiff } = await supabase
-            .from("reviews").select("id, store_id, submission_id, line_user_id")
+            .from("reviews").select("id, store_id, submission_id, line_user_id, score")
             .eq("id", liffRevId).maybeSingle();
           if (!revLiff) {
             return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -5442,15 +6370,53 @@ document.getElementById('copyBtn').onclick=function(){
             headers: _liffApHeaders,
             body: JSON.stringify({ store_id: (revLiff as any).store_id, action_type: "line", source_ref: "line_follow", line_user_id: effectiveUid }),
           }).catch(console.error);
-          // LINE Push: ポイントカードURLをLINEに送信
-          const liffDashboardUrl = (Deno.env.get("DASHBOARD_URL") ?? "").replace(/\/$/, "");
+          // URL を生成
+          const liffDashboardUrl = (Deno.env.get("DASHBOARD_URL") ?? "https://restaurant-dashboard-ruddy.vercel.app").replace(/\/$/, "");
           const liffFormBase = (Deno.env.get("FORM_ENGINE_BASE_URL") ?? "").replace(/\/$/, "") || (new URL(req.url).origin + "/functions/v1");
-          const liffResultUrl = liffDashboardUrl
-            ? `${liffDashboardUrl}/s/${encodeURIComponent((revLiff as any).store_id)}/wallet/${encodeURIComponent((revLiff as any).submission_id)}`
-            : `${liffFormBase}/form-engine?store_id=${encodeURIComponent((revLiff as any).store_id)}&sid=${encodeURIComponent((revLiff as any).submission_id)}&_nc=1`;
-          // LIFF 経由は wallet_url への直接リダイレクトで完結するため LINE push は送信しない。
-          // LINE push は LINE bot OAメッセージ経由（lineOaMsgUrl フロー）でのみ行う。
-          return new Response(JSON.stringify({ ok: true, wallet_url: liffResultUrl }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          // ポイントカード URL（restaurant-dashboard のウォレットページ）
+          const liffWalletUrl = `${liffDashboardUrl}/s/${encodeURIComponent((revLiff as any).store_id)}/wallet/${encodeURIComponent((revLiff as any).submission_id)}`;
+          // 口コミ生成ページ URL（フォーム結果ページ = 口コミ案が表示される）
+          const liffReviewPageUrl = `${liffFormBase}/form-engine?store_id=${encodeURIComponent((revLiff as any).store_id)}&sid=${encodeURIComponent((revLiff as any).submission_id)}&_nc=1`;
+          // ★ LINE Push: 口コミ投稿 → ポイントカードの順で誘導
+          // googlePtLiff を try ブロック外で宣言（スコープバグ修正）
+          let googlePtLiff = 3;
+          try {
+            const { data: storeLiff } = await supabase
+              .from("store_profiles")
+              .select("line_channel_access_token, point_rule_google, score_max, score_threshold_mid, reward_mode, coupon_wallet_enabled")
+              .eq("store_id", (revLiff as any).store_id)
+              .maybeSingle();
+            // store 固有のトークンのみ使用。env var フォールバックは別店舗のトークンを誤使用する恐れがあるため使わない
+            const channelTokenLiff = ((storeLiff as any)?.line_channel_access_token as string | null) ?? "";
+            googlePtLiff = Number((storeLiff as any)?.point_rule_google ?? 3);
+            // スコアに基づいてメッセージを分岐
+            const liffScoreMax = Math.max(1, Number((storeLiff as any)?.score_max) || 5);
+            const liffThresholdMid = (storeLiff as any)?.score_threshold_mid != null
+              ? Number((storeLiff as any).score_threshold_mid)
+              : Math.round(liffScoreMax * 0.6);
+            const isLowScoreLiff = Number((revLiff as any).score ?? 0) <= liffThresholdMid;
+            const liffRewardMode = String((storeLiff as any)?.reward_mode || "points").toLowerCase();
+            const liffCwWallet = (storeLiff as any)?.coupon_wallet_enabled === true;
+            const pushText = buildLinePushText({
+              headerText: "LINE連携が完了しました！",
+              rewardMode: liffRewardMode,
+              cwWalletMode: liffCwWallet,
+              isLowScore: isLowScoreLiff,
+              reviewPageUrl: liffReviewPageUrl,
+              walletPageUrl: liffWalletUrl,
+            });
+            if (channelTokenLiff && effectiveUid) {
+              await fetch("https://api.line.me/v2/bot/message/push", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${channelTokenLiff}` },
+                body: JSON.stringify({
+                  to: effectiveUid,
+                  messages: [{ type: "text", text: pushText }],
+                }),
+              }).catch(console.error);
+            }
+          } catch { /* push 失敗は無視 */ }
+          return new Response(JSON.stringify({ ok: true, wallet_url: liffWalletUrl, review_url: liffReviewPageUrl, google_points: googlePtLiff }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
         if (body.action === "get_line_code") {
           // LINEコード発行（oaMessage URL に埋め込む用）
@@ -5707,6 +6673,8 @@ document.getElementById('copyBtn').onclick=function(){
           if (!rev) {
             return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
+          // ★ 口コミ導線をタップした記録（survey_review クーポンの2枚目ゲートで使用）
+          supabase.from("reviews").update({ review_returned_at: new Date().toISOString() }).eq("id", review_id).is("review_returned_at", null).then(() => {}, () => {});
 
           // ── identity 解決: reviews に line_user_id がない場合は
           // submission_id → customer_points_ledger から identity_id を逆引き ──
@@ -6342,13 +7310,30 @@ document.getElementById('copyBtn').onclick=function(){
     // （question_key 名が regex に頼らず確実にスコアを拾う）
     const { data: formQsForScore } = await supabase
       .from("form_questions")
-      .select("question_key, question_type, label")
+      .select("question_key, question_type, label, options")
       .eq("store_id", store_id);
     const ratingQuestionKeys = new Set(
       (formQsForScore || [])
-        .filter((q) => q.question_type === "rating")
+        .filter((q) => q.question_type === "rating" || q.question_type === "score")
         .map((q) => q.question_key as string)
     );
+    // 選択肢ID → 表示テキストの解決（AIに内部IDではなくラベルを渡すため）
+    const optionTextFor = (q: { options?: unknown }, raw: unknown): string | null => {
+      if (!Array.isArray(q?.options)) return null;
+      const v = String(raw ?? "").trim();
+      if (!v) return null;
+      for (const o of q.options as unknown[]) {
+        if (o && typeof o === "object") {
+          const oo = o as Record<string, unknown>;
+          const id = String(oo.id ?? oo.value ?? "").trim();
+          const text = String(oo.text ?? oo.label ?? "").trim();
+          if (id && id === v) return text || v;
+        } else if (String(o).trim() === v) {
+          return v;
+        }
+      }
+      return null;
+    };
     // answers から rating 質問の値でスコアを上書き
     for (const [k, v] of Object.entries(answers)) {
       if (ratingQuestionKeys.has(k)) {
@@ -6460,6 +7445,14 @@ document.getElementById('copyBtn').onclick=function(){
       return keys;
     })();
 
+    // ★ LINE本人特定が必須の店舗は、line_user_id なしの送信をサーバー側でも拒否
+    if ((store as Record<string, unknown>).line_auth_required === true && !lineUserIdFromForm) {
+      return new Response(
+        JSON.stringify({ error: "LINE_AUTH_REQUIRED", message: "LINEで本人確認ができていません。LINEから開き直してください。" }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const thresholdHigh = Number(store.score_threshold_high ?? 9);
     const thresholdMid = Number(store.score_threshold_mid ?? 7);
     const scoreMax = Math.max(1, Number(store.score_max) || 5);
@@ -6477,6 +7470,25 @@ document.getElementById('copyBtn').onclick=function(){
         if (!keyMatch && !labelMatch) continue;
         const ans = String((answers as Record<string, unknown>)[q.question_key] ?? "").trim();
         if (ans) freeTextDishAnswers.push(ans);
+      }
+      // ラジオ/セレクトのメニュー設問（「注文したメニュー」等）から選択ラベルを抽出
+      const MENU_QUESTION_PATTERN = /menu|dish|food|メニュー|注文|料理|食べ/i;
+      for (const q of (formQsForScore || [])) {
+        if (q.question_type !== "radio" && q.question_type !== "select" && q.question_type !== "checkbox") continue;
+        const keyMatch = MENU_QUESTION_PATTERN.test(String(q.question_key ?? ""));
+        const labelMatch = MENU_QUESTION_PATTERN.test(String(q.label ?? ""));
+        if (!keyMatch && !labelMatch) continue;
+        const raw = (answers as Record<string, unknown>)[q.question_key];
+        if (raw == null || raw === "") continue;
+        const rawValues = q.question_type === "checkbox" && typeof raw === "string"
+          ? raw.split(",").map((s) => s.trim()).filter(Boolean)
+          : [raw];
+        for (const rv of rawValues) {
+          const text = optionTextFor(q, rv);
+          if (text && text.trim() && !freeTextDishAnswers.includes(text.trim())) {
+            freeTextDishAnswers.push(text.trim());
+          }
+        }
       }
     }
 
@@ -6634,7 +7646,7 @@ document.getElementById('copyBtn').onclick=function(){
       })();
       // 自由記述の料理名ブロック（store_menu_items未設定でも料理名を口コミに反映）
       const FREE_TEXT_DISH_HEADER: Record<string, string> = {
-        ja: "\n【お客様が記述した料理名（必須）】\nお客様がアンケートで自由記述した料理名です。この料理名を口コミの各スタイル（style1〜3）すべてに必ず自然に組み込み、具体的に言及すること。「料理が美味しかった」など何を食べたか分からない抽象表現だけにしてはいけない。\n",
+        ja: "\n【お客様が選択・記述した料理名（必須）】\nお客様がアンケートで選択または自由記述した料理名です。この料理名を口コミの各スタイル（style1〜3）すべてに必ず自然に組み込み、具体的に言及すること。「料理が美味しかった」など何を食べたか分からない抽象表現だけにしてはいけない。\n",
         en: "\n[Customer-described dish (REQUIRED)]\nThe customer wrote this dish name in the free-text survey field. You MUST naturally incorporate this specific dish name into every review style. Do not use only generic phrases like \"the food was delicious\" without naming the dish.\n",
         zh: "\n【顾客填写的菜名（必须）】\n顾客在问卷自由填写了这道菜的名称。必须在所有风格（style1〜3）中自然地提到该具体菜名，不得只用模糊表达（如仅写菜很好吃）。\n",
         ko: "\n[고객이 기재한 요리명(필수)]\n고객이 설문 자유 기재란에 요리명을 입력했습니다. 모든 스타일(style1〜3)에 반드시 이 요리명을 자연스럽게 포함하세요. 무엇을 먹었는지 알 수 없는 표현만으로는 안 됩니다.\n",
@@ -6657,9 +7669,30 @@ document.getElementById('copyBtn').onclick=function(){
       const sanitizedAnswers = Object.fromEntries(
         Object.entries(answers).map(([k, v]) => [k, typeof v === "string" ? v.slice(0, 500) : v])
       );
+      // ★ 選択肢ID → ラベル解決: AIには内部ID（opt_xxx）ではなく
+      //   「設問ラベル: 選択肢テキスト」の読めるJSONを渡す
+      const readableAnswers: Record<string, unknown> = (() => {
+        const out: Record<string, unknown> = {};
+        for (const [k, vRaw] of Object.entries(sanitizedAnswers)) {
+          if (k.startsWith("__demo_")) continue; // プロフィール設問は口コミ本文に使わない
+          const q = (formQsForScore || []).find((fq) => fq.question_key === k);
+          let label = String(q?.label ?? k).replace(/\r?\n/g, " ").trim().slice(0, 100) || k;
+          let v: unknown = vRaw;
+          if (q && (q.question_type === "radio" || q.question_type === "select")) {
+            const t = optionTextFor(q, vRaw);
+            if (t) v = t;
+          } else if (q && q.question_type === "checkbox" && typeof vRaw === "string") {
+            v = vRaw.split(",").map((s) => optionTextFor(q, s.trim()) ?? s.trim()).filter(Boolean).join("、");
+          }
+          // 同一ラベルの設問（分岐設問など）の衝突を回避
+          while (Object.prototype.hasOwnProperty.call(out, label)) label += "＿";
+          out[label] = v;
+        }
+        return out;
+      })();
       const userContent = [
         (SURVEY_LABEL[lang] || SURVEY_LABEL.en),
-        JSON.stringify(sanitizedAnswers),
+        JSON.stringify(readableAnswers),
         SURVEY_MENU_RULE[lang] || SURVEY_MENU_RULE.en,
         "\n" + (STORE_LABEL[lang] || STORE_LABEL.en) + ((typeof store.form_display_name === "string" && store.form_display_name.trim()) ? store.form_display_name.trim() : (store.store_name_ja as string) || (store.store_name_jp as string) || store_id),
         includeHashtagsInUser && (store.hashtags_fixed as string)?.trim()
@@ -6710,10 +7743,14 @@ document.getElementById('copyBtn').onclick=function(){
     }
 
     const coupon_awarded = (() => {
+      // coupon_high/low_score が空の場合は coupon_tiers の1件目をフォールバック
+      const tierFallback = Array.isArray(store.coupon_tiers) && (store.coupon_tiers as { name?: string }[]).length > 0
+        ? String((store.coupon_tiers as { name?: string }[])[0]?.name ?? "").trim()
+        : "";
       const base =
         score >= thresholdHigh
-          ? (store.coupon_high_score as string)?.trim() || "スタッフまでお尋ねください"
-          : (store.coupon_low_score as string)?.trim() || "スタッフまでお尋ねください";
+          ? (store.coupon_high_score as string)?.trim() || tierFallback || "スタッフまでお尋ねください"
+          : (store.coupon_low_score as string)?.trim() || tierFallback || "スタッフまでお尋ねください";
       if (store.coupon_special_active && (store.coupon_special as string)?.trim()) {
         if (store.coupon_special_active_dup) return `${base}\n\n${store.coupon_special}`;
         return String(store.coupon_special);
@@ -6802,46 +7839,16 @@ document.getElementById('copyBtn').onclick=function(){
                 .maybeSingle();
               _todayRev = (_rRow as { id: string; line_user_id: string | null; review_options: Record<string, string> | null }) ?? null;
             }
-            const _gPts  = Number((store as Record<string, unknown>).point_rule_google ?? 3);
-            const _fbPts = _gPts + 1;
-            const _tc    = String((store as Record<string, unknown>).theme_color ?? "#6366f1");
+            const _fbPts = Number((store as Record<string, unknown>).point_rule_google ?? 3) + 1;
             const _apiBase = new URL(req.url).origin + "/functions/v1/form-engine";
-            // 初回生成画面と同じサイトリンクリストを構築
-            const _allSiteLinks = [
-              { n: "⭐ Googleに口コミを書く",    u: String((store as Record<string,unknown>).review_url_google    ?? (store as Record<string,unknown>).google_url    ?? ""), c: "#4285F4" },
-              { n: "🍽 Hotpepperに口コミを書く",  u: String((store as Record<string,unknown>).review_url_hotpepper ?? ""), c: "#FF3B30" },
-              { n: "🍜 食べログに口コミを書く",    u: String((store as Record<string,unknown>).review_url_tabelog   ?? ""), c: "#FF9500" },
-              { n: "👥 Rettyに口コミを書く",      u: String((store as Record<string,unknown>).review_url_retty     ?? ""), c: "#FF6B6B" },
-              { n: "💎 OZmallに口コミを書く",     u: String((store as Record<string,unknown>).review_url_ozmall    ?? ""), c: "#E65100" },
-              { n: "🏨 一休に口コミを書く",        u: String((store as Record<string,unknown>).review_url_ikyu      ?? ""), c: "#1976D2" },
-            ].filter(l => l.u && l.u !== "null" && l.u.startsWith("http"));
-            if (_todayRev && _allSiteLinks.length > 0) {
-              // 口コミ・フィードバック動線を継続表示（今日のセッションの続き）
-              const _opts = _todayRev.review_options ?? {};
-              // style1 → style2 → style3 の順で最初に中身があるものを使用
-              const _reviewComment = ((_opts.style1 || _opts.style2 || _opts.style3) ?? "").trim();
-              const _hasReview = _reviewComment.length > 0;
-              // サイトボタン HTML（コピー＋開くボタン）
-              const _siteBtns = _allSiteLinks.map((l, i) =>
-                `<a href="${l.u}" target="_blank" rel="noopener"
-                  onclick="(function(el){window._siteClicked=true;if(window._rvtxtVal&&navigator.clipboard){navigator.clipboard.writeText(window._rvtxtVal).catch(function(){});}setTimeout(function(){var b=document.getElementById('_rcclaim');if(b&&!window._gcDone)b.style.display='block';},3000);})(this)"
-                  style="display:block;width:100%;padding:12px;background:${l.c};color:#fff;font-weight:700;font-size:13px;text-align:center;border-radius:10px;text-decoration:none;box-sizing:border-box;margin-bottom:8px;">${l.n}</a>`
-              ).join("");
+            if (_todayRev) {
+              // フィードバック動線を継続表示（今日のセッションの続き）
               return createHtmlResponse(`<div style="min-height:100vh;background:#f9fafb;display:flex;flex-direction:column;align-items:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:20px 16px;padding-top:36px;">
 <div style="width:100%;max-width:400px;">
 <div style="text-align:center;margin-bottom:22px;">
 <div style="font-size:44px;margin-bottom:10px;">✅</div>
 <h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 6px;">本日のアンケートは送信済みです</h2>
-<p style="font-size:13px;color:#6b7280;margin:0;">口コミやフィードバックでさらにポイントを獲得できます</p>
-</div>
-<div style="background:#fff;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);">
-<div style="font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">📝 口コミでポイントを獲得</div>
-<p style="font-size:12px;color:#6b7280;margin:0 0 10px;">口コミを投稿すると <strong>＋${_gPts}P</strong> 加算されます。</p>
-${_hasReview ? `<div style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:10px;padding:12px;font-size:13px;color:#1e3a5f;line-height:1.75;margin-bottom:10px;white-space:pre-wrap;word-break:break-word;" id="_rvtxt">${_reviewComment.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</div>
-<button id="_cpybtn" onclick="(function(){var t=document.getElementById('_rvtxt');if(!t)return;var txt=t.innerText;window._rvtxtVal=txt;if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){var b=document.getElementById('_cpybtn');b.textContent='✅ コピーしました！';b.style.background='#15803d';setTimeout(function(){b.textContent='📋 口コミ文をコピーする';b.style.background='#0284c7';},2500);});}else{var r=document.createRange();r.selectNodeContents(t);window.getSelection().removeAllRanges();window.getSelection().addRange(r);document.execCommand('copy');}})()" style="width:100%;padding:11px;background:#0284c7;color:#fff;font-weight:700;font-size:13px;border:none;border-radius:10px;cursor:pointer;box-sizing:border-box;margin-bottom:12px;">📋 口コミ文をコピーする</button>` : ''}
-${_siteBtns}
-<button id="_rcclaim" style="display:none;width:100%;padding:13px;background:#16a34a;color:#fff;font-weight:700;font-size:14px;border:none;border-radius:12px;cursor:pointer;box-sizing:border-box;margin-top:4px;">✅ 書きました！ ＋${_gPts}P 受け取る</button>
-<div id="_rcstatus" style="font-size:12px;color:#6b7280;text-align:center;margin-top:6px;min-height:16px;"></div>
+<p style="font-size:13px;color:#6b7280;margin:0;">フィードバックでさらにポイントを獲得できます</p>
 </div>
 <div style="background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.07);">
 <div style="font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">💬 レポートを送る</div>
@@ -6853,19 +7860,6 @@ ${_siteBtns}
 </div>
 <script>(function(){
 var API=${JSON.stringify(_apiBase)},SID=${JSON.stringify(store_id)},RID=${JSON.stringify(_todayRev.id)},QSID=${JSON.stringify(_todaySid)};
-window._gcDone=false;window._siteClicked=false;window._rvtxtVal=${JSON.stringify(_reviewComment)};
-document.getElementById('_rcclaim').onclick=async function(){
-  if(window._gcDone)return;
-  var btn=this,st=document.getElementById('_rcstatus');
-  btn.disabled=true;btn.textContent='⏳ 確認中…';
-  try{
-    var r=await fetch(API+'?store_id='+encodeURIComponent(SID)+(QSID?'&sid='+encodeURIComponent(QSID):''),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'claim_google_bonus',review_id:RID})});
-    var d=await r.json();
-    if(d.ok&&!d.skipped){window._gcDone=true;btn.textContent='✅ ＋${_gPts}P 加算しました！';btn.style.background='#15803d';if(st)st.textContent='口コミポイントを加算しました';}
-    else if(d.skipped){window._gcDone=true;btn.textContent='✅ 本日分は加算済みです';btn.style.background='#6b7280';}
-    else{btn.disabled=false;btn.textContent='✅ 書きました！ ＋${_gPts}P 受け取る';}
-  }catch(e){btn.disabled=false;btn.textContent='✅ 書きました！ ＋${_gPts}P 受け取る';}
-};
 document.getElementById('_fbsend').onclick=async function(){
   if(window._fbDone)return;
   var txt=(document.getElementById('_fbtxt')||{}).value||'';
@@ -6925,6 +7919,19 @@ document.getElementById('_fbsend').onclick=async function(){
         console.error("[form-engine] photo upload failed:", e);
       }
     }
+    // 回答者プロフィール（許可値のみ採用）
+    const _pick = (raw: unknown, allowed: string[]): string | null => {
+      const v = String(raw ?? "").trim();
+      return allowed.includes(v) ? v : null;
+    };
+    const respGender   = _pick(answers["__demo_gender"], ["male", "female", "other"]);
+    const respAgeBand  = _pick(answers["__demo_age"], ["10s", "20s", "30s", "40s", "50s", "60s"]);
+    const respArea     = _pick(answers["__demo_area"], ["hokkaido", "tohoku", "kanto", "chubu", "kinki", "chugoku", "shikoku", "kyushu"]);
+    const respBirthMonth = (() => {
+      const n = Math.floor(Number(answers["__demo_birth_month"]));
+      return Number.isInteger(n) && n >= 1 && n <= 12 ? n : null;
+    })();
+
     const { data: inserted } = await supabase
       .from("reviews")
       .insert({
@@ -6939,6 +7946,10 @@ document.getElementById('_fbsend').onclick=async function(){
         is_scouter: false,
         image_url: imageUrl,
         ip_hash: _ipHash,
+        resp_gender: respGender,
+        resp_age_band: respAgeBand,
+        resp_area: respArea,
+        resp_birth_month: respBirthMonth,
         raw_data: {
           source: "form-engine",
           form: answers,
@@ -7137,6 +8148,39 @@ document.getElementById('_fbsend').onclick=async function(){
       }
     }
 
+    // ── line_user_id でアンケート特典を付与（LINE本人特定済み＝LIFF/LINE必須店舗）──────
+    // LINEユーザーは submit 時点で identity が確定しているため、ここでアンケート特典(survey +1)を付与する。
+    // （旧フローは claim_survey_line / liff_link_review に依存していたが、LINE必須フローでは呼ばれないため）
+    // add-loyalty-point は source_ref=submission_id で重複防止するため、後段で再度呼ばれても二重付与にならない。
+    // 低評価でクーポン非表示（coupon_low_score_enabled=false かつ低評価）のウォレット店舗では、見えないクーポンの累積を防ぐため付与もスキップ。
+    const _cwWalletMode = (store as Record<string, unknown>).coupon_wallet_enabled === true;
+    const _lowScoreNoCoupon = (store as Record<string, unknown>).coupon_low_score_enabled === false && Number(score) < thresholdHigh;
+    if (lineUserIdFromForm && !(_cwWalletMode && _lowScoreNoCoupon)) {
+      const workerSecretLine = Deno.env.get("SNS_WORKER_SECRET") ?? "";
+      const anonKeyForLine = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+      const addPtUrlLine = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
+      try {
+        const _lAbort = new AbortController();
+        const _lTimer = setTimeout(() => _lAbort.abort(), 15000);
+        try {
+          await fetch(addPtUrlLine, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-worker-secret": workerSecretLine,
+              ...(anonKeyForLine ? { "apikey": anonKeyForLine, "Authorization": `Bearer ${anonKeyForLine}` } : {}),
+            },
+            body: JSON.stringify({ store_id, action_type: "survey", source_ref: submission_id, line_user_id: lineUserIdFromForm }),
+            signal: _lAbort.signal,
+          });
+        } finally {
+          clearTimeout(_lTimer);
+        }
+      } catch (e) {
+        console.error("[form-engine] line add-loyalty-point (survey) failed:", e);
+      }
+    }
+
     // ── アンケート完了後に referral code を即時生成（wallet ロード前でもコードが確定） ──
     if ((store.point_rule_referral as number) > 0) {
       try {
@@ -7179,9 +8223,51 @@ document.getElementById('_fbsend').onclick=async function(){
     const lineLiffIdPost = (typeof lineLiffIdRawPost === "string" && lineLiffIdRawPost.trim()) ? lineLiffIdRawPost.trim() : null;
     const lineBotBasicIdRawPost = lineCredsPost?.line_bot_basic_id ?? (store as { line_bot_basic_id?: string } | null)?.line_bot_basic_id ?? null;
     const lineBotBasicIdPost = (typeof lineBotBasicIdRawPost === "string" && lineBotBasicIdRawPost.trim()) ? lineBotBasicIdRawPost.trim() : null;
-    const formEngineBaseUrlPost = new URL(req.url).origin + "/functions/v1/form-engine";
+    // カスタムドメインがある場合は必ずそちらを使用（raw Supabase URLを避ける）
+    const formEngineBaseUrlPost = customDomainBase
+      ? `${customDomainBase}/form-engine`
+      : new URL(req.url).origin + "/functions/v1/form-engine";
     const scoutLpBaseUrl = Deno.env.get("SCOUT_LP_BASE_URL")?.trim() || "https://scout-lp.com/join";
     const dashboardUrlPost = (Deno.env.get("DASHBOARD_URL") ?? "").replace(/\/$/, "");
+
+    // ── LINE連携済みユーザー → スコア別LINEプッシュで生成画面URLを送信 ──
+    if (lineUserIdFromForm) {
+      try {
+        const postScoreMax = Math.max(1, Number((store as Record<string, unknown>).score_max) || 5);
+        const postThresholdMid = (store as Record<string, unknown>).score_threshold_mid != null
+          ? Number((store as Record<string, unknown>).score_threshold_mid)
+          : Math.round(postScoreMax * 0.6);
+        // store 固有のトークンのみ使用。env var フォールバックは別店舗のトークンを誤使用する恐れがあるため使わない
+        const postChannelToken = ((store as Record<string, unknown>).line_channel_access_token as string | null) ?? "";
+        const reviewPageUrl = `${formEngineBaseUrlPost}?store_id=${encodeURIComponent(store_id)}&sid=${encodeURIComponent(submission_id)}&_nc=1`;
+        const postDashboardUrl = (Deno.env.get("DASHBOARD_URL") ?? "").replace(/\/$/, "");
+        const walletPageUrl = postDashboardUrl
+          ? `${postDashboardUrl}/s/${encodeURIComponent(store_id)}/wallet/${encodeURIComponent(submission_id)}`
+          : reviewPageUrl;
+        const isPostLowScore = review.score <= postThresholdMid;
+        const postRewardMode = String((store as Record<string, unknown>).reward_mode || "points").toLowerCase();
+        const postCwWallet = (store as Record<string, unknown>).coupon_wallet_enabled === true;
+        const postPushText = buildLinePushText({
+          headerText: "アンケートありがとうございました！",
+          rewardMode: postRewardMode,
+          cwWalletMode: postCwWallet,
+          isLowScore: isPostLowScore,
+          reviewPageUrl,
+          walletPageUrl,
+        });
+        if (postChannelToken) {
+          await fetch("https://api.line.me/v2/bot/message/push", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${postChannelToken}` },
+            body: JSON.stringify({
+              to: lineUserIdFromForm,
+              messages: [{ type: "text", text: postPushText }],
+            }),
+          }).catch(console.error);
+        }
+      } catch { /* push 失敗は無視 */ }
+    }
+
     const resultHtml = buildResultHtml({
       review: {
         id: review.id,
