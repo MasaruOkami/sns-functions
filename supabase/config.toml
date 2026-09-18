@@ -366,3 +366,70 @@ entrypoint = "./functions/generate-media/index.ts"
 # Specifies static files to be bundled with the function. Supports glob patterns.
 # For example, if you want to serve static HTML pages in your function:
 # static_files = [ "./functions/generate-media/*.html" ]
+
+[functions.form-engine]
+verify_jwt = false
+
+[functions.marketing-click]
+verify_jwt = false
+
+[functions.marketing-blast-runner]
+verify_jwt = false
+
+[functions.marketing-trigger-runner]
+verify_jwt = false
+
+[functions.marketing-queue-processor]
+verify_jwt = false
+
+[functions.line-webhook-coupon]
+verify_jwt = false
+
+[functions.add-loyalty-point]
+verify_jwt = false
+
+# 旧ディスパッチャ（cron job 14 は停止済み・現行経路は story-plan-scheduler → story-plan-dispatch）。
+# 呼び出し元が無いので本来は `supabase functions delete story-dispatch` で撤去するのが望ましい。
+# 残す場合は関数内で x-worker-secret を SNS_WORKER_SECRET と照合して fail-closed（JWT は付かないため false）。
+[functions.story-dispatch]
+verify_jwt = false
+
+[functions.sns-worker]
+verify_jwt = false
+
+# EF→EF 呼び出し（x-worker-secret のみ・Authorizationヘッダ無し）で叩かれるため false 必須
+[functions.story-plan-dispatch]
+verify_jwt = false
+
+[functions.story-availability-post]
+verify_jwt = false
+
+# 付与ヘルスチェック（pg_cron から x-cron-secret で呼ぶ。Authorizationヘッダは付かないため false 必須）
+[functions.grant-healthcheck]
+verify_jwt = false
+
+# 週次キーワードQCレポート（pg_cron から x-cron-secret で呼ぶ）
+[functions.keyword-qc-report]
+verify_jwt = false
+
+# キーワード自動分類（pg_cron から x-cron-secret で呼ぶ）
+[functions.keyword-classify]
+verify_jwt = false
+
+# ストーリー予約スケジューラ（pg_cron job 13 から x-worker-secret で毎分呼ぶ。JWT は付かないため false 必須。
+# 関数内で SNS_WORKER_SECRET と照合して fail-closed）
+[functions.story-plan-scheduler]
+verify_jwt = false
+
+# 基準写真（ブラウザからユーザーJWTで呼ぶ。関数内で guard により店舗ロールも確認）
+[functions.reference-photos-list]
+verify_jwt = true
+
+[functions.reference-photos-delete]
+verify_jwt = true
+
+[functions.reference-photos-save]
+verify_jwt = true
+
+[functions.reference-photos-update]
+verify_jwt = true
