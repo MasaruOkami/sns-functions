@@ -1,14 +1,30 @@
 // supabase/functions/gbp-oauth-callback/index.ts
 // Exchanges Google OAuth code for tokens, discovers account/location,
 // saves credentials to gbp_tokens.
-import { requireAuthPasswordOkAndStoreRole } from "../_shared/guard.ts";
-import { corsHeaders } from "../_shared/cors.ts";
-import { adminClient } from "../_shared/keys.ts";
+//
+// 本番(oahnmyfalnhdkoihrswh)のデプロイ実体をそのまま土台にしている。
+// 変更は「鍵の取得を ./_shared/keys.ts 経由にした」ことだけで、
+// CORS の許可オリジン・ヘッダ・メソッド、ガード、業務ロジックは本番と同一。
+// ガードは関数ローカルの ./_shared/guard.ts（本番と同じ PW期限チェックあり版）を使う。
+import { serve } from "https://deno.land/std/http/server.ts";
+import { requireAuthPasswordOkAndStoreRole } from "./_shared/guard.ts";
+import { adminClient } from "./_shared/keys.ts";
 
 const GOOGLE_CLIENT_ID     = Deno.env.get("GOOGLE_CLIENT_ID") ?? "";
 const GOOGLE_CLIENT_SECRET = Deno.env.get("GOOGLE_CLIENT_SECRET") ?? "";
 
 const supabaseAdmin = adminClient("gbp-oauth-callback");
+
+function corsHeaders(origin: string | null) {
+  return {
+    "Access-Control-Allow-Origin": origin ?? "*",
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type, x-store-id",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Max-Age": "86400",
+    Vary: "Origin",
+  };
+}
 
 function json(body: unknown, status = 200, origin: string | null = null) {
   return new Response(JSON.stringify(body), {
@@ -17,7 +33,7 @@ function json(body: unknown, status = 200, origin: string | null = null) {
   });
 }
 
-Deno.serve(async (req) => {
+serve(async (req) => {
   const origin = req.headers.get("origin");
 
   if (req.method === "OPTIONS") {
