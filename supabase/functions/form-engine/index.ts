@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { adminClient, publishableKey, supabaseUrl } from "../_shared/keys.ts";
 import OpenAI from "https://esm.sh/openai@4.28.0";
 
 /** fetch with automatic AbortController timeout (default 20s) */
@@ -4071,10 +4071,7 @@ serve(async (req: Request): Promise<Response> => {
     }
   }
 
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-  );
+  const supabase = adminClient("form-engine");
   const openai = new OpenAI({ apiKey: Deno.env.get("OPENAI_API_KEY")! });
   const url = new URL(req.url);
 
@@ -4766,7 +4763,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   // ---------- GET/POST: 来店チェックインポイント ----------
   if (actionParam === "checkin" && storeId) {
     const SNS_WORKER_SECRET_VAL = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-    const addPointUrl = `${Deno.env.get("SUPABASE_URL") ?? url.origin}/functions/v1/add-loyalty-point`;
+    const addPointUrl = `${supabaseUrl() ?? url.origin}/functions/v1/add-loyalty-point`;
 
     // 店舗情報取得（point_rule_visit は ADD COLUMN IF NOT EXISTS で追加済みでなければ null になる）
     const { data: ciStore } = await supabase
@@ -4805,7 +4802,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
         });
       }
 
-      const _ciAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+      const _ciAnonKey = publishableKey() ?? "";
       const ptRes = await fetchWithTimeout(addPointUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-worker-secret": SNS_WORKER_SECRET_VAL, ...(_ciAnonKey ? { "apikey": _ciAnonKey, "Authorization": `Bearer ${_ciAnonKey}` } : {}) },
@@ -6271,9 +6268,9 @@ document.getElementById('copyBtn').onclick=function(){
             return new Response(JSON.stringify({ error: "review_not_found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
           }
           const workerSecret = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-          const _apAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+          const _apAnonKey = publishableKey() ?? "";
           const _apHeaders = { "Content-Type": "application/json", "x-worker-secret": workerSecret, ...(_apAnonKey ? { "apikey": _apAnonKey, "Authorization": `Bearer ${_apAnonKey}` } : {}) };
-          const addPointUrl = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
+          const addPointUrl = (supabaseUrl() ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
           const ptRes = await fetchWithTimeout(addPointUrl, {
             method: "POST",
             headers: _apHeaders,
@@ -6335,9 +6332,9 @@ document.getElementById('copyBtn').onclick=function(){
           // 実際に使用する LINE UID は常に LIFF 認証ユーザー
           const effectiveUid = liffUid;
           const workerSecretLiff = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-          const _liffAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+          const _liffAnonKey = publishableKey() ?? "";
           const _liffApHeaders = { "Content-Type": "application/json", "x-worker-secret": workerSecretLiff, ...(_liffAnonKey ? { "apikey": _liffAnonKey, "Authorization": `Bearer ${_liffAnonKey}` } : {}) };
-          const addPointUrlLiff = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
+          const addPointUrlLiff = (supabaseUrl() ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
           // ★ split identity 防止: 既存 anon identity に LINE user ID を紐付ける
           // liff_link_review 呼び出し時点で customer_identity に line_user_id が未登録の場合、
           // add-loyalty-point が新規 identity を作成してしまうのを防ぐ
@@ -6694,8 +6691,8 @@ document.getElementById('copyBtn').onclick=function(){
           }
 
           const workerSecret = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-          const _gbAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
-          const addPointUrl = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
+          const _gbAnonKey = publishableKey() ?? "";
+          const addPointUrl = (supabaseUrl() ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
           const sourceRef = `${rev.submission_id}_google`;
 
           // identity_id が直接わかった場合はポイントをここで直接書き込み
@@ -6813,8 +6810,8 @@ document.getElementById('copyBtn').onclick=function(){
             );
           }
           const workerSecret = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-          const _rpAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
-          const addPointUrl = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
+          const _rpAnonKey = publishableKey() ?? "";
+          const addPointUrl = (supabaseUrl() ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
           const ptRes = await fetchWithTimeout(addPointUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json", "x-worker-secret": workerSecret, ...(_rpAnonKey ? { "apikey": _rpAnonKey, "Authorization": `Bearer ${_rpAnonKey}` } : {}) },
@@ -6954,8 +6951,8 @@ document.getElementById('copyBtn').onclick=function(){
                 .maybeSingle();
               const ptGoogle = Number((storeForPt as any)?.point_rule_google ?? 3);
               const workerSecret = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-              const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
-              const addPointUrl = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
+              const anonKey = publishableKey() ?? "";
+              const addPointUrl = (supabaseUrl() ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
               const ptRes = await fetchWithTimeout(addPointUrl, {
                 method: "POST",
                 headers: {
@@ -8102,8 +8099,8 @@ document.getElementById('_fbsend').onclick=async function(){
     // anon_id でポイント付与（LIFF未設定店舗のフォールバック）
     if (anonIdFromForm && !lineUserIdFromForm) {
       const workerSecretAnon = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-      const anonKeyForPt = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
-      const addPtUrlAnon = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
+      const anonKeyForPt = publishableKey() ?? "";
+      const addPtUrlAnon = (supabaseUrl() ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
       try {
         const ptAbort = new AbortController();
         const ptTimer = setTimeout(() => ptAbort.abort(), 15000); // 15s timeout
@@ -8157,8 +8154,8 @@ document.getElementById('_fbsend').onclick=async function(){
     const _lowScoreNoCoupon = (store as Record<string, unknown>).coupon_low_score_enabled === false && Number(score) < thresholdHigh;
     if (lineUserIdFromForm && !(_cwWalletMode && _lowScoreNoCoupon)) {
       const workerSecretLine = Deno.env.get("SNS_WORKER_SECRET") ?? "";
-      const anonKeyForLine = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
-      const addPtUrlLine = (Deno.env.get("SUPABASE_URL") ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
+      const anonKeyForLine = publishableKey() ?? "";
+      const addPtUrlLine = (supabaseUrl() ?? new URL(req.url).origin) + "/functions/v1/add-loyalty-point";
       try {
         const _lAbort = new AbortController();
         const _lTimer = setTimeout(() => _lAbort.abort(), 15000);

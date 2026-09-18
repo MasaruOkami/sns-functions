@@ -4,18 +4,14 @@
  * 全店舗の不正利用を検知して okami@pm-company.net にメール通知する。
  */
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { adminClient } from "../_shared/keys.ts";
 
-const SUPABASE_URL              = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SNS_WORKER_SECRET         = Deno.env.get("SNS_WORKER_SECRET") ?? "";
 const SENDGRID_API_KEY          = Deno.env.get("SENDGRID_API_KEY") ?? "";
 const ALERT_TO                  = "okami@pm-company.net";
 const ALERT_FROM                = Deno.env.get("ALERT_FROM_EMAIL") ?? Deno.env.get("APPROVAL_EMAIL_FROM") ?? "noreply@pm-company.net";
 
-const db = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false },
-});
+const db = adminClient("fraud-cron");
 
 // ── 型定義 ────────────────────────────────────────────────────────────────────
 

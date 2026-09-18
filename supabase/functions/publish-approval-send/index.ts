@@ -1,8 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { adminClient, serviceKey, supabaseUrl } from "../_shared/keys.ts";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_URL = supabaseUrl() ?? "";
+const SERVICE_KEY = serviceKey() ?? "";
+// この関数も「呼び出し側が service 鍵そのものを Authorization ヘッダに載せてくる」設計
+// （GitHub Actions からの直叩き）。移行期間中は新方式(sb_secret_)・レガシー(service_role)の
+// どちらの鍵で来ても通す。片方だけにすると呼び出し側と同時に切り替える必要が生じて事故る。
+const LEGACY_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const APPROVAL_BASE_URL = (Deno.env.get("PUBLISH_APPROVAL_BASE_URL") ?? "").trim();
 const SENDGRID_API_KEY = (Deno.env.get("SENDGRID_API_KEY") ?? "").trim();
 const RESEND_FROM = (Deno.env.get("APPROVAL_EMAIL_FROM") ?? "").trim();
@@ -251,14 +255,16 @@ serve(async (req) => {
     return jsonResponse({ error: "method_not_allowed" }, 405);
   }
 
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  if (!SUPABASE_URL || !SERVICE_KEY) {
     return jsonResponse({ error: "missing_supabase_env" }, 500);
   }
 
   // GitHub Actions から service_role key で直叩きする運用を想定。
+  // 新旧どちらの鍵で来ても通す（冒頭のコメント参照）。
   const auth = req.headers.get("Authorization") || "";
-  const expected = `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
-  if (auth !== expected) {
+  const authOk = (SERVICE_KEY !== "" && auth === `Bearer ${SERVICE_KEY}`) ||
+    (LEGACY_SERVICE_KEY !== "" && auth === `Bearer ${LEGACY_SERVICE_KEY}`);
+  if (!authOk) {
     return jsonResponse({ error: "unauthorized" }, 401);
   }
 
@@ -275,7 +281,7 @@ serve(async (req) => {
     return jsonResponse({ error: "action=send and round_id are required" }, 400);
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const supabase = adminClient("publish-approval-send");
 
   const { data: roundRaw, error: roundErr } = await supabase
     .from("form_menu_publish_rounds")

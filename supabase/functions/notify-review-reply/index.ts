@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { adminClient } from '../_shared/keys.ts'
 
 serve(async (req) => {
   try {
@@ -17,10 +17,7 @@ serve(async (req) => {
     const visitDate = record.visit_date ?? ''
     const reviewPageUrl = record.review_page_url ?? ''
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    )
+    const supabase = adminClient('notify-review-reply')
 
     const { data: profile } = await supabase
       .from('store_profiles')

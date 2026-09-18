@@ -1,15 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+// 鍵の解決は ../_shared/keys.ts に集約（新方式 sb_secret_ / レガシー両対応）
+import { adminClient } from "../_shared/keys.ts"
 
 serve(async (req) => {
   const url = new URL(req.url)
   const id = url.searchParams.get('id')
   if (!id) return new Response("Error: Missing ID", { status: 400 })
 
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL') ?? '',
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-  )
+  const supabase = adminClient("view-review")
 
   // 1. レビューデータの取得
   let query = supabase.from('reviews').select(`

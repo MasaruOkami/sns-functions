@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// 鍵の解決は ../_shared/keys.ts に集約（新方式 sb_secret_ / レガシー両対応）
+import { adminClient, serviceKey, supabaseUrl } from "../_shared/keys.ts";
 
 serve(async (req) => {
   const url = new URL(req.url);
@@ -20,13 +21,11 @@ serve(async (req) => {
     return new Response("❌ 無効なステータスです", { status: 400 });
   }
 
-  const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
-  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  if (!supabaseUrl() || !serviceKey()) {
     return new Response("❌ 環境変数が未設定です", { status: 500 });
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const supabase = adminClient("feedback");
   const table = `${store_id}_review_reply_log`;
 
   // ✅ レコード取得

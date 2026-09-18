@@ -4,6 +4,8 @@
 //   { "store_id": "kemuriya_namba2", "limit": 15, "dry_run": false }
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+// 鍵の解決は ../_shared/keys.ts に集約（新方式 sb_secret_ / レガシー両対応）
+import { logKeyMode, serviceKey, supabaseUrl } from "../_shared/keys.ts";
 
 // ========= 環境変数ユーティリティ =========
 function getEnv(name: string): string {
@@ -248,11 +250,14 @@ Deno.serve(async (req) => {
         : DEFAULT_BATCH_LIMIT,
     );
 
-    const SUPABASE_URL = getEnv("SUPABASE_URL");
-    const SERVICE_KEY = getEnv("SUPABASE_SERVICE_ROLE_KEY");
+    // 鍵は keys.ts 経由。見つからない場合は従来どおり getEnv が
+    // `Missing env: ...` を投げる（エラー文言を変えないため）
+    const SUPABASE_URL = supabaseUrl() ?? getEnv("SUPABASE_URL");
+    const SERVICE_KEY = serviceKey() ?? getEnv("SUPABASE_SERVICE_ROLE_KEY");
     const OPENAI_API_KEY = getEnv("OPENAI_API_KEY");
 
     const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
+    logKeyMode("dict-auto-update");
 
     const unknownTable = `${store_id}_unknown_words`;
     const dictTable = `${store_id}_dict_rules`;

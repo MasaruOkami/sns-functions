@@ -4,9 +4,9 @@
 // 店舗ごとに別LINEアカウント: https://xxx.supabase.co/functions/v1/line-webhook-coupon?store_id=XXX
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { adminClient, supabaseUrl } from "../_shared/keys.ts";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_URL = supabaseUrl() ?? "";
 /** AI食生活判定クイズ用（Webhook が line-webhook-coupon に向いている場合の postback 対応） */
 const AI_LINE_CHANNEL_SECRET = Deno.env.get("LINE_CHANNEL_SECRET") ?? "";
 const AI_LINE_CHANNEL_ACCESS_TOKEN = Deno.env.get("LINE_CHANNEL_ACCESS_TOKEN") ?? "";
@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
   }
   console.log("[line-webhook-coupon] POST", { bodyLen: bodyRaw.length });
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const supabase = adminClient("line-webhook-coupon");
 
   let secret: string | null = null;
   let accessToken: string | null = null;

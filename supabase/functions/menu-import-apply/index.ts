@@ -1,8 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { adminClient, serviceKey, supabaseUrl } from "../_shared/keys.ts";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_URL = supabaseUrl() ?? "";
+const SERVICE_KEY = serviceKey() ?? "";
+// この関数は「呼び出し側が service 鍵そのものを Authorization ヘッダに載せてくる」設計。
+// 移行期間中は新方式(sb_secret_)・レガシー(service_role)のどちらの鍵で来ても通す。
+// 片方だけにすると呼び出し側と同時に切り替える必要が生じて事故るため、両方と比較する。
+const LEGACY_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -105,10 +109,13 @@ function deriveSpokenJa(nameJa: string): string {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });
   if (req.method !== "POST") return jsonResponse({ error: "method_not_allowed" }, 405);
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return jsonResponse({ error: "missing_env" }, 500);
+  if (!SUPABASE_URL || !SERVICE_KEY) return jsonResponse({ error: "missing_env" }, 500);
 
   const auth = req.headers.get("Authorization") || "";
-  if (auth !== `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`) return jsonResponse({ error: "unauthorized" }, 401);
+  // 新旧どちらの鍵で来ても通す（冒頭のコメント参照）
+  const authOk = (SERVICE_KEY !== "" && auth === `Bearer ${SERVICE_KEY}`) ||
+    (LEGACY_SERVICE_KEY !== "" && auth === `Bearer ${LEGACY_SERVICE_KEY}`);
+  if (!authOk) return jsonResponse({ error: "unauthorized" }, 401);
 
   let body: { store_id?: string; clear_staging?: boolean; create_round?: boolean; proposal_only?: boolean };
   try {
@@ -124,7 +131,7 @@ serve(async (req) => {
     return jsonResponse({ error: "proposal_only_requires_create_round" }, 400);
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const supabase = adminClient("menu-import-apply");
 
   const { data: storeProfilesRaw, error: storeProfilesErr } = await supabase
     .from("store_profiles")

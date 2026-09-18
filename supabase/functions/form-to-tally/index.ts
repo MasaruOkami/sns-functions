@@ -1,6 +1,6 @@
 // form-to-tally: form_questions を Tally API へプッシュしてフォームを作成/更新
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { adminClient, supabaseUrl as resolveSupabaseUrl } from "../_shared/keys.ts";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -384,10 +384,7 @@ serve(async (req: Request): Promise<Response> => {
     );
   }
 
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-  );
+  const supabase = adminClient("form-to-tally");
 
   const { data: store } = await supabase
     .from("store_profiles")
@@ -420,7 +417,7 @@ serve(async (req: Request): Promise<Response> => {
   const themeColor = (store.theme_color as string)?.trim() || null;
   const logoPath = (store.logo_image_path as string)?.trim() || null;
   const coverPath = (store.cover_image_path as string)?.trim() || null;
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const supabaseUrl = resolveSupabaseUrl();
   const origin = supabaseUrl ? new URL(supabaseUrl).origin : "";
   const toPublicUrl = (p: string | null) =>
     p && origin
@@ -621,7 +618,7 @@ serve(async (req: Request): Promise<Response> => {
 
       // 新規作成時のみ Webhook を登録（tally-webhook へ送信）
       try {
-        const supabaseUrl = Deno.env.get("SUPABASE_URL");
+        const supabaseUrl = resolveSupabaseUrl();
         if (supabaseUrl) {
           const baseUrl = new URL(supabaseUrl).origin;
           const webhookUrl = `${baseUrl}/functions/v1/tally-webhook`;

@@ -1,7 +1,7 @@
 // supabase/functions/sns-feedback/index.ts
 import { serve } from "https://deno.land/std/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { requireAuthPasswordOkAndStoreRole } from "./_shared/guard.ts";
+import { adminClient } from "./_shared/keys.ts";
 
 // ====== CORS ヘッダ ======
 function corsHeaders(origin: string | null) {
@@ -23,12 +23,7 @@ function json(body: unknown, status = 200, origin: string | null = null) {
 }
 
 // ====== 環境変数 ======
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-
-const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false },
-});
+const supabaseAdmin = adminClient("sns-feedback");
 
 // 今回許可する action と source
 const ALLOWED_ACTIONS = ["approve", "regen_caption", "regen_video", "skip"] as const;

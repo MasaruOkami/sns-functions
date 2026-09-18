@@ -1,8 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { adminClient, serviceKey, supabaseUrl } from "../_shared/keys.ts";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_URL = supabaseUrl() ?? "";
+const SERVICE_KEY = serviceKey() ?? "";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -55,7 +55,7 @@ function sanitizeFormQuestion(storeId: string, raw: Record<string, unknown>, i: 
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return jsonResponse({ error: "missing_env" }, 500);
+  if (!SUPABASE_URL || !SERVICE_KEY) return jsonResponse({ error: "missing_env" }, 500);
   if (!["GET", "POST"].includes(req.method)) return jsonResponse({ error: "method_not_allowed" }, 405);
 
   const url = new URL(req.url);
@@ -89,7 +89,7 @@ serve(async (req) => {
   if (!mode) mode = "approve";
   if (!["approve", "reject"].includes(mode)) mode = "approve";
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const supabase = adminClient("publish-approval-decision");
   const { data: round, error: roundErr } = await supabase
     .from("form_menu_publish_rounds")
     .select("id, store_id, status, approve_token_hash, approve_token_expires_at, form_questions_snapshot, menu_items_snapshot, edit_count, max_edits")

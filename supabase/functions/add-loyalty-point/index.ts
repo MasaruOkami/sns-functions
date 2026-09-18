@@ -18,16 +18,13 @@
  *        }
  */
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// 鍵の解決は ../_shared/keys.ts に集約（新方式 sb_secret_ / レガシー両対応）
+import { adminClient } from "../_shared/keys.ts";
 
-const SUPABASE_URL              = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SNS_WORKER_SECRET         = Deno.env.get("SNS_WORKER_SECRET") ?? "";
 const WALLET_BASE_URL           = Deno.env.get("WALLET_BASE_URL") ?? "https://restaurant-dashboard-ruddy.vercel.app";
 
-const db = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false },
-});
+const db = adminClient("add-loyalty-point");
 
 // ── ユーティリティ ────────────────────────────────────────────
 

@@ -1,5 +1,6 @@
 // supabase/functions/html-renderer/index.ts
-import { createClient } from 'npm:@supabase/supabase-js@2.43.4';
+// 鍵の解決は ../_shared/keys.ts に集約（新方式 sb_secret_ / レガシー両対応）
+import { adminClient } from '../_shared/keys.ts';
 Deno.serve(async (req)=>{
   // CORS対応（必要に応じて）
   if (req.method === 'OPTIONS') {
@@ -23,8 +24,7 @@ Deno.serve(async (req)=>{
       });
     }
     const bucket = url.searchParams.get('bucket') || 'reports';
-    const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
+    const supabase = adminClient('smooth-task');
     const { data, error } = await supabase.storage.from(bucket).download(path);
     if (error) {
       console.error('❌ Error downloading file:', error);

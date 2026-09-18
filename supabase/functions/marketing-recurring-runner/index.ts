@@ -1,8 +1,6 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
-import { createClient } from 'jsr:@supabase/supabase-js@2'
+import { adminClient } from '../_shared/keys.ts'
 
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 const MARKETING_TRIGGER_SECRET = Deno.env.get('MARKETING_TRIGGER_SECRET') ?? ''
 
 // JST 時刻で次回の実行 UTC を計算
@@ -58,7 +56,7 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({ error: 'UNAUTHORIZED' }), { status: 401 })
   }
 
-  const db = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+  const db = adminClient('marketing-recurring-runner')
   const now = new Date()
 
   const { data: schedules, error } = await db

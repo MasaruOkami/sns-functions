@@ -1,13 +1,13 @@
 // supabase/functions/story-availability-preview/index.ts
 import { serve } from "https://deno.land/std/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { requireAuthPasswordOkAndStoreRole } from "./_shared/guard.ts";
+import { adminClient, serviceKey, supabaseUrl } from "./_shared/keys.ts";
 // ✅ viewer許可（確定）
 const ALLOW_ROLES = ["admin", "editor"] as const;
 
 // === 環境変数 ===
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_URL = supabaseUrl() ?? "";
+const SUPABASE_SERVICE_ROLE_KEY = serviceKey() ?? "";
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 const STORY_BUCKET = Deno.env.get("STORY_BUCKET") ?? "story_assets";
 
@@ -17,9 +17,7 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !OPENAI_API_KEY) {
 }
 
 // DBは service role（RLSバイパス）でOK。ただし store_id は guard で確定した値だけ使う
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false },
-});
+const supabase = adminClient("story-availability-preview");
 
 const allowedOrigins = new Set<string>([
   "http://localhost:3000",

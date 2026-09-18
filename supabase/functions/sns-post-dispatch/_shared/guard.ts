@@ -1,5 +1,8 @@
 // supabase/functions/_shared/guard.ts
+// 鍵の解決は ./keys.ts に集約している（新方式 sb_secret_ への移行期間中、
+// 新旧どちらの鍵でも動くようにするため）。
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { publishableKey, supabaseUrl } from "./keys.ts";
 
 type GuardOk = {
   userId: string;
@@ -73,8 +76,8 @@ export async function requireAuthPasswordOkAndStoreRole(
   const token = getBearerToken(req);
   if (!token) return json({ ok: false, error: "UNAUTHORIZED", detail: "Missing Bearer token" }, 401);
 
-  const url = Deno.env.get("SUPABASE_URL");
-  const anon = Deno.env.get("SUPABASE_ANON_KEY");
+  const url = supabaseUrl();
+  const anon = publishableKey();
   if (!url || !anon) return json({ ok: false, error: "SERVER_MISCONFIG", detail: "Missing SUPABASE_URL/ANON" }, 500);
 
   const sb = createClient(url, anon, {

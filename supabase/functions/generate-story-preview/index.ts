@@ -1,10 +1,7 @@
 // supabase/functions/generate-story-preview/index.ts
 import { serve } from "https://deno.land/std/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { requireAuthPasswordOkAndStoreRole } from "./_shared/guard.ts";
-
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+import { adminClient } from "./_shared/keys.ts";
 
 const ENABLE_OPENAI = (Deno.env.get("ENABLE_OPENAI") ?? "false") === "true";
 
@@ -23,9 +20,7 @@ type AllowedStatus = "available" | "few" | "full" | "closed";
 
 // DBはservice roleでOK（RLSバイパス）
 // ※ただし store_id は guard で確定した値だけを使う
-const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false },
-});
+const supabaseAdmin = adminClient("generate-story-preview");
 
 /* =========================
  * CORS
