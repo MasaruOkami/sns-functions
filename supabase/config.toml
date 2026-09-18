@@ -433,3 +433,39 @@ verify_jwt = true
 
 [functions.reference-photos-update]
 verify_jwt = true
+
+# --- レポミール本番(oahnmyfalnhdkoihrswh)で verify_jwt=false で稼働している関数 ---
+# 2026-09-18 追記。これらは本番では verify_jwt=false だが config.toml に記載が無く、
+# このまま再デプロイすると既定値の true に戻って 401 で止まる。
+#   feedback / view-review / form-to-tally        … 公開エンドポイント
+#   fraud-cron / marketing-profile-backfill /
+#   marketing-recurring-runner                    … pg_cron が叩く
+#   line-referral-webhook                         … LINE webhook
+#   smooth-task / publish-approval-decision
+
+[functions.feedback]
+verify_jwt = false
+
+[functions.smooth-task]
+verify_jwt = false
+
+[functions.view-review]
+verify_jwt = false
+
+[functions.form-to-tally]
+verify_jwt = false
+
+[functions.publish-approval-decision]
+verify_jwt = false
+
+[functions.fraud-cron]
+verify_jwt = false
+
+[functions.line-referral-webhook]
+verify_jwt = false
+
+[functions.marketing-profile-backfill]
+verify_jwt = false
+
+[functions.marketing-recurring-runner]
+verify_jwt = false
