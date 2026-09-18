@@ -305,15 +305,32 @@ Deno.serve(async (req) => {
 
   // ── ウォレット更新（ledger + redemption から再集計。wallet は競合で乖離するため使わない）
   const [{ data: ledgerRows }, { data: redeemRows }] = await Promise.all([
-    db.from("customer_points_ledger").select("points_delta")
+    db.from("customer_points_ledger").select("points_delta, created_at")
       .eq("identity_id", identity_id).eq("scope_type", scope_type).eq("scope_id", scope_id).gt("points_delta", 0),
-    db.from("points_redemption").select("spent_points")
+    db.from("points_redemption").select("spent_points, created_at")
       .eq("identity_id", identity_id).eq("scope_type", scope_type).eq("scope_id", scope_id)
       .eq("status", "used").gt("spent_points", 0),
   ]);
 
   const new_total   = (ledgerRows ?? []).reduce((s: number, r: Record<string, unknown>) => s + Number(r.points_delta ?? 0), 0);
-  const total_spent = (redeemRows ?? []).reduce((s: number, r: Record<string, unknown>) => s + Number(r.spent_points ?? 0), 0);
+
+  // 現存する最古の付与より前の使用は数えない（2026-09-19 修正）
+  //
+  // 使用実績を全期間で合計していたため、期限切れなどで台帳から付与が消える一方で
+  // 使用記録だけが残ると、balance = 付与合計 - 使用合計 が永久にマイナスになり、
+  // 新しく付与しても相殺されてクーポンが出なくなっていた（3名・4店舗で発生）。
+  // 消えた付与を消費した使用は、その付与と一緒に無かったことにするのが正しい。
+  const grantTimes = (ledgerRows ?? [])
+    .map((r: Record<string, unknown>) => new Date(String(r.created_at ?? "")).getTime())
+    .filter((t: number) => Number.isFinite(t));
+  const earliestGrantAt = grantTimes.length ? Math.min(...grantTimes) : null;
+
+  const total_spent = earliestGrantAt === null
+    ? 0 // 付与が1件も残っていないなら、消費対象も存在しない
+    : (redeemRows ?? [])
+        .filter((r: Record<string, unknown>) =>
+          new Date(String(r.created_at ?? "")).getTime() >= earliestGrantAt)
+        .reduce((s: number, r: Record<string, unknown>) => s + Number(r.spent_points ?? 0), 0);
   // 閾値判定用: 今回のポイント付与前の累計（reward check で使用）
   const old_total   = new_total - points_delta;
 
