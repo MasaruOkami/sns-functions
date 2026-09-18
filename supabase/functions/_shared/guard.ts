@@ -1,5 +1,13 @@
 // supabase/functions/_shared/guard.ts
-import { createClient } from "npm:@supabase/supabase-js@2";
+// 鍵の解決は ./keys.ts に集約している（新方式 sb_secret_ への移行期間中、
+// 新旧どちらの鍵でも動くようにするため）。
+import {
+  adminClient,
+  authClient as makeAuthClient,
+  publishableKey,
+  serviceKey,
+  supabaseUrl,
+} from "./keys.ts";
 
 type AllowRole = "viewer" | "editor" | "admin";
 
@@ -15,12 +23,6 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-auth-password, x-worker-secret, x-store-id",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
-
-function env(name: string, fallback?: string) {
-  const v = Deno.env.get(name);
-  if (v == null || v === "") return fallback;
-  return v;
-}
 
 function textResponse(text: string, status = 200) {
   return new Response(text, {
@@ -82,22 +84,15 @@ export async function requireAuthAndStoreRoleStrict(
   const storeId = await resolveStoreId(req);
   if (!storeId) throw jsonResponse({ ok: false, error: "Missing store_id (send x-store-id header)" }, 400);
 
-  const SUPABASE_URL = env("SUPABASE_URL");
-  const SUPABASE_ANON_KEY = env("SUPABASE_ANON_KEY");
-  const SUPABASE_SERVICE_ROLE_KEY = env("SUPABASE_SERVICE_ROLE_KEY");
-
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_SERVICE_ROLE_KEY) {
+  if (!supabaseUrl() || !publishableKey() || !serviceKey()) {
     throw jsonResponse(
-      { ok: false, error: "Missing SUPABASE_URL / SUPABASE_ANON_KEY / SUPABASE_SERVICE_ROLE_KEY" },
+      { ok: false, error: "Missing SUPABASE_URL / publishable key / service key" },
       500,
     );
   }
 
-  // 1) JWT を anon client で検証（auth.getUser）
-  const authClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: { persistSession: false },
-    global: { headers: { Authorization: `Bearer ${token}` } },
-  });
+  // 1) JWT を publishable（旧 anon）の client で検証（auth.getUser）
+  const authClient = makeAuthClient(token);
 
   const { data: userData, error: userErr } = await authClient.auth.getUser();
   if (userErr || !userData?.user) {
@@ -105,10 +100,8 @@ export async function requireAuthAndStoreRoleStrict(
   }
   const userId = userData.user.id;
 
-  // 2) role は service role で参照（RLSに左右されない）
-  const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false },
-  });
+  // 2) role は service 権限で参照（RLSに左右されない）
+  const admin = adminClient("guard");
 
   const { data: roleRow, error: roleErr } = await admin
     .from("user_store_roles")
