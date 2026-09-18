@@ -14,11 +14,18 @@
 //   レガシーキーを無効化すれば、切り替えの瞬間に落ちない。
 //
 // 参照する環境変数（上から順に探す）
-//   service 側 : SUPABASE_SECRET_KEY → SUPABASE_SECRET_KEYS → SUPABASE_SERVICE_ROLE_KEY
-//   client 側  : SUPABASE_PUBLISHABLE_KEY → SUPABASE_PUBLISHABLE_KEYS → SUPABASE_ANON_KEY
+//   service 側 : SB_SECRET_KEY → SUPABASE_SECRET_KEYS → SUPABASE_SERVICE_ROLE_KEY
+//   client 側  : SB_PUBLISHABLE_KEY → SUPABASE_ANON_KEY → SUPABASE_PUBLISHABLE_KEYS
 //
-//   SUPABASE_*_KEYS（複数形）は Supabase が自動で入れるもので、複数キーがあると
-//   カンマ区切りになりうるため先頭を採用する。単数形は手動で設定する用。
+// 変数名についての注意
+//   ・SUPABASE_ で始まる名前は Supabase の予約で、シークレットとして自分では登録できない
+//     （"Name must not start with the SUPABASE_ prefix" で弾かれる）。
+//     手動で上書きしたいときのために SB_ 接頭辞の名前を用意している。
+//   ・SUPABASE_*_KEYS（複数形）は Supabase が自動で入れるもの。ダッシュボードで
+//     新方式キーを作ると値が入る。複数キーがあるとカンマ区切りになりうるため先頭を採用する。
+//   ・client 側だけ ANON を先に見るのは、新方式キーが未作成のプロジェクトでも
+//     SUPABASE_PUBLISHABLE_KEYS に値が入っている場合があり、中身を確認できないため。
+//     いまの挙動を変えないでおき、切り替えるときは SB_PUBLISHABLE_KEY を明示的に設定する。
 
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
 
@@ -41,16 +48,16 @@ export function supabaseUrl(): string | undefined {
 
 /** サーバー側で使う鍵（RLS を迂回する権限） */
 export function serviceKey(): string | undefined {
-  return env("SUPABASE_SECRET_KEY") ??
+  return env("SB_SECRET_KEY") ??
     first("SUPABASE_SECRET_KEYS") ??
     env("SUPABASE_SERVICE_ROLE_KEY");
 }
 
 /** ブラウザに出してよい鍵（JWT の検証などに使う） */
 export function publishableKey(): string | undefined {
-  return env("SUPABASE_PUBLISHABLE_KEY") ??
-    first("SUPABASE_PUBLISHABLE_KEYS") ??
-    env("SUPABASE_ANON_KEY");
+  return env("SB_PUBLISHABLE_KEY") ??
+    env("SUPABASE_ANON_KEY") ??
+    first("SUPABASE_PUBLISHABLE_KEYS");
 }
 
 /**
@@ -58,7 +65,7 @@ export function publishableKey(): string | undefined {
  * 移行の進み具合をログで確認するために使う（Step 5 の「レガシー利用がゼロ」の判定）。
  */
 export function keyMode(): KeyMode {
-  if (env("SUPABASE_SECRET_KEY") || first("SUPABASE_SECRET_KEYS")) return "new";
+  if (env("SB_SECRET_KEY") || first("SUPABASE_SECRET_KEYS")) return "new";
   if (env("SUPABASE_SERVICE_ROLE_KEY")) return "legacy";
   return "missing";
 }
