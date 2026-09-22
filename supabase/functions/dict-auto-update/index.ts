@@ -42,6 +42,22 @@ const DEFAULT_BATCH_LIMIT = Number(Deno.env.get("DICT_UPDATE_BATCH_SIZE") ?? "15
 const AUTO_DICT_CATEGORIES = new Set(["food", "drink"]);
 const AUTO_DICT_MIN_FREQ = Number(Deno.env.get("DICT_AUTO_MIN_FREQ") ?? "5");
 
+// ★ category=food でも辞書に入れない一般名詞（2026-09-22 に追加）
+//
+// GPT は「料理」「メニュー」「食事」を category=food / is_food=true と判定する。
+// 意味としては正しいが、これらは具体的な品名ではなく飲食の文脈で必ず出る概念語で、
+// 中華料理店の口コミなら「料理」は全件に出る。is_food に登録すると
+// キーワード分析の1位を占領して、本来見たいメニュー名を押し出してしまう。
+// kemuriya_namba2 の dry run で「料理」が出現148回・freq 1位で登録候補になった。
+//
+// 具体的な品名（エビマヨ・点心・麻婆豆腐）は通し、概念語だけを弾く。
+// 全店舗共通。店ごとに変えると足並みが崩れる。
+const GENERIC_FOOD_NOUNS = new Set([
+  "料理", "お料理", "メニュー", "食事", "お食事", "食べ物", "飲み物",
+  "品", "一品", "逸品", "商品", "フード", "グルメ", "ごちそう",
+  "中華料理", "和食", "洋食", "中華", "イタリアン", "フレンチ",
+]);
+
 type UnknownWordRow = {
   id: string;
   surface: string;
@@ -323,9 +339,28 @@ Deno.serve(async (req) => {
       resultMap.set(w.surface, w);
     }
 
+    // 2.5) この店で人が stopword に決めた語を取っておく
+    //
+    // GPT が is_food と言っても、店の辞書で既に「分析から消す」と決まっている語は
+    // 登録しない。人の判断を機械が上書きしないための一手。
+    // 取得に失敗しても登録は止めない（保守的に空扱い）が、警告は残す。
+    const { data: existingStop, error: stopErr } = await supabase
+      .from(dictTable)
+      .select("key_norm")
+      .eq("rule_type", "stopword")
+      .eq("enabled", true);
+    if (stopErr) {
+      console.warn("⚠️ 既存 stopword の取得に失敗（空として続行）:", stopErr.message);
+    }
+    const humanStopwords = new Set<string>(
+      (existingStop ?? []).map((r: any) => String(r.key_norm ?? "").trim()).filter(Boolean),
+    );
+
     // 3) unknown_words を更新 & dict_rules へ upsert 用の行を構築
     const unknownUpdates: any[] = [];
     const dictInserts: any[] = [];
+    // dry_run で「なぜ登録されなかったか」を見せるための記録
+    const skipped: { surface: string; key: string; reason: string }[] = [];
 
     const nowIso = new Date().toISOString();
 
@@ -359,14 +394,23 @@ Deno.serve(async (req) => {
       // 後戻りしにくい操作で、形態素解析の誤りをそのまま固定してしまう。
       // GPT の判断は unknown_words の canonical_suggestion / add_to_dict に
       // 残してあるので、人が選んで登録できる。
-      if (!res.is_food) continue;
-      if (!AUTO_DICT_CATEGORIES.has(res.category)) continue;
-      if ((row.freq_total ?? 0) < AUTO_DICT_MIN_FREQ) continue;
+      const dictKey = canonical ?? keyNorm;
+      const skip = (reason: string) => skipped.push({ surface: row.surface, key: dictKey, reason });
+
+      if (!res.is_food) { skip("is_food=false"); continue; }
+      if (!AUTO_DICT_CATEGORIES.has(res.category)) { skip(`category=${res.category}`); continue; }
+      if ((row.freq_total ?? 0) < AUTO_DICT_MIN_FREQ) { skip(`freq=${row.freq_total} < ${AUTO_DICT_MIN_FREQ}`); continue; }
+      // GPT 自身が「一般語」と言っている語は、is_food でも入れない
+      if (res.is_stopword) { skip("GPT: is_stopword=true"); continue; }
+      // 店の辞書で人が stopword に決めた語を機械が覆さない
+      if (humanStopwords.has(dictKey) || humanStopwords.has(keyNorm)) { skip("店の辞書で stopword 済み"); continue; }
+      // 「料理」「メニュー」のような概念語は品名ではない
+      if (GENERIC_FOOD_NOUNS.has(dictKey) || GENERIC_FOOD_NOUNS.has(keyNorm)) { skip("一般名詞（共通除外）"); continue; }
 
       dictInserts.push({
         store_id,
         rule_type: "is_food",
-        key_norm: canonical ?? keyNorm,
+        key_norm: dictKey,
         canonical_key_norm: null,
         value_bool: true,
         enabled: true,
@@ -387,10 +431,12 @@ Deno.serve(async (req) => {
           auto_dict_policy: {
             categories: [...AUTO_DICT_CATEGORIES],
             min_freq: AUTO_DICT_MIN_FREQ,
+            human_stopwords_in_store: humanStopwords.size,
             note: "stopword / alias は自動登録しない。unknown_words に提案として残る",
           },
           unknown_updates: unknownUpdates,
           dict_inserts: dictInserts,
+          skipped,
         }),
         { headers: { "Content-Type": "application/json", ...CORS_HEADERS } },
       );
