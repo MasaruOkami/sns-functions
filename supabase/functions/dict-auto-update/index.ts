@@ -356,6 +356,22 @@ Deno.serve(async (req) => {
       (existingStop ?? []).map((r: any) => String(r.key_norm ?? "").trim()).filter(Boolean),
     );
 
+    // 全店舗共通の stopword（dict_rules_global）も同じ扱いにする。
+    // 「料理」「メニュー」のような概念語はここにあり、店舗に依らず is_food にしない。
+    // 読めなかったときはコード内の GENERIC_FOOD_NOUNS が最低限の保険になる。
+    const { data: globalStop, error: gStopErr } = await supabase
+      .from("dict_rules_global")
+      .select("key_norm")
+      .eq("rule_type", "stopword")
+      .eq("enabled", true);
+    if (gStopErr) {
+      console.warn("⚠️ dict_rules_global の取得に失敗（コード内リストのみで続行）:", gStopErr.message);
+    }
+    for (const r of globalStop ?? []) {
+      const k = String((r as any).key_norm ?? "").trim();
+      if (k) humanStopwords.add(k);
+    }
+
     // 3) unknown_words を更新 & dict_rules へ upsert 用の行を構築
     const unknownUpdates: any[] = [];
     const dictInserts: any[] = [];
