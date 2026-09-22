@@ -398,17 +398,28 @@ Deno.serve(async (req) => {
     }
 
     // 4) unknown_words を更新
-    if (unknownUpdates.length > 0) {
+    //
+    // ここは以前 upsert(onConflict:"id") だったが、全店舗で必ず失敗していた。
+    // unknown_words には surface / freq_total / review_ids という NOT NULL 列があり、
+    // PostgreSQL は NOT NULL を ON CONFLICT の解決より前に評価するため、
+    // id が必ず衝突する（＝取得済みの行を更新する）場合でも NOT NULL 違反で落ちる。
+    // 既存行の更新なので update が正しい。出現数や review_ids を
+    // 古い値で上書きしてしまう事故も同時に防げる。
+    let updatedCount = 0;
+    for (const u of unknownUpdates) {
+      const { id, ...fields } = u;
       const { error: upErr } = await supabase
         .from(unknownTable)
-        .upsert(unknownUpdates, { onConflict: "id" });
+        .update(fields)
+        .eq("id", id);
       if (upErr) {
-        console.error("❌ unknown_words upsert error:", upErr);
+        console.error("❌ unknown_words update error:", { id, message: upErr.message });
         return new Response(
-          JSON.stringify({ ok: false, error: upErr.message }),
+          JSON.stringify({ ok: false, error: upErr.message, updated_before_failure: updatedCount }),
           { status: 500, headers: { "Content-Type": "application/json", ...CORS_HEADERS } },
         );
       }
+      updatedCount += 1;
     }
 
     // 5) dict_rules へ upsert
@@ -432,7 +443,7 @@ Deno.serve(async (req) => {
       JSON.stringify({
         ok: true,
         processed: unknownRows.length,
-        updated_unknown_words: unknownUpdates.length,
+        updated_unknown_words: updatedCount,
         upserted_dict_rules: dictInserts.length,
       }),
       { headers: { "Content-Type": "application/json", ...CORS_HEADERS } },
