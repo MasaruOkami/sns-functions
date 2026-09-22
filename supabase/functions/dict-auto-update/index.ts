@@ -315,8 +315,20 @@ Deno.serve(async (req) => {
     }
 
     if (!candidates || candidates.length === 0) {
+      // dry_run / processed を返さないと、呼び出し側（GitHub Actions の Summarize）が
+      // dry_run=true の実行を「本番実行」と表示してしまう。0 件でも他の経路と同じ形で返す
       return new Response(
-        JSON.stringify({ ok: true, message: "no candidates" }),
+        JSON.stringify({
+          ok: true,
+          dry_run,
+          store_id,
+          processed: 0,
+          updated_unknown_words: 0,
+          upserted_dict_rules: 0,
+          dict_inserts: [],
+          skipped: [],
+          message: "no candidates",
+        }),
         { headers: { "Content-Type": "application/json", ...CORS_HEADERS } },
       );
     }
