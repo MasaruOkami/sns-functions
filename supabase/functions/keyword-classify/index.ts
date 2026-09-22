@@ -1,9 +1,16 @@
 // supabase/functions/keyword-classify/index.ts
 // 役割：
-//  - mode に応じて、単店 or 全店舗のキーワード正規化を実行
+//  - mode に応じて、単店 or 全店舗のキーワード分類を実行
 //  - {store_id}_keyword から未分類レコードを取得
-//  - OpenAI で canonical_key / category / is_food / lemma_key を付与
-//  - 同じテーブルに upsert（既存行のみ UPDATE 想定）
+//  - OpenAI で canonical_key / category_pred / is_food を付与
+//  - RPC apply_keyword_classification で id 指定の UPDATE（INSERT はしない）
+//
+// 【2026-09-23 修正】lemma_key を書かない。
+//  以前は GPT の返す key_norm で lemma_key を上書きしていたが、同じ語がバッチごとに
+//  「料理」「リョウリ」「食べ放題・飲み放題」のように別のキーになり、集計が割れていた。
+//  lemma_key は DB の生成列（lemma_key_of(lemma)）が決める。lemma / surface / pos /
+//  sentiment / review_id も GPT の値では書かない（lemma は衝突キーの一部）。
+//  対象店舗は store_profiles.is_active（keyword_enabled は参照しない）。
 //
 // 【2026-08-22 修正】認証を追加。
 //  これまで verify_jwt=false かつ関数内の認証も無く、**完全に無認証**だった。
@@ -42,12 +49,11 @@ interface RequestBody {
 
 interface KeywordOutput {
   id: string;
-  lemma: string;
-  surface: string;
-  key_norm: string;
-  canonical_key: string;
-  category: string;
-  is_food: boolean;
+  lemma?: string;
+  surface?: string;
+  canonical_key?: string;
+  category?: string;
+  is_food?: boolean;
 }
 
 // ========================
@@ -104,11 +110,12 @@ Deno.serve(async (req) => {
       if (Array.isArray(body.store_ids) && body.store_ids.length > 0) {
         storeIds = body.store_ids;
       } else {
-        // store_profiles.keyword_enabled = true の店舗一覧を自動取得
+        // 稼働店舗（store_profiles.is_active = true）を自動取得。
+        // ETL・未知語収集・健全性判定と同じ 1 つのフラグで揃える（2026-09-23）
         const { data, error } = await supabase
           .from("store_profiles")
           .select("store_id")
-          .eq("keyword_enabled", true);
+          .eq("is_active", true);
 
         if (error) {
           console.error("❌ store_profiles select error", error);
@@ -125,7 +132,7 @@ Deno.serve(async (req) => {
 
       if (storeIds.length === 0) {
         return jsonResponse(
-          { ok: true, mode: "all", message: "no target stores (keyword_enabled)" },
+          { ok: true, mode: "all", target_stores: 0, message: "no target stores (is_active)" },
           200,
         );
       }
@@ -261,54 +268,23 @@ async function processStore(storeId: string, batchSize: number) {
     throw new Error("invalid OpenAI response structure");
   }
 
+  // 書くのは canonical_key / category_pred / is_food の 3 列だけ（RPC 側で normalized=true, updated_at=now()）。
+  // lemma / surface / pos / sentiment / review_id / lemma_key は GPT の値で上書きしない。
   const updates = parsed.items
     .map((item) => {
       if (!item.id) return null;
       const base = baseMap[item.id];
       if (!base) {
-        // GPT が変な id を返した場合はスキップ（INSERT させない）
+        // GPT が変な id を返した場合はスキップ（UPDATE 専用 RPC なので INSERT は起きない）
         console.warn("[keyword-classify] skip unknown id", item.id);
         return null;
       }
-
-      // lemma / surface / pos / sentiment は必ず何かしら入るようにフェイルセーフ
-      let lemma = (item.lemma ?? base.lemma ?? "").trim();
-      let surface = (item.surface ?? base.surface ?? lemma).trim();
-      let pos = base.pos ?? null;
-
-      if (!lemma) {
-        lemma = base.lemma || base.surface || "UNKNOWN";
-      }
-      if (!surface) {
-        surface = lemma;
-      }
-      if (!pos) {
-        // NOT NULL テーブル対策：最低限 "UNKNOWN" を入れておく
-        pos = "UNKNOWN";
-      }
-
-      // sentiment: NOT NULL テーブル対策
-      const sentiment: string = (base.sentiment as string | null) ?? "neutral";
-
-      const canonical_key = (item.canonical_key ?? lemma).trim();
-      const key_norm =
-        (item.key_norm ?? canonical_key ?? lemma ?? surface).trim().toLowerCase();
-      const category = normalizeCategory(item.category);
-      const is_food = Boolean(item.is_food);
-
+      const canonical_key = (item.canonical_key ?? "").trim() || base.lemma;
       return {
-        id: item.id,               // PK で upsert（実質 UPDATE）
-        review_id: base.review_id, // NOT NULL 対策：元の値を保持
-        lemma,                     // NOT NULL
-        surface,
-        pos,                       // NOT NULL
-        sentiment,                 // NOT NULL 対策
-        canonical_key: canonical_key || lemma || surface || "UNKNOWN",
-        lemma_key: key_norm || (lemma || surface).toLowerCase(),
-        category_pred: category,
-        is_food,
-        normalized: true,
-        updated_at: new Date().toISOString(),
+        id: item.id,
+        canonical_key,
+        category_pred: normalizeCategory(item.category),
+        is_food: Boolean(item.is_food),
       };
     })
     .filter((u): u is NonNullable<typeof u> => !!u);
@@ -321,17 +297,18 @@ async function processStore(storeId: string, batchSize: number) {
     };
   }
 
-  const { error: upsertError } = await supabase
-    .from(table)
-    .upsert(updates, { onConflict: "id" });
+  const { data: updatedCount, error: rpcError } = await supabase.rpc(
+    "apply_keyword_classification",
+    { _table: `public.${table}`, payload: updates },
+  );
 
-  if (upsertError) {
-    throw new Error(`upsert error on ${table}: ${upsertError.message}`);
+  if (rpcError) {
+    throw new Error(`apply_keyword_classification error on ${table}: ${rpcError.message}`);
   }
 
   return {
     processed_rows: validInputs.length,
-    updated_rows: updates.length,
+    updated_rows: typeof updatedCount === "number" ? updatedCount : updates.length,
   };
 }
 
@@ -357,17 +334,14 @@ function buildPrompt(storeId: string, keywords: KeywordRow[]): string {
 各要素に対して以下を決めてください：
 
 - id: 入力の id をそのまま返す（DB更新のために必須）
-- lemma: 入力の lemma
-- surface: 入力の surface を優先。無ければ lemma
-- key_norm: 同じ意味の語が同じになるような正規化キー
-  - 例: 「チャーハン」「炒飯」「ちゃーはん」→ "チャーハン"
 - canonical_key: 分析やレポートで見せる代表表記
+  - 例: 「チャーハン」「炒飯」「ちゃーはん」→ "チャーハン"
 - category: 次のいずれか
   - "料理" / "ドリンク" / "雰囲気" / "サービス" / "清潔さ" / "価格" / "その他"
 - is_food: 料理・ドリンクそのものを指す単語なら true、それ以外は false
 
 【重要ルール】
-- 意味が似ている語は、できるだけ同じ key_norm / canonical_key にまとめる
+- 意味が似ている語は、できるだけ同じ canonical_key にまとめる
 - 店名や人名など固有名詞は "その他" カテゴリでも良い
 - 中華・ラーメン・焼肉などジャンル固有の料理名も「料理」
 - 曖昧な場合は無理に「料理」にせず、「その他」にする
@@ -378,9 +352,6 @@ function buildPrompt(storeId: string, keywords: KeywordRow[]): string {
   "items": [
     {
       "id": "入力の id",
-      "lemma": "入力の lemma",
-      "surface": "入力の surface または lemma",
-      "key_norm": "正規化キー",
       "canonical_key": "代表表記",
       "category": "料理|ドリンク|雰囲気|サービス|清潔さ|価格|その他",
       "is_food": true

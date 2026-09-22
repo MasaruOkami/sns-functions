@@ -40,6 +40,7 @@ const DEFAULT_BATCH_LIMIT = Number(Deno.env.get("DICT_UPDATE_BATCH_SIZE") ?? "15
 // stopword と alias は unknown_words に提案として残し、人が選ぶ。
 // 「料理」「こと」を消すかどうかは店ごとの判断で、機械に任せる話ではない。
 const AUTO_DICT_CATEGORIES = new Set(["food", "drink"]);
+// freq_total は 2026-09-23 から「出現レビュー数」（何件の口コミに出たか）。以前は出現回数だった
 const AUTO_DICT_MIN_FREQ = Number(Deno.env.get("DICT_AUTO_MIN_FREQ") ?? "5");
 
 // ★ category=food でも辞書に入れない一般名詞（2026-09-22 に追加）
@@ -403,17 +404,23 @@ Deno.serve(async (req) => {
         sentiment_pred: res.sentiment,
         canonical_suggestion: res.canonical_key_norm,
         add_to_dict: res.add_to_dict,
-        last_seen: nowIso,
+        // last_seen は書かない。freq_total / review_ids / last_seen は DB 関数 refresh_unknown_words が
+        // {store}_keyword から再集計して管理する（2026-09-23）
       });
 
       if (!res.add_to_dict) continue;
 
-      // canonical / lemma / surface から代表 key を決定
-      const baseKey = row.lemma ?? row.surface;
-      const keyNorm = baseKey;
+      // 辞書に書くキーは unknown_words.key_norm（= {store}_keyword.lemma_key と同じ空間）そのもの。
+      // GPT の canonical_suggestion や lemma から作り直すと、ダッシュボードが引く lemma_key と
+      // 別の空間になって当たらない（2026-09-23）。canonical は note と unknown_words に残すだけ。
+      const keyNorm = String(row.key_norm ?? "").trim();
       const canonical = res.canonical_key_norm && res.canonical_key_norm.trim().length > 0
         ? res.canonical_key_norm.trim()
         : null;
+      if (!keyNorm) {
+        skipped.push({ surface: row.surface, key: "", reason: "key_norm null" });
+        continue;
+      }
 
       // ── 自動登録するのは料理・ドリンクの is_food ルールだけ ──
       //
@@ -422,8 +429,10 @@ Deno.serve(async (req) => {
       // 後戻りしにくい操作で、形態素解析の誤りをそのまま固定してしまう。
       // GPT の判断は unknown_words の canonical_suggestion / add_to_dict に
       // 残してあるので、人が選んで登録できる。
-      const dictKey = canonical ?? keyNorm;
+      const dictKey = keyNorm;
       const skip = (reason: string) => skipped.push({ surface: row.surface, key: dictKey, reason });
+      // stopword / 一般名詞の照合はキー・lemma・surface の 3 形で（辞書は lemma 空間だが、人が書く形も拾う）
+      const forms = [dictKey, String(row.lemma ?? ""), String(row.surface ?? "")].filter(Boolean);
 
       if (!res.is_food) { skip("is_food=false"); continue; }
       if (!AUTO_DICT_CATEGORIES.has(res.category)) { skip(`category=${res.category}`); continue; }
@@ -431,9 +440,9 @@ Deno.serve(async (req) => {
       // GPT 自身が「一般語」と言っている語は、is_food でも入れない
       if (res.is_stopword) { skip("GPT: is_stopword=true"); continue; }
       // 店の辞書で人が stopword に決めた語を機械が覆さない
-      if (humanStopwords.has(dictKey) || humanStopwords.has(keyNorm)) { skip("店の辞書で stopword 済み"); continue; }
-      // 「料理」「メニュー」のような概念語は品名ではない
-      if (GENERIC_FOOD_NOUNS.has(dictKey) || GENERIC_FOOD_NOUNS.has(keyNorm)) { skip("一般名詞（共通除外）"); continue; }
+      if (forms.some((f) => humanStopwords.has(f))) { skip("辞書で stopword 済み（店 or 共通）"); continue; }
+      // 「料理」「メニュー」のような概念語は品名ではない（dict_rules_global の stopword が本体。コード定数は保険）
+      if (forms.some((f) => GENERIC_FOOD_NOUNS.has(f))) { skip("一般名詞（共通除外）"); continue; }
 
       dictInserts.push({
         store_id,
@@ -443,7 +452,7 @@ Deno.serve(async (req) => {
         value_bool: true,
         enabled: true,
         source: "auto_unknown_words",
-        note: `auto: category=${res.category}, sentiment=${res.sentiment}, freq=${row.freq_total}`,
+        note: `auto: category=${res.category}, sentiment=${res.sentiment}, reviews=${row.freq_total}${canonical && canonical !== keyNorm ? `, suggested=${canonical}` : ""}`,
         created_at: nowIso,
         updated_at: nowIso,
       });
