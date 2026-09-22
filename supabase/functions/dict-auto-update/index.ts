@@ -24,6 +24,24 @@ const OPENAI_TEMPERATURE = Number(Deno.env.get("OPENAI_TEMPERATURE") ?? "0.1");
 // ★ 1 回あたりのバッチサイズ上限（body.limit がなければこれを使う）
 const DEFAULT_BATCH_LIMIT = Number(Deno.env.get("DICT_UPDATE_BATCH_SIZE") ?? "15");
 
+// ★ dict_rules へ自動登録する条件（2026-09-22 に追加）
+//
+// 以前は GPT の add_to_dict をそのまま信じて is_food / stopword / alias の
+// 3種類すべてを自動登録していた。これは危険だった。
+// 形態素解析の誤りが unknown_words にそのまま入っているためで、
+// 実例: 表層「幹事」が lemma「感じ」として登録されている（出現75回）。
+// GPT はこの語を見てもっともらしく分類するが、元データが壊れていることには
+// 気づかない。そのまま辞書にすると誤りが恒久的に焼き付く。
+//
+// 頻度だけでは防げない（幹事は75回で、どんな閾値も超える）。
+// 効くのは category による絞り込みのほう。料理・ドリンクと判定された語は
+// 誤変換が紛れ込みにくく、かつ辞書の効果（メニュー名を拾う）の大half を占める。
+//
+// stopword と alias は unknown_words に提案として残し、人が選ぶ。
+// 「料理」「こと」を消すかどうかは店ごとの判断で、機械に任せる話ではない。
+const AUTO_DICT_CATEGORIES = new Set(["food", "drink"]);
+const AUTO_DICT_MIN_FREQ = Number(Deno.env.get("DICT_AUTO_MIN_FREQ") ?? "5");
+
 type UnknownWordRow = {
   id: string;
   surface: string;
@@ -334,53 +352,29 @@ Deno.serve(async (req) => {
         ? res.canonical_key_norm.trim()
         : null;
 
-      // is_food ルール
-      if (res.is_food) {
-        dictInserts.push({
-          store_id,
-          rule_type: "is_food",
-          key_norm: canonical ?? keyNorm,
-          canonical_key_norm: null,
-          value_bool: true,
-          enabled: true,
-          source: "auto_unknown_words",
-          note: `auto: category=${res.category}, sentiment=${res.sentiment}`,
-          created_at: nowIso,
-          updated_at: nowIso,
-        });
-      }
+      // ── 自動登録するのは料理・ドリンクの is_food ルールだけ ──
+      //
+      // stopword と alias は dict_rules へ自動で入れない。
+      // どちらも「この語を分析から消す」「この語を別語に寄せる」という
+      // 後戻りしにくい操作で、形態素解析の誤りをそのまま固定してしまう。
+      // GPT の判断は unknown_words の canonical_suggestion / add_to_dict に
+      // 残してあるので、人が選んで登録できる。
+      if (!res.is_food) continue;
+      if (!AUTO_DICT_CATEGORIES.has(res.category)) continue;
+      if ((row.freq_total ?? 0) < AUTO_DICT_MIN_FREQ) continue;
 
-      // stopword ルール
-      if (res.is_stopword) {
-        dictInserts.push({
-          store_id,
-          rule_type: "stopword",
-          key_norm: keyNorm,
-          canonical_key_norm: null,
-          value_bool: null,
-          enabled: true,
-          source: "auto_unknown_words",
-          note: res.notes ?? null,
-          created_at: nowIso,
-          updated_at: nowIso,
-        });
-      }
-
-      // alias ルール（canonical があり、baseKey と違う場合）
-      if (canonical && canonical !== keyNorm) {
-        dictInserts.push({
-          store_id,
-          rule_type: "alias",
-          key_norm: keyNorm,
-          canonical_key_norm: canonical,
-          value_bool: null,
-          enabled: true,
-          source: "auto_unknown_words",
-          note: res.notes ?? null,
-          created_at: nowIso,
-          updated_at: nowIso,
-        });
-      }
+      dictInserts.push({
+        store_id,
+        rule_type: "is_food",
+        key_norm: canonical ?? keyNorm,
+        canonical_key_norm: null,
+        value_bool: true,
+        enabled: true,
+        source: "auto_unknown_words",
+        note: `auto: category=${res.category}, sentiment=${res.sentiment}, freq=${row.freq_total}`,
+        created_at: nowIso,
+        updated_at: nowIso,
+      });
     }
 
     if (dry_run) {
@@ -390,6 +384,11 @@ Deno.serve(async (req) => {
           ok: true,
           dry_run: true,
           processed: unknownRows.length,
+          auto_dict_policy: {
+            categories: [...AUTO_DICT_CATEGORIES],
+            min_freq: AUTO_DICT_MIN_FREQ,
+            note: "stopword / alias は自動登録しない。unknown_words に提案として残る",
+          },
           unknown_updates: unknownUpdates,
           dict_inserts: dictInserts,
         }),
