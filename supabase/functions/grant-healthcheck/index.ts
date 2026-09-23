@@ -87,6 +87,61 @@ async function runCheck() {
   return { checked: candidates.length, misses, reviews: (reviews ?? []).length };
 }
 
+// ── キーワード分析パイプライン（ETL / keyword-classify / 未知語収集）の健全性 ──
+// DB 関数 keyword_pipeline_health() は「異常のときだけ行を返す」（0 行 = 正常）。
+// 付与チェックとは別枠で通知し、同じ異常の集合は 24 時間に 1 回しか送らない（毎時の cron で同じメールを送り続けない）。
+// 2026-09-23 追加。背景: lemma_key の二重書き手・匿名キー行 62%・天保山の分類漏れ等が数か月見えなかった
+type KwAlert = { check_name: string; store_id: string; value: number; detail: string };
+type KwResult = { rows: KwAlert[]; error?: string };
+
+async function checkKeywordPipeline(): Promise<KwResult> {
+  const { data, error } = await db.rpc("keyword_pipeline_health");
+  if (error) return { rows: [], error: error.message };
+  return { rows: (data ?? []) as KwAlert[] };
+}
+
+async function sha256Hex(s: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+// 異常の「種類 × 店舗」の集合で同一性を判定する（件数は毎時変わるので含めない）
+async function shouldNotifyKeyword(kw: KwResult): Promise<{ notify: boolean; hash: string; alerts: string }> {
+  const alerts = kw.error
+    ? `check_error|${kw.error}`
+    : kw.rows.map((r) => `${r.check_name}|${r.store_id}`).sort().join("\n");
+  const hash = await sha256Hex(alerts);
+  const { data } = await db.from("keyword_health_notifications").select("notified_at").eq("hash", hash).maybeSingle();
+  const last = data?.notified_at ? new Date(data.notified_at as string).getTime() : 0;
+  return { notify: Date.now() - last >= 24 * 3600_000, hash, alerts };
+}
+
+async function markKeywordNotified(hash: string, alerts: string) {
+  const { error } = await db
+    .from("keyword_health_notifications")
+    .upsert({ hash, alerts, notified_at: new Date().toISOString() }, { onConflict: "hash" });
+  if (error) console.warn("[grant-healthcheck] keyword_health_notifications upsert failed:", error.message);
+}
+
+function keywordAlertBody(kw: KwResult): string {
+  const lines = kw.error
+    ? [`  ・keyword_pipeline_health() の実行に失敗: ${kw.error}`]
+    : kw.rows.map((r) => `  ・${r.check_name}  ${r.store_id}  (${r.value})  ${r.detail}`);
+  return `キーワード分析のパイプライン（口コミ→_keyword→分類→未知語）に異常があります。
+
+${lines.join("\n")}
+
+■ 見方
+- keyword_empty: 本文のある口コミが 7 日以上前からあるのに {store}_keyword が 0 行 → ETL（GitHub Actions「Keyword ETL」）が走っていないか、店舗の 7 テーブルが欠けている
+- etl_stale: 口コミ本体の最新より _keyword の最新が 14 日以上古い → ETL の失敗か対象店舗の設定（store_profiles.is_active）
+- classify_pending_stale: 1 日以上前の行が未分類 → Edge Function keyword-classify（pg_cron 5 分おき）の失敗。Supabase のログを確認
+- anon_rows: 口コミ本体に review_id が無い行がある → スクレイパ側で review_id を付ける
+- review_inserted_null: 口コミ本体の inserted_at が NULL → ETL の窓に入らない。本体の inserted_at を埋める
+- table_missing: 店舗の 7 テーブルのどれかが無い → 店舗受け入れ手順（provision）を通す
+
+同じ異常の集合は 24 時間に 1 回だけ通知します。このメールは付与ヘルスチェック（1 時間ごと）の別枠です。`;
+}
+
 async function sendEmail(subject: string, body: string): Promise<{ ok: boolean; via: string; detail?: string }> {
   if (RESEND_API_KEY) {
     const r = await fetch("https://api.resend.com/emails", {
@@ -160,8 +215,27 @@ Deno.serve(async (req) => {
   const abnormal = result.misses.length >= ALERT_THRESHOLD;
   const dryRun = url.searchParams.get("dry_run") === "1";
 
+  // キーワード分析の健全性（付与とは別枠・別メール・24h に 1 回）。検査の失敗で付与チェックを止めない
+  let kw: KwResult;
+  try { kw = await checkKeywordPipeline(); } catch (e) { kw = { rows: [], error: String((e as Error).message) }; }
+  const kwAbnormal = kw.rows.length > 0 || !!kw.error;
+  let kwNotified: { ok: boolean; via: string; detail?: string } | null = null;
+  if (kwAbnormal && !dryRun) {
+    const { notify, hash, alerts } = await shouldNotifyKeyword(kw);
+    if (notify) {
+      const subject = kw.error
+        ? "【レポミール】キーワード分析の健全性チェックが失敗"
+        : `【レポミール】キーワード分析の異常 ${kw.rows.length}件`;
+      kwNotified = await sendEmail(subject, keywordAlertBody(kw));
+      if (kwNotified.ok) await markKeywordNotified(hash, alerts);
+    } else {
+      kwNotified = { ok: false, via: "suppressed_24h" };
+    }
+  }
+  const keyword = { abnormal: kwAbnormal, rows: kw.rows, error: kw.error ?? null, notified: kwNotified };
+
   if (!abnormal || dryRun) {
-    return json({ ok: true, abnormal, dryRun, ...result });
+    return json({ ok: true, abnormal, dryRun, ...result, keyword });
   }
 
   // 店舗別に集計して通知
@@ -190,5 +264,5 @@ ${result.misses.slice(0, 20).map((m) => `  ${m.submission_id} (${m.store_id}, ${
 このメールは付与ヘルスチェック（1時間ごと）による自動通知です。`;
 
   const sent = await sendEmail(`【レポミール】付与されていない回答を${result.misses.length}件検出`, body);
-  return json({ ok: true, abnormal, notified: sent, ...result });
+  return json({ ok: true, abnormal, notified: sent, ...result, keyword });
 });
