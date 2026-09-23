@@ -1,6 +1,6 @@
 // supabase/functions/sns-p-plan-restore/index.ts
-import { createClient } from "npm:@supabase/supabase-js@2";
 import { requireAuthedUser } from "./_shared/guard.ts";
+import { adminClient, serviceKey, supabaseUrl } from "./_shared/keys.ts";
 
 /* -------------------------------------------------- */
 /* CORS / Response helpers */
@@ -116,15 +116,13 @@ Deno.serve(async (req) => {
   const actorUserId = authed.userId;
 
   // 1) Env + client
-  const SUPABASE_URL = env("SUPABASE_URL");
-  const SUPABASE_SERVICE_ROLE_KEY = env("SUPABASE_SERVICE_ROLE_KEY");
+  const SUPABASE_URL = supabaseUrl();
+  const SUPABASE_SERVICE_ROLE_KEY = serviceKey();
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return fail("Missing SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY", 500);
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false },
-  });
+  const supabase = adminClient("sns-p-plan-restore");
 
   // 2) Input
   const body = await req.json().catch(() => null);

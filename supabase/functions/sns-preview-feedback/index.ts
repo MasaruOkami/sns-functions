@@ -1,6 +1,6 @@
 // supabase/functions/sns-preview-feedback/index.ts
-import { createClient } from "npm:@supabase/supabase-js@2";
 import { requireAuthAndStoreRoleStrict } from "../_shared/guard.ts";
+import { adminClient, serviceKey, supabaseUrl } from "../_shared/keys.ts";
 
 /* ------------------------------------------------------------------ */
 /* Utils */
@@ -249,15 +249,13 @@ Deno.serve(async (req) => {
 
   const userId = guard.userId;
 
-  const SUPABASE_URL = env("SUPABASE_URL");
-  const SUPABASE_SERVICE_ROLE_KEY = env("SUPABASE_SERVICE_ROLE_KEY");
+  const SUPABASE_URL = supabaseUrl();
+  const SUPABASE_SERVICE_ROLE_KEY = serviceKey();
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return errorResponse("Missing SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY", 500);
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false },
-  });
+  const supabase = adminClient("sns-preview-feedback");
 
   const body = await req.json().catch(() => null);
   if (!body) return errorResponse("Invalid JSON body", 400);

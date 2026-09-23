@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { adminClient, publishableKey, supabaseUrl } from "../_shared/keys.ts";
 
 /**
  * CORS
@@ -43,9 +44,8 @@ serve(async (req) => {
   try {
     if (req.method !== "GET") return json(405, { error: "METHOD_NOT_ALLOWED" }, origin);
 
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const SUPABASE_URL = supabaseUrl()!;
+    const SUPABASE_ANON_KEY = publishableKey()!;
 
     const authHeader = req.headers.get("Authorization") ?? "";
 
@@ -60,9 +60,7 @@ serve(async (req) => {
     if (userErr || !user) return json(401, { error: "UNAUTHORIZED" }, origin);
 
     // 店舗一覧は service role で取得（RLSに依存しない）
-    const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-      auth: { persistSession: false },
-    });
+    const supabaseAdmin = adminClient("list-my-stores");
 
     const { data, error } = await supabaseAdmin
       .from("user_store_roles")

@@ -1,15 +1,15 @@
 // supabase/functions/sns-post-dispatch/index.ts
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
 import { requireAuthPasswordOkAndStoreRole } from "../_shared/guard.ts";
+import { adminClient, serviceKey, supabaseUrl } from "./_shared/keys.ts";
 
 /**
  * Env
  */
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_URL = supabaseUrl() ?? "";
+const SUPABASE_SERVICE_ROLE_KEY = serviceKey() ?? "";
 
 /**
  * ✅ Roles (admin-only)
@@ -160,9 +160,7 @@ serve(async (req) => {
     const limit = Math.min(Math.max(Number(limitRaw ?? 10) || 10, 1), 50);
     const dryRun = typeof dryRunRaw === "boolean" ? dryRunRaw : DEFAULT_DRY_RUN;
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-      auth: { persistSession: false },
-    });
+    const supabase = adminClient("sns-post-dispatch");
 
     // 対象plan（承認済み＆未投稿）
     let q = supabase

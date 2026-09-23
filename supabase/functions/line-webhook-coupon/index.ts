@@ -4,9 +4,9 @@
 // 店舗ごとに別LINEアカウント: https://xxx.supabase.co/functions/v1/line-webhook-coupon?store_id=XXX
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { adminClient, supabaseUrl } from "../_shared/keys.ts";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_URL = supabaseUrl() ?? "";
 /** AI食生活判定クイズ用（Webhook が line-webhook-coupon に向いている場合の postback 対応） */
 const AI_LINE_CHANNEL_SECRET = Deno.env.get("LINE_CHANNEL_SECRET") ?? "";
 const AI_LINE_CHANNEL_ACCESS_TOKEN = Deno.env.get("LINE_CHANNEL_ACCESS_TOKEN") ?? "";
@@ -17,6 +17,24 @@ const FORM_ENGINE_BASE_URL = (Deno.env.get("FORM_ENGINE_BASE_URL") ?? "").replac
 
 const te = new TextEncoder();
 const FUNCTIONS_BASE = SUPABASE_URL ? SUPABASE_URL.replace(/\/$/, "") + "/functions/v1" : "";
+
+// ── LINE ユーザー別インメモリレートリミット（インスタンス単位）──
+// 大量メッセージ送信（スパム・ボット）への対策。同一 userId に対し 60 秒間に 20 件超はスキップ。
+const _lineMsgLimiter = new Map<string, { count: number; resetAt: number }>();
+function checkLINERateLimit(userId: string, limit = 20, windowMs = 60_000): boolean {
+  const now = Date.now();
+  // 古いエントリーを間引く（Map が 5000 件超になったとき）
+  if (_lineMsgLimiter.size > 5_000) {
+    Array.from(_lineMsgLimiter.entries()).forEach(([k, v]) => { if (now > v.resetAt) _lineMsgLimiter.delete(k); });
+  }
+  const entry = _lineMsgLimiter.get(userId);
+  if (!entry || now > entry.resetAt) {
+    _lineMsgLimiter.set(userId, { count: 1, resetAt: now + windowMs });
+    return true;
+  }
+  entry.count++;
+  return entry.count <= limit;
+}
 // 結果ページURLはカスタムドメイン優先
 const RESULT_BASE = FORM_ENGINE_BASE_URL || FUNCTIONS_BASE;
 
@@ -124,7 +142,7 @@ Deno.serve(async (req) => {
   }
   console.log("[line-webhook-coupon] POST", { bodyLen: bodyRaw.length });
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const supabase = adminClient("line-webhook-coupon");
 
   let secret: string | null = null;
   let accessToken: string | null = null;
@@ -419,6 +437,12 @@ Deno.serve(async (req) => {
   const events = parsed?.events ?? [];
   console.log("[line-webhook-coupon] events count", events.length, "types", events.map((e: { type?: string }) => e.type));
   for (const ev of events) {
+    // ★ rate limit: 同一ユーザーが 60 秒以内に 20 件超送信した場合はイベントをスキップ（スパム・ボット対策）
+    const evUserId = ev.source?.userId;
+    if (evUserId && !checkLINERateLimit(evUserId)) {
+      console.warn("[line-webhook-coupon] rate limit exceeded, skipping event", { type: ev.type, userId: evUserId.slice(0, 8) + "..." });
+      continue;
+    }
     console.log("[line-webhook-coupon] event", { type: ev.type, hasReplyToken: !!ev.replyToken, hasSource: !!ev.source });
     if (ev.type === "follow") {
       const replyToken = ev.replyToken;
@@ -536,18 +560,39 @@ Deno.serve(async (req) => {
           const reviewWindowMs = (sharedChannelStoreIds && sharedChannelStoreIds.length > 1) ? 4 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
           const oneDayAgo = new Date(Date.now() - reviewWindowMs).toISOString();
 
-          // 直近24時間以内の line_user_id 未設定レビューを探す
-          let reviewQuery = supabase
-            .from("reviews")
-            .select("id, submission_id, store_id")
-            .is("line_user_id", null)
-            .gte("created_at", oneDayAgo)
-            .order("created_at", { ascending: false })
-            .limit(1);
-          // 複数店舗でチャネルを共有している場合は全店舗横断で検索する（先にsharedChannelStoreIdsを優先）
-          if (sharedChannelStoreIds && sharedChannelStoreIds.length > 1) reviewQuery = reviewQuery.in("store_id", sharedChannelStoreIds);
-          else if (resolvedStoreId) reviewQuery = reviewQuery.eq("store_id", resolvedStoreId);
-          const { data: recentReview } = await reviewQuery.maybeSingle();
+          // ── follow.start.data による submission_id 直接リンク（addFriendURL?start=submissionId）──
+          // start.data がある場合はそれを submission_id として優先; なければ直近レビューにフォールバック
+          let recentReview: { id: string; submission_id: string; store_id: string } | null = null;
+          const followStartRaw: string | null = (ev as Record<string, unknown> & { follow?: { start?: { data?: string } } }).follow?.start?.data ?? null;
+          if (followStartRaw && !followStartRaw.startsWith('checkin_')) {
+            let followStartDecoded = followStartRaw;
+            try { followStartDecoded = decodeURIComponent(followStartRaw); } catch { /* keep raw */ }
+            if (followStartDecoded && !followStartDecoded.startsWith('checkin_')) {
+              const { data: revByStart } = await supabase
+                .from("reviews")
+                .select("id, submission_id, store_id")
+                .eq("submission_id", followStartDecoded)
+                .is("line_user_id", null)
+                .maybeSingle();
+              recentReview = (revByStart as typeof recentReview) ?? null;
+              if (recentReview) console.log("[follow] start.data linked submission:", followStartDecoded);
+            }
+          }
+          if (!recentReview) {
+            // 直近24時間以内の line_user_id 未設定レビューを探す（フォールバック）
+            let reviewQuery = supabase
+              .from("reviews")
+              .select("id, submission_id, store_id")
+              .is("line_user_id", null)
+              .gte("created_at", oneDayAgo)
+              .order("created_at", { ascending: false })
+              .limit(1);
+            // 複数店舗でチャネルを共有している場合は全店舗横断で検索する（先にsharedChannelStoreIdsを優先）
+            if (sharedChannelStoreIds && sharedChannelStoreIds.length > 1) reviewQuery = reviewQuery.in("store_id", sharedChannelStoreIds);
+            else if (resolvedStoreId) reviewQuery = reviewQuery.eq("store_id", resolvedStoreId);
+            const { data: fallbackReview } = await reviewQuery.maybeSingle();
+            recentReview = (fallbackReview as typeof recentReview) ?? null;
+          }
 
           const effectiveStoreId = recentReview?.store_id ?? resolvedStoreId;
 
@@ -628,6 +673,10 @@ Deno.serve(async (req) => {
       let rawText = String(ev.message.text ?? "").trim();
       if (rawText.startsWith("text=")) rawText = rawText.slice(5);
       if (rawText.startsWith("TEXT=")) rawText = rawText.slice(5);
+      // URLエンコードされたまま届く端末対策: "REVIEW%3Axxx" → "REVIEW:xxx"
+      if (rawText.includes('%')) {
+        try { rawText = decodeURIComponent(rawText); } catch { /* keep as-is */ }
+      }
       const text = rawText.toUpperCase();
       console.log("[line-webhook-coupon] message event", { userId: userId?.slice(0, 8) + "...", resolvedStoreId, textLen: rawText.length });
 

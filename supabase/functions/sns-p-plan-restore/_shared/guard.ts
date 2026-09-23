@@ -1,5 +1,8 @@
 // supabase/functions/sns-p-plan-restore/_shared/guard.ts
+// 鍵の解決は ./keys.ts に集約している（新方式 sb_secret_ への移行期間中、
+// 新旧どちらの鍵でも動くようにするため）。
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { publishableKey, supabaseUrl } from "./keys.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -38,9 +41,9 @@ export async function requireAuthedUser(req: Request): Promise<{ userId: string 
     return Promise.reject(error("Missing Authorization Bearer token", 401));
   }
 
-  const SUPABASE_URL = env("SUPABASE_URL");
+  const SUPABASE_URL = supabaseUrl();
   // anon key で OK（ユーザーJWT検証用途）
-  const SUPABASE_ANON_KEY = env("SUPABASE_ANON_KEY");
+  const SUPABASE_ANON_KEY = publishableKey();
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     return Promise.reject(error("Missing SUPABASE_URL / SUPABASE_ANON_KEY", 500));
   }

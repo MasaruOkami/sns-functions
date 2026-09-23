@@ -1,5 +1,8 @@
 // supabase/functions/sns-feedback/_shared/guard.ts
+// 鍵の解決は ./keys.ts に集約している（新方式 sb_secret_ への移行期間中、
+// 新旧どちらの鍵でも動くようにするため）。
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { adminClient, publishableKey, supabaseUrl } from "./keys.ts";
 
 type GuardResult = {
   user: { id: string; email?: string | null };
@@ -14,9 +17,8 @@ const json = (status: number, body: unknown, extraHeaders: Record<string, string
   });
 
 export function createSupabaseClients(req: Request) {
-  const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-  const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const SUPABASE_URL = supabaseUrl()!;
+  const SUPABASE_ANON_KEY = publishableKey()!;
 
   const authHeader = req.headers.get("Authorization") ?? "";
 
@@ -25,9 +27,7 @@ export function createSupabaseClients(req: Request) {
     auth: { persistSession: false },
   });
 
-  const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false },
-  });
+  const supabaseAdmin = adminClient("sns-feedback/guard");
 
   return { supabaseUser, supabaseAdmin };
 }

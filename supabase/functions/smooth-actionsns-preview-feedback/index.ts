@@ -1,7 +1,7 @@
 // supabase/functions/smooth-actionsns-preview-feedback/index.ts
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { requireAuthPasswordOkAndStoreRole } from "./_shared/guard.ts";
+import { adminClient } from "./_shared/keys.ts";
 
 type ActionKey =
   | "ok"
@@ -31,12 +31,7 @@ const ACTION_MAP: Record<
   change_datetime: { status: "changes_requested", comment: "投稿日時を変更したい" },
 };
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
-const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false },
-});
+const supabaseAdmin = adminClient("smooth-actionsns-preview-feedback");
 
 /**
  * ✅ CORS
