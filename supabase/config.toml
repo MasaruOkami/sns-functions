@@ -408,10 +408,6 @@ verify_jwt = false
 [functions.grant-healthcheck]
 verify_jwt = false
 
-# 週次キーワードQCレポート（pg_cron から x-cron-secret で呼ぶ）
-[functions.keyword-qc-report]
-verify_jwt = false
-
 # キーワード自動分類（pg_cron から x-cron-secret で呼ぶ）
 [functions.keyword-classify]
 verify_jwt = false
